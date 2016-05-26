@@ -6,4 +6,3 @@ app.set('port', port);
 app.listen(app.get('port'));
 console.log('Music happens on port: ' + app.get('port'));
 app.use(express.static(__dirname + '/../compiled'));
-

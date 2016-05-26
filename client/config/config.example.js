@@ -1,1 +1,1 @@
-window.SCId = 'Your SC client id insert!';
+window.SCId = 'your client id';

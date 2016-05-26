@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>Dummy Search HTML</title>
-    <script src="https://connect.soundcloud.com/sdk/sdk-3.1.1.js"></script>
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.1.1.js"></script>    
     <script type="text/javascript" src="/exampleSearch.js"></script>
+    <script type="text/javascript" src="/client/config/config.example.js"></script>
+
     <style media="screen">
- 
       #info {
         display: none;
       }
@@ -26,7 +27,7 @@
 
     <script type="text/javascript">
       SC.initialize({
-        w
+        client_id: window.SCId
       });
       var inputField = document.getElementById('url');
       var title = document.getElementById('title');
