@@ -8,9 +8,9 @@ Collaborative music streamer and visualizer.
 
 ## Team
 
-  - __Product Owner__: Bill Ramsey
-  - __Scrum Master__: Aaron Brown
-  - __Development Team Members__: Jinsoo Cha, Sehoon Park
+- __Product Owner__: Bill Ramsey
+- __Scrum Master__: Aaron Brown
+- __Development Team Members__: Jinsoo Cha, Sehoon Park
 
 
 ## Table of Contents
