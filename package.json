@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=node_modules,compiled,server,client/config/config.js --source-maps inline",
-    "start": "nodemon ./server/server.js"
+    "start": "./start & nodemon ./server/server.js"
   },
 
   "repository": {
