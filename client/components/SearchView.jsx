@@ -37,7 +37,6 @@ class SearchView extends React.Component {
 			<form onSubmit={this.handleSubmit.bind(this)}>
 	      <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
      	</form>
-
 		)
 	}
 
