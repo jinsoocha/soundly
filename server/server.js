@@ -1,15 +1,9 @@
 var express = require('express');
 var app = express();
 
-
-app.use(express.static(__dirname + '/../compiled'));
-app.get('/', function(req, res) {
-  res.send('Happening here.');
-});
-
 port = process.env.PORT || 4568;
-app.listen(port);
-console.log('Music happens on port: ' + port);
+app.set('port', port);
+app.listen(app.get('port'));
+console.log('Music happens on port: ' + app.get('port'));
+app.use(express.static(__dirname + '/../compiled'));
 
-// TODO
-// why does babel compile server.js
