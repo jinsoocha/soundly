@@ -1,15 +1,16 @@
 # soundly
 Collaborative music streamer and visualizer. 
 
+
 # Project Name
 
 > Changing the way you view and share music. 
 
 ## Team
 
-  - __Product Owner__: Sehoon Park
+  - __Product Owner__: Bill Ramsey 
   - __Scrum Master__: Aaron Brown
-  - __Development Team Members__: Jinsoo Cha, Bill Ramsey
+  - __Development Team Members__: Jinsoo Cha, Sehoon Park 
 
 ## Table of Contents
 
