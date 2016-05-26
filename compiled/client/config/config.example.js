@@ -1,4 +1,0 @@
-'use strict';
-
-window.SCId = 'your client id';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2NsaWVudC9jb25maWcvY29uZmlnLmV4YW1wbGUuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxPQUFPLElBQVAsR0FBYyxnQkFBZCIsImZpbGUiOiJjb25maWcuZXhhbXBsZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIndpbmRvdy5TQ0lkID0gJ3lvdXIgY2xpZW50IGlkJztcbiJdfQ==

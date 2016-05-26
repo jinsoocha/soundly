@@ -1,2 +1,12 @@
-node_modules
+## Mac OSX ##
+.DS_Store
+
+## NPM ##
+node_modules/
+
+## Compiled files ##
+compiled/
+
+## API keys ##
 client/config/config.js
+compiled/client/config/config.js
