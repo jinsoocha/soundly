@@ -1,3 +1,5 @@
+//SearchView renders the input bar and sends the search input to the server on submit.
+
 class SearchView extends React.Component {
   constructor(props) {
     super(props);
@@ -5,6 +7,7 @@ class SearchView extends React.Component {
     }
   }
 
+  //we need this to send the input data to the client
   requestBuildQueryString (params) {
     var queryString = [];
     for(var property in params)
@@ -23,6 +26,8 @@ class SearchView extends React.Component {
       type: 'POST',
       data: this.requestBuildQueryString(obj),
       success: function(result) {
+        console.log(result.data)
+        //sending the data from the server to the parent, SearchResultView
         this.props.getTracks(result.data);
       }.bind(this),
       error: function(xhr, status, err) {

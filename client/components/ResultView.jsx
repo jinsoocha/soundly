@@ -1,3 +1,8 @@
+//ResultView shows the search results
+
+//passing in the key to the childview is mandatory in React
+//Without key, you will get a warning in console.
+
 class ResultView extends React.Component {
   constructor(props) {
     super(props);
@@ -25,3 +30,4 @@ class ResultView extends React.Component {
 }
 
 window.ResultView = ResultView;
+
