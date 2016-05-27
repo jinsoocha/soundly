@@ -24,6 +24,8 @@
     "mongoose": "^4.4.19",
     "mongoose-type-url": "^1.0.2",
     "morgan": "^1.7.0"
+    "mongoose": "^4.4.19",
+    "node-soundcloud": "0.0.5"
   },
   "devDependencies": {
     "babel": "^6.5.2",

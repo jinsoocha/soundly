@@ -38,23 +38,31 @@ app.get('/songs', function(req, res) {
     })
 });
 
+
 var port = process.env.PORT || 4568;
 app.listen(port);
 console.log('Music happens on port: ' + port);
+
+var SC = require('node-soundcloud');
+ 
+// Initialize client 
+SC.init({
+  id: '0459c5ad7403b5ac30a0112b1411e68b',
+  secret: 'ca7a19a59c37ed373dbcbeb71d6d8a74',
+});
+//search and bring the results from api
 
 var data;
 
 app.post('/server',function(req,res) {
 	data = req.body;
-  return res.send({statusCode: 200, status: 'OK', data: req.body})
-
-	// return SC.get('/tracks', {
- //  			q: example,
- //  			streamable: true
-	// 		}).bind(this)
-	// 		.then(function(tracks) {
-	//   		console.log(tracks)
-	// 		});
+	console.log(req.body.keyword)
+	SC.get('/tracks', {
+  			q: req.body.keyword,
+  			streamable: true
+			},function(error, tracks) {
+  			return res.send({statusCode: 200, status: 'OK', data: tracks})
+			});
 }); 
 
 var headers = {
