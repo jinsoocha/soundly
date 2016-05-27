@@ -9,8 +9,11 @@ var Song = require('./models/Song.js');
 var bodyParser = require('body-parser');
 
 app.use(morgan('combined'));
+//we need this to receive the search input data from the client side
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+//serving index.html on client side
+//You do not need to use app.get('/'...) because it is taken care of by ReactRouter
 app.use(express.static(__dirname + '/../compiled'));
 
 app.get('/users', function(req, res) {
@@ -37,30 +40,15 @@ app.get('/songs', function(req, res) {
     })
 });
 
-
 var port = process.env.PORT || 4568;
 app.set('port', port);
 app.listen(app.get('port'));
 console.log('Music happens on port: ' + app.get('port'));
 
-//serving index.html on client side
-//You do not need to use app.get('/'...) because it is taken care of by ReactRouter
-app.use(express.static(__dirname + '/../compiled'));
-
-//we need this to receive the search input data from the client side
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-//require soundcloud package on server side
+//require soundcloud package on server side 
 var SC = require('node-soundcloud');
  
 // initialize soundcloud api 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-var SC = require('node-soundcloud');
- 
-// Initialize client 
 SC.init({
   id: '0459c5ad7403b5ac30a0112b1411e68b',
   secret: 'ca7a19a59c37ed373dbcbeb71d6d8a74',
@@ -77,8 +65,10 @@ app.post('/server',function(req,res) {
 	console.log(req.body.keyword)
 	SC.get('/tracks', {
   			q: req.body.keyword,
+        limit: 50, 
   			streamable: true
 			},function(error, tracks) {
+        // if(error) console.log(error);
   			return res.send({statusCode: 200, status: 'OK', data: tracks})
 			});
 }); 
