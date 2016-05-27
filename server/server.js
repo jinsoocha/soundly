@@ -1,12 +1,13 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var morgan = require('morgan');
 var db = require('./db-config');
 var User = require('./models/User.js');
 var Song = require('./models/Song.js');
+var bodyParser = require('body-parser');
+// sending the searchKeyword to the server
 
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({extended: true}));
