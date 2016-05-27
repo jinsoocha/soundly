@@ -1,12 +1,18 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var morgan = require('morgan');
+var path = require('path');
 var db = require('./db-config');
 var User = require('./models/User.js');
 var Song = require('./models/Song.js');
+var port = process.env.PORT || 4568;
+// app.listen(port);
 
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -37,6 +43,14 @@ app.get('/songs', function(req, res) {
     })
 });
 
-var port = process.env.PORT || 4568;
-app.listen(port);
-console.log('Music happens on port: ' + port);
+app.get('/test', function(req, res) {
+  res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));
+});
+
+io.on('connection', function(socket) {
+  console.log('= a user connected =');
+})
+
+http.listen(port, function() {
+  console.log('Music happening on =>', port);
+});
