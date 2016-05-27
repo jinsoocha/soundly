@@ -55,6 +55,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 var SC = require('node-soundcloud');
  
 // initialize soundcloud api 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+var SC = require('node-soundcloud');
+ 
+// Initialize client 
 SC.init({
   id: '0459c5ad7403b5ac30a0112b1411e68b',
   secret: 'ca7a19a59c37ed373dbcbeb71d6d8a74',
