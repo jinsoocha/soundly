@@ -22,7 +22,7 @@ app.get('/users', function(req, res) {
       } else {
         res.json(users);
       }
-    })
+    });
 });
 
 app.get('/songs', function(req, res) {
@@ -34,7 +34,7 @@ app.get('/songs', function(req, res) {
       } else {
         res.json(songs);
       }
-    })
+    });
 });
 
 var port = process.env.PORT || 4568;
