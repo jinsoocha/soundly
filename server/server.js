@@ -7,7 +7,6 @@ var db = require('./db-config');
 var User = require('./models/User.js');
 var Song = require('./models/Song.js');
 var bodyParser = require('body-parser');
-// sending the searchKeyword to the server
 
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -40,20 +39,33 @@ app.get('/songs', function(req, res) {
 
 
 var port = process.env.PORT || 4568;
-app.listen(port);
-console.log('Music happens on port: ' + port);
+app.set('port', port);
+app.listen(app.get('port'));
+console.log('Music happens on port: ' + app.get('port'));
 
+//serving index.html on client side
+//You do not need to use app.get('/'...) because it is taken care of by ReactRouter
+app.use(express.static(__dirname + '/../compiled'));
+
+//we need this to receive the search input data from the client side
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+//require soundcloud package on server side
 var SC = require('node-soundcloud');
  
-// Initialize client 
+// initialize soundcloud api 
 SC.init({
   id: '0459c5ad7403b5ac30a0112b1411e68b',
   secret: 'ca7a19a59c37ed373dbcbeb71d6d8a74',
 });
-//search and bring the results from api
 
+//I set up the data inside the server for now
+//so we can check the input keyword from the client side 
+//in our server url: /server
 var data;
 
+//when the client posts the search input, server receives and makes an api call to get the corresponding tracks
 app.post('/server',function(req,res) {
 	data = req.body;
 	console.log(req.body.keyword)
@@ -72,9 +84,8 @@ var headers = {
   'access-control-max-age': 10 // Seconds.
 };
 
-
+//when you go to localhost:4568/server you will see the data the server is holding if any.
 app.get('/server', function(req, res) {
 	res.writeHead(200, headers);
   res.end(JSON.stringify(data));
 });
-//sending the searchKeyword to the server

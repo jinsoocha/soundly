@@ -1,3 +1,6 @@
+//SearchResultView is a parent view of SearchView and ResultView
+//This view manages the data flow between SearchView and ResultView
+
 class SearchResultView extends React.Component {
   constructor(props) {
     super(props);
