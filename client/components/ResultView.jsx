@@ -21,6 +21,7 @@ class ResultView extends React.Component {
 					<ResultEntryView
 				    key={track.id}
 				    track={track}
+				    clickSong={this.props.clickSong}
 				  />
 				)}
      	</div>

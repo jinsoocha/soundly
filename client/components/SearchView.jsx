@@ -18,6 +18,7 @@ class SearchView extends React.Component {
   }
 
 	handleSubmit (e) {
+    e.preventDefault();
 		var obj = {keyword: this.refs.searchInput.value}
 		console.log(this.refs.searchInput.value)
     $.ajax({

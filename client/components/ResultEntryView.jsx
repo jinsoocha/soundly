@@ -5,11 +5,15 @@ class ResultEntryView extends React.Component {
     }
   }
 
+  handleClick(e) {
+		e.preventDefault();
+		this.props.clickSong(this.props.track);
+  }
 
 	render () {
 
 		return (
-			<div>
+			<div onClick={this.handleClick.bind(this)}>
 				{this.props.track.title}
      	</div>
 

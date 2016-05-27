@@ -17,7 +17,7 @@ class SearchResultView extends React.Component {
 		return (
 			<div>
 				<SearchView getTracks={this.handleGetTracks.bind(this)}/>
-				<ResultView tracks={this.state.tracks}/>
+				<ResultView tracks={this.state.tracks} clickSong={this.props.clickSong}/>
      	</div>
 
 		);
