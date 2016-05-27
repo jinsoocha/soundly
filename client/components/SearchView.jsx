@@ -1,8 +1,7 @@
 class SearchView extends React.Component {
   constructor(props) {
     super(props);
-    this.state= {
-    	data: ''
+    this.state = {
     }
   }
 
@@ -23,9 +22,8 @@ class SearchView extends React.Component {
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: this.requestBuildQueryString(obj),
-      success: function(data) {
-      	console.log(data)
-        this.setState({data: data});
+      success: function(result) {
+        this.props.getTracks(result.data);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(status, err.toString());
@@ -34,10 +32,12 @@ class SearchView extends React.Component {
 	}
 
 	render () {
+
 		return (
 			<form onSubmit={this.handleSubmit.bind(this)}>
 	      <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
      	</form>
+
 		)
 	}
 

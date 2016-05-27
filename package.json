@@ -20,7 +20,8 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
-    "mongoose": "^4.4.19"
+    "mongoose": "^4.4.19",
+    "node-soundcloud": "0.0.5"
   },
   "devDependencies": {
     "babel": "^6.5.2",
