@@ -40,3 +40,31 @@ app.get('/songs', function(req, res) {
 var port = process.env.PORT || 4568;
 app.listen(port);
 console.log('Music happens on port: ' + port);
+
+var data;
+
+app.post('/server',function(req,res) {
+	data = req.body;
+  return res.send({statusCode: 200, status: 'OK', data: req.body})
+
+	// return SC.get('/tracks', {
+ //  			q: example,
+ //  			streamable: true
+	// 		}).bind(this)
+	// 		.then(function(tracks) {
+	//   		console.log(tracks)
+	// 		});
+}); 
+
+var headers = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
+
+
+app.get('/server', function(req, res) {
+	res.writeHead(200, headers);
+  res.end(JSON.stringify(data));
+});
