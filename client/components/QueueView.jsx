@@ -1,4 +1,5 @@
 class QueueView extends React.Component {
+
   constructor({songs, parentFunction}) {
     this.songs = songs;
     this.parentFunction = parentFunction;

@@ -4,9 +4,8 @@
 ## NPM ##
 node_modules/
 
-## Bower ##
-compiled/bower_components
-
+## BOWER ##
+compiled/bower_components/
 
 ## Compiled files ##
 compiled/client
