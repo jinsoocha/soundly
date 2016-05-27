@@ -1,11 +1,6 @@
-import { Router, Route, hashHistory } from 'react-router';
-
-var Queue = React.createClass({
-  render: function() {
-    return (<h1>Welcome to the Queue</h1>);
+class QueueView extends React.Component {
+  render() {
+    return <div>Hello</div>
   }
-});
-
-ReactDOM.render((
-  <Queue/>
-  ), document.getElementById('app'))
+}
+window.QueueView = QueueView;
