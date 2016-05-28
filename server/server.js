@@ -45,17 +45,17 @@ app.set('port', port);
 app.listen(app.get('port'));
 console.log('Music happens on port: ' + app.get('port'));
 
-//require soundcloud package on server side 
+//require soundcloud package on server side
 var SC = require('node-soundcloud');
- 
-// initialize soundcloud api 
+
+// initialize soundcloud api
 SC.init({
-  id: '0459c5ad7403b5ac30a0112b1411e68b',
-  secret: 'ca7a19a59c37ed373dbcbeb71d6d8a74',
+  id: window.SCId,
+  secret: window.secret,
 });
 
 //I set up the data inside the server for now
-//so we can check the input keyword from the client side 
+//so we can check the input keyword from the client side
 //in our server url: /server
 var data;
 
@@ -65,13 +65,13 @@ app.post('/server',function(req,res) {
 	console.log(req.body.keyword)
 	SC.get('/tracks', {
   			q: req.body.keyword,
-        limit: 50, 
+        limit: 50,
   			streamable: true
 			},function(error, tracks) {
         // if(error) console.log(error);
   			return res.send({statusCode: 200, status: 'OK', data: tracks})
 			});
-}); 
+});
 
 var headers = {
   'access-control-allow-origin': '*',
