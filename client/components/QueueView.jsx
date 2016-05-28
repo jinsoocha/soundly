@@ -1,13 +1,17 @@
 class QueueView extends React.Component {
 
-  constructor({songs, parentFunction}) {
-    this.songs = songs;
-    this.parentFunction = parentFunction;
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
   }
   render () {
+
+    var tracks = this.props.tracks;
+
     return (
-      <div className="queue-view">
-      {songs.map(song => {
+      <div>
+      {tracks.map((track) => {
         return (<QueueEntryView key={song.id.scId} song={song} parentFunction={this.parentFunction}/>);
       })};
     );

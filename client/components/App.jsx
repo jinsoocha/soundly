@@ -1,6 +1,6 @@
 //App is our main view that contains every subview.
 
-//Note: I am using stateful class for every component 
+//Note: I am using stateful class for every component
 //because I am not sure if a component would have a state at a later point as we code.
 //We can refactor to stateless functional class when we feel necessary.
 //Question for myself: why is stateless functional better than stateful?
@@ -32,9 +32,10 @@ class App extends React.Component {
 				<div>
 				<SearchResultView clickSong={this.onClickSong.bind(this)}/>
 				</div>
+        <div>  </div>
 			</div>
 		)
-	}		
+	}
 }
 
 window.App = App;
