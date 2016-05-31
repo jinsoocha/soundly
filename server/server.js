@@ -10,7 +10,8 @@ var db = require('./db-config');
 var User = require('./models/User.js');
 var Song = require('./models/Song.js');
 var bodyParser = require('body-parser');
-var port = process.env.PORT || 4568;
+//require soundcloud package on server side
+var SC = require('node-soundcloud');
 
 app.use(morgan('combined'));
 
@@ -51,13 +52,11 @@ app.set('port', port);
 app.listen(app.get('port'));
 console.log('Music happens on port: ' + app.get('port'));
 
-//require soundcloud package on server side
-var SC = require('node-soundcloud');
 
 // initialize soundcloud api
 SC.init({
-  id: window.SCId,
-  secret: window.secret,
+  // id: window.SCId,
+  // secret: window.secret,
 });
 
 //I set up the data inside the server for now

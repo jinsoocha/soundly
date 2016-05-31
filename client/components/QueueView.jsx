@@ -1,21 +1,20 @@
-class QueueView extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-  render () {
-
-    var tracks = this.props.tracks;
-
-    return (
-      <div>
-      {tracks.map((track) => {
-        return (<QueueEntryView key={song.id.scId} song={song} parentFunction={this.parentFunction}/>);
-      })};
-    );
-  }
+// stateless functional component
+const QueueView = ({song}) => {
+  return (
+    <div>
+      <h3>Queue</h3>
+        <ul>
+        {song.map((title, artist) => {
+          return (
+            <li>
+              <QueueEntryView
+                key={song.id}
+                track={song.track}
+                artist={song.artist}
+            </li>
+          )
+        })}
+        </ul>
+    </div>
+  );
 }
-
-window.QueueView = QueueView;

@@ -7,6 +7,7 @@
 
 class App extends React.Component {
   constructor(props) {
+    console.log(props);
     super(props);
     //TODO: need to pass this state to queueView
     this.state = {
@@ -31,6 +32,7 @@ class App extends React.Component {
 				</h1>
 				<div>
 				<SearchResultView clickSong={this.onClickSong.bind(this)}/>
+        <QueueView song={this.state.clickedSong}/>
 				</div>
         <div>  </div>
 			</div>
