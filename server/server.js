@@ -46,10 +46,6 @@ app.get('/songs', function(req, res) {
     })
 });
 
-app.set('port', port);
-app.listen(app.get('port'));
-console.log('Music happens on port: ' + app.get('port'));
-
 //require soundcloud package on server side 
 var SC = require('node-soundcloud');
  
@@ -89,6 +85,7 @@ var headers = {
 app.get('/server', function(req, res) {
 	res.writeHead(200, headers);
   res.end(JSON.stringify(data));
+});  
 
 app.get('/test', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));

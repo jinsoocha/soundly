@@ -4,7 +4,7 @@
   "description": "Changing the way you view and share music.",
   "main": "app.js",
   "scripts": {
-    "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=bower_components,node_modules,compiled,server,client/config/config.js,start --source-maps inline",
+    "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=bower_components,node_modules,compiled,server,client/config/config.js,mockup,start --source-maps inline",
     "start": "./start & nodemon ./server/server.js"
   },
   "repository": {
