@@ -18,3 +18,5 @@ const QueueView = ({song}) => {
     </div>
   );
 }
+
+window.QueueView = QueueView;
