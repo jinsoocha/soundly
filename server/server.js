@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
+//attach http server to the express app
 var http = require('http').Server(app);
+//attach socket io to http server
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
@@ -91,6 +93,7 @@ app.get('/test', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));
 });
 
+//establish the socket io connection 
 io.on('connection', function(socket) {
   console.log('a user connected');
   socket.on('disconnect', function() {
@@ -98,6 +101,7 @@ io.on('connection', function(socket) {
   })
 })
 
+//listening to chat message from the client
 io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('user message =>', msg);
