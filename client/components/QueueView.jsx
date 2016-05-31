@@ -10,7 +10,7 @@ const QueueView = ({song}) => {
               <QueueEntryView
                 key={song.id}
                 track={song.track}
-                artist={song.artist}
+                artist={song.artist}/>
             </li>
           )
         })}
