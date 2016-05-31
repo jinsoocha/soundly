@@ -1,17 +1,23 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var morgan = require('morgan');
+var path = require('path');
 var db = require('./db-config');
 var User = require('./models/User.js');
 var Song = require('./models/Song.js');
 var bodyParser = require('body-parser');
+var port = process.env.PORT || 4568;
 
 app.use(morgan('combined'));
+
 //we need this to receive the search input data from the client side
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
 //serving index.html on client side
 //You do not need to use app.get('/'...) because it is taken care of by ReactRouter
 app.use(express.static(__dirname + '/../compiled'));
@@ -40,7 +46,6 @@ app.get('/songs', function(req, res) {
     })
 });
 
-var port = process.env.PORT || 4568;
 app.set('port', port);
 app.listen(app.get('port'));
 console.log('Music happens on port: ' + app.get('port'));
@@ -84,4 +89,24 @@ var headers = {
 app.get('/server', function(req, res) {
 	res.writeHead(200, headers);
   res.end(JSON.stringify(data));
+
+app.get('/test', function(req, res) {
+  res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));
+});
+
+io.on('connection', function(socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
+  })
+})
+
+io.on('connection', function(socket) {
+  socket.on('chat message', function(msg) {
+    console.log('user message =>', msg);
+  })
+})
+
+http.listen(port, function() {
+  console.log('Music happening on =>', port);
 });
