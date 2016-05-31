@@ -3,18 +3,18 @@ class DownView extends React.Component {
     super(props);
     this.state = {
       // do I want to declare the state in here, and set the change
-      count: 0
+      count: 0,
     };
   }
 
   handleUpClick(e) {
     e.preventDefault();
     this.setState({
-      count: count + 1
+      count: count + 1,
     });
   }
 
-  render () {
+  render() {
 
     return (
       <div onUpClick={this.handleUpClick.bind(this)}>

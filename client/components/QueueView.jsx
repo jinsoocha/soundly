@@ -1,4 +1,5 @@
 // stateless functional component
+
 const QueueView = ({song}) => {
   return (
     <div>

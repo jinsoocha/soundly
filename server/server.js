@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 //require soundcloud package on server side
 var SC = require('node-soundcloud');
 
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 
 //we need this to receive the search input data from the client side
 app.use(bodyParser.urlencoded({extended: true}));
@@ -92,7 +92,7 @@ app.get('/server', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-  res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));
+  res.sendFile(path.resolve(__dirname + '/../index.html'));
 });
 
 io.on('connection', function(socket) {
@@ -108,6 +108,3 @@ io.on('connection', function(socket) {
   })
 })
 
-http.listen(port, function() {
-  console.log('Music happening on =>', port);
-});

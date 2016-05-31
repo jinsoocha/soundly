@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Index</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="node_modules/jquery/dist/jquery.js"></script>
+  <script src="node_modules/react/dist/react.js"></script>
+  <script src="node_modules/react-dom/dist/react-dom.min.js"></script>
+  <script src="node_modules/react-router/umd/ReactRouter.min.js"></script>
+  <script src="node_modules/lodash/lodash.min.js"></script>
+  <script src="https://connect.soundcloud.com/sdk/sdk-3.1.1.js"></script>
+  <script type="text/javascript" src="client/config/config.js"></script>
+  <script>
+  SC.initialize({
+        client_id: window.SCId
+  });
+  </script>
+<!--   <script>
+  var { Router,
+      Route,
+      IndexRoute,
+      IndexLink,
+      Link } = ReactRouter;
+  </script> -->
+
+  <!-- add more scripts here as you create more component files -->
+  <script src="client/components/ResultEntryView.js"></script>
+  <script src="client/components/ResultView.js"></script>
+  <script src="client/components/SearchView.js"></script>
+  <script src="client/components/SearchResultView.js"></script>
+  <script src="client/components/App.js"></script>
+  <script src="client/components/QueueView.js"></script>
+  <script src="client/index.js"></script>
+
+
+<!--   <ul id="messages"></ul>
+  <form action="">
+    <input id="msg" autocomplete="off"><button>Send</button>
+  </form> -->
+
+  <!-- socket.io connection -->
+<!--   <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    $('form').submit(function() {
+      socket.emit('chat message', $('#msg').val());
+      $('msg').val('');
+      return false;
+    })
+  </script> -->
+</body>
+
+
+</html>
