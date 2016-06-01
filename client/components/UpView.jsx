@@ -17,7 +17,7 @@ class DownView extends React.Component {
   render() {
 
     return (
-      <div onUpClick={this.handleUpClick.bind(this)}>
+      <div onClick={this.handleUpClick.bind(this)}>
         {this.state.count}
       </div>
 

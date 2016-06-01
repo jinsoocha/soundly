@@ -17,16 +17,16 @@ class SearchView extends React.Component {
     return queryString.join('&');
   }
 
-	handleSubmit (e) {
+  handleSubmit (e) {
     e.preventDefault();
-		var obj = {keyword: this.refs.searchInput.value}
-		console.log(this.refs.searchInput.value)
+    var obj = {keyword: this.refs.searchInput.value}
+    console.log(this.refs.searchInput.value)
     $.ajax({
       url: 'http://localhost:4568/server',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: this.requestBuildQueryString(obj),
-      success: function(result) {
+      success: function (result) {
         console.log(result.data)
         //sending the data from the server to the parent, SearchResultView
         this.props.getTracks(result.data);
@@ -35,22 +35,15 @@ class SearchView extends React.Component {
         console.error(status, err.toString());
       }.bind(this)
     });
-	}
+}
 
-	render () {
-
-		return (
-			<form onSubmit={this.handleSubmit.bind(this)}>
-	      <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
-     	</form>
-
-		)
-	}
-
-
-
-
-
+  render () {
+    return (
+      <form onSubmit={this.handleSubmit.bind(this)}>
+        <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
+      </form>
+    );
+  }
 }
 
 window.SearchView = SearchView;

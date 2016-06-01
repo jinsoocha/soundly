@@ -7,7 +7,6 @@
 
 class App extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     // TODO: need to pass this state to queueView
     this.state = {
