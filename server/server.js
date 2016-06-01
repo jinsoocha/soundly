@@ -2,15 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const path = require('path');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
 const soundcloud = require('./routes/soundcloud.js');
 
 // //attach http server to the express app
-var http = require('http').Server(app);
+const http = require('http').Server(app);
 // //attach socket io to http server
-var io = require('socket.io')(http);
+const io = require('socket.io')(http);
 
 app.use(morgan('dev'));
 
@@ -34,20 +33,20 @@ app.get('/server', soundcloud.server);
 
 const port = process.env.PORT || 4568;
 
-//establish the socket io connection 
+//  establish the socket io connection
 io.on('connection', function(socket) {
   console.log('a user connected');
   socket.on('disconnect', function() {
     console.log('user disconnected');
-  })
-})
+  });
+});
 
-//listening to chat message from the client
+//  listening to chat message from the client
 io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('user message =>', msg);
-  })
-})
+  });
+});
 
 http.listen(port, function() {
   console.log('Music happening on =>', port);
