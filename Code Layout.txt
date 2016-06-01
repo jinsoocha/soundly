@@ -1,0 +1,8 @@
+Code Layout.
+
+server/server.js
+  //routes directory
+    socketio.js features.
+    users.js handles user authentication, creation, etc.
+    soundcloud.js handles sound cloud api calls.
+    songs.js? stores songs to the database

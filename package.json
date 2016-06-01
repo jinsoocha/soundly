@@ -19,13 +19,18 @@
   "homepage": "https://github.com/glistening-gibus/soundly#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "eslint-config-airbnb": "^9.0.1",
     "express": "^4.13.4",
+    "jquery": "^2.2.4",
+    "lodash": "^4.13.1",
     "method-override": "^2.3.6",
     "mongoose": "^4.4.19",
     "mongoose-type-url": "^1.0.2",
     "morgan": "^1.7.0",
-    "mongoose": "^4.4.19",
     "node-soundcloud": "0.0.5",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-router": "^2.4.1",
     "socket.io": "^1.4.6"
   },
   "devDependencies": {
