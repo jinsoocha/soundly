@@ -34,6 +34,7 @@
   <script src="/client/components/SearchResultView.js"></script>
   <script src="/client/components/App.js"></script>
   <script src="/client/components/QueueView.js"></script>
+  <script src="/client/components/QueueEntryView.js"></script>
   <script src="/client/index.js"></script>
   <!-- in case we are using bootstrap.. -->
 
@@ -50,7 +51,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
-    //emiting form input to the server 
+    //emiting form input to the server
     $('form').submit(function() {
       socket.emit('chat message', $('#msg').val());
       $('msg').val('');
