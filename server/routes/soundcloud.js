@@ -1,4 +1,3 @@
-const config = require('./../config');
 // soundcloud.js
 // require soundcloud package on server side
 const SC = require('node-soundcloud');
@@ -13,12 +12,7 @@ const headers = {
 
 // initialize soundcloud api
 SC.init({
-<<<<<<< HEAD
-  SCId: config.SCId,
-  secret: config.secret,
-=======
-  id: config.SCId
->>>>>>> 618b6d69c8b5bf37164ea6d65e461c1f348402c6
+  id: config.SCId,
 });
 
 

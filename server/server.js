@@ -5,15 +5,10 @@ const morgan = require('morgan');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
 const soundcloud = require('./routes/soundcloud.js');
-
-<<<<<<< HEAD
-=======
 // //attach http server to the express app
 const http = require('http').Server(app);
 // //attach socket io to http server
 const io = require('socket.io')(http);
-
->>>>>>> 618b6d69c8b5bf37164ea6d65e461c1f348402c6
 app.use(morgan('dev'));
 
 // we need this to receive the search input data from the client side
@@ -27,13 +22,32 @@ app.use(express.static(__dirname + '/../compiled'));
 app.get('/users', users.find);
 
 app.get('/songs', songs.find);
-
-
 // when the client posts the search input, server receives and makes an api call to
 // get the corresponding tracks
 app.post('/server', soundcloud.get);
 // when you go to localhost:4568/server you will see the data the server is holding if any.
 app.get('/server', soundcloud.server);
+
+// song queue -- will moudlarize //
+// ********************************** //
+const headers = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10, // Seconds.
+};
+const songsQueue = [];
+app.post('/queue', function(req, res) {
+  songsQueue.push(req.body);
+  console.log('$$$$reqbody',req.body, '$$$$songdqueue', songsQueue);
+  return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
+});
+
+app.get('/queue', function(req, res) {
+  res.writeHead(200, headers);
+  res.end(JSON.stringify(songsQueue));
+});
+// ********************************** //
 
 const port = process.env.PORT || 4568;
 

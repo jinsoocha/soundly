@@ -14,7 +14,7 @@ compiled/node_modules
 client/config/config.js
 server/config/config.js
 compiled/client/config/config.js
-server/config
+server/config/config.js
 
 ## MongoDB path ##
 data/

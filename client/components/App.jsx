@@ -11,6 +11,7 @@ class App extends React.Component {
     //  TODO: need to pass this state to queueView
     this.state = {
       clickedSong: '',
+      queue: [],
     };
   }
 
@@ -19,12 +20,21 @@ class App extends React.Component {
     this.setState({
       clickedSong: song,
     });
-    // set up the state as the song that has been passed from SearchResultView
-    console.log(song);
-    this.setState({
-      clickedSong: song,
+    $.ajax({
+      url: 'http://localhost:4568/queue',
+      contentType: 'application/x-www-form-urlencoded',
+      type: 'POST',
+      data: song,
+      success: function(result) {
+        console.log(result);
+        this.setState({
+          queue: result.data,
+        });
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
     });
-    console.log(this.state.clickedSong);
   }
 
   render() {
@@ -37,7 +47,11 @@ class App extends React.Component {
           <SearchResultView clickSong={this.onClickSong.bind(this)}/>
         </div>
         <div>
-          <QueueView song={this.state.clickedSong}/>
+          <QueueView
+            song={this.state.clickedSong}
+            queue={this.state.queue}
+          />
+
         </div>
       </div>
 		);
