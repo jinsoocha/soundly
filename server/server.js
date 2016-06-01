@@ -2,13 +2,18 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const path = require('path');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
 const soundcloud = require('./routes/soundcloud.js');
-// What does this do?
-// const methodOverride = require('method-override');
 
+<<<<<<< HEAD
+=======
+// //attach http server to the express app
+const http = require('http').Server(app);
+// //attach socket io to http server
+const io = require('socket.io')(http);
+
+>>>>>>> 618b6d69c8b5bf37164ea6d65e461c1f348402c6
 app.use(morgan('dev'));
 
 // we need this to receive the search input data from the client side
@@ -18,9 +23,6 @@ app.use(bodyParser.json());
 // serving index.html on client side
 // You do not need to use app.get('/'...) because it is taken care of by ReactRouter
 app.use(express.static(__dirname + '/../compiled'));
-app.get('/test', (req, res) => {
-  res.sendFile(path.resolve(__dirname + '/../compiled/index.html'));
-});
 
 app.get('/users', users.find);
 
@@ -34,7 +36,22 @@ app.post('/server', soundcloud.get);
 app.get('/server', soundcloud.server);
 
 const port = process.env.PORT || 4568;
-app.set('port', port);
-app.listen(app.get('port'));
-console.log('Music happens on port: ', app.get('port'));
 
+//  establish the socket io connection
+io.on('connection', function(socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
+  });
+});
+
+//  listening to chat message from the client
+io.on('connection', function(socket) {
+  socket.on('chat message', function(msg) {
+    console.log('user message =>', msg);
+  });
+});
+
+http.listen(port, function() {
+  console.log('Music happening on =>', port);
+});

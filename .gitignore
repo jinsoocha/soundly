@@ -7,12 +7,14 @@ bower_components/
 
 ## Compiled files ##
 compiled/client
-compiled/node_modules/
+compiled/node_modules
+
 
 ## API keys ##
 client/config/config.js
 server/config/config.js
 compiled/client/config/config.js
+server/config
 
 ## MongoDB path ##
 data/
