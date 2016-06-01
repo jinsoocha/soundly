@@ -6,7 +6,7 @@ node_modules/
 
 ## Compiled files ##
 compiled/client
-compiled/bower_components
+compiled/node_modules
 
 ## API keys ##
 client/config/config.js
