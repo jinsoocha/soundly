@@ -1,7 +1,7 @@
 // soundcloud.js
 // require soundcloud package on server side
 const SC = require('node-soundcloud');
-
+const config = require('../config/config.js');
 
 const headers = {
   'access-control-allow-origin': '*',
@@ -12,15 +12,14 @@ const headers = {
 
 // initialize soundcloud api
 SC.init({
-  // id: window.SCId,
-  // secret: window.secret,
+  id: config.SCId
 });
 
 
 // I set up the data inside the server for now
 // so we can check the input keyword from the client side
 // in our server url: /server
-const data = {};
+let data = {};
 
 module.exports.get = (req, res) => {
   data = req.body;
