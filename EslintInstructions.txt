@@ -5,4 +5,17 @@ if you have eslint already in -g global for npm, you may have to install eslint-
 npm -g install eslint-config-airbnb
 follow instructions here:
 https://github.com/hackreactor-labs/eslint-config-hackreactor
-But replace hackreactor with airbnb
+
+
+install sublime package babel to get jsx to lint.
+Go to preferences-> Package Settings -> Sublime Linter -> Settings User
+and set the eslint section to this.  (note, no airbnb or hackreactor.  Should use eslint).
+
+
+  "eslint": {
+      "@disable": false,
+      "args": [],
+      "excludes": []
+  }
+
+restart sublime text
