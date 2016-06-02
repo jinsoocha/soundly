@@ -10,26 +10,49 @@ class App extends React.Component {
     super(props);
     //  TODO: need to pass this state to queueView
     this.state = {
-      clickedSong: '',
       queue: [],
+      currentSong: '',
     };
   }
 
   onClickSong(song) {
+    console.log("clicked",song)
     // set up the state as the song that has been passed from searchResultView
-    this.setState({
-      clickedSong: song,
-    });
     $.ajax({
       url: 'http://localhost:4568/queue',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
       success: function(result) {
-        console.log(result);
+        console.log("Queueing the new song",result.data);
         this.setState({
           queue: result.data,
         });
+        if(this.state.queue.length === 1) {
+          this.setState({
+            currentSong: this.state.queue[0],
+          });
+          console.log("Playing the first song in the queue when length=1", this.state.currentSong)
+        }
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
+    });
+  }
+
+  handleChangeSong() {  
+    console.log("changing song")
+    $.ajax({
+      url: 'http://localhost:4568/remove',
+      contentType: 'application/x-www-form-urlencoded',
+      type: 'POST',
+      success: function(result) {
+        this.setState({
+          queue: result.data,
+          currentSong: result.data[0],
+        });
+        console.log("Changing queue and song on finish",this.state.queue, this.state.currentSong)
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(status, err.toString());
@@ -48,10 +71,15 @@ class App extends React.Component {
         </div>
         <div>
           <QueueView
-            song={this.state.clickedSong}
             queue={this.state.queue}
           />
-
+        </div>
+        <div>
+          <PlayerView 
+            changeSong={this.handleChangeSong.bind(this)}
+            currentSong={this.state.currentSong}
+            queue={this.state.queue}
+          />
         </div>
       </div>
 		);
