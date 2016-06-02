@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
+const queue = require('./routes/queue.js')
 const soundcloud = require('./routes/soundcloud.js');
 const queue = require('./routes/queue.js');
 // //attach http server to the express app
@@ -50,23 +51,30 @@ app.post('/api/queue/removeSong', queue.removeSongFromQueue);
 
 // song queue -- will moudlarize //
 // ********************************** //
-// const headers = {
-//   'access-control-allow-origin': '*',
-//   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-//   'access-control-allow-headers': 'content-type, accept',
-//   'access-control-max-age': 10, // Seconds.
-// };
-// const songsQueue = [];
-// app.post('/queue', function(req, res) {
-//   songsQueue.push(req.body);
-//   console.log('$$$$reqbody',req.body, '$$$$songdqueue', songsQueue);
-//   return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
-// });
+const headers = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10, // Seconds.
+};
 
-// app.get('/queue', function(req, res) {
-//   res.writeHead(200, headers);
-//   res.end(JSON.stringify(songsQueue));
-// });
+let songsQueue = [];
+
+app.post('/queue', function(req, res) {
+  songsQueue.push(req.body);
+  console.log('$$$$reqbody',req.body, '$$$$songdqueue', songsQueue);
+  return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
+});
+
+app.post('/remove', function(req,res) {
+  songsQueue.shift();
+  return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
+});
+
+app.get('/queue', function(req, res) {
+  res.writeHead(200, headers);
+  res.end(JSON.stringify(songsQueue));
+});
 // ********************************** //
 
 const port = process.env.PORT || 4568;
