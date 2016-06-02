@@ -1,8 +1,13 @@
 class PlayerView extends React.Component {
+  constructor(props) {
+    super(props);
+    //  TODO: need to pass this state to queueView
+  }
 
   streamTrack(track) {
     return SC.stream('/tracks/' + track.id)
       .then(player => { 
+        console.log("playing the song", player)
         player.play();
         player.on('finish', () => {
           this.props.changeSong();

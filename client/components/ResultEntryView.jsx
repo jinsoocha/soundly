@@ -13,7 +13,7 @@ class ResultEntryView extends React.Component {
   render() {
     return (
       <div onClick={this.handleClick.bind(this)}>
-				{this.props.track.title}
+				{this.props.track.title} {this.props.track.duration/1000}
       </div>
 		);
   }
