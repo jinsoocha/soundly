@@ -3,24 +3,22 @@ class DownView extends React.Component {
     super(props);
     this.state = {
       // do I want to declare the state in here, and set the change
-      count: 0
+      count: 0,
     };
   }
 
   handleDownClick(e) {
     e.preventDefault();
     this.setState({
-      count: count + 1
+      count: count + 1,
     });
   }
 
-  render () {
-
+  render() {
     return (
-      <div onDownClick={this.handleDownClick.bind(this)}>
+      <div onClick={this.handleDownClick.bind(this)}>
         {this.state.count}
       </div>
-
     );
   }
 }

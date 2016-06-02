@@ -12,7 +12,7 @@ const headers = {
 
 // initialize soundcloud api
 SC.init({
-  id: config.SCId
+  id: config.SCId,
 });
 
 

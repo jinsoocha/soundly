@@ -6,7 +6,6 @@ class SearchView extends React.Component {
     this.state = {
     };
   }
-
   //  we need this to send the input data to the client
   requestBuildQueryString(params) {
     const queryString = [];
@@ -43,7 +42,7 @@ class SearchView extends React.Component {
       <form onSubmit={this.handleSubmit.bind(this)}>
         <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
       </form>
-		);
+    );
   }
 }
 
