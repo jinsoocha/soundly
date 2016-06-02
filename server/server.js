@@ -4,9 +4,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
-const queue = require('./routes/queue.js')
-const soundcloud = require('./routes/soundcloud.js');
 const queue = require('./routes/queue.js');
+const soundcloud = require('./routes/soundcloud.js');
 // //attach http server to the express app
 const http = require('http').Server(app);
 // //attach socket io to http server
@@ -40,7 +39,7 @@ app.post('/api/queue/addSong', queue.addSongToQueue);
 //  Passes array index of song to increase in rank.
 app.post('/api/queue/increaseRank', queue.increaseSongRanking);
 //  Passes array index of song to decrease in rank.
-app.post('/api/queue/decreaseRank', queue.decreaseRank);
+app.post('/api/queue/decreaseRank', queue.decreaseSongRanking);
 //  Passes array index of song to move up in queue.
 app.post('/api/queue/moveUpInQueue', queue.moveUpInQueue);
 //  Passes array index of song to move down in queue.
