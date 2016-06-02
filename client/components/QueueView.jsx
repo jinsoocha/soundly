@@ -2,20 +2,37 @@ class QueueView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
     };
   }
 
-  handleUpVote() {
-    this.setState ({
-      count: this.state.count + 1,
-    });
+  handleUpVote(song, i) {
+    console.log(song, i);
+    // $.ajax({
+    //   type: 'POST',
+    //   url: 'http://localhost:4568/queue',
+    //   data: this.props.song,
+    //   success: function (result) {
+    //     upVote = result.data.upVote;
+    //   }.bind(this),
+    //   error: function (xhr, status, err) {
+    //     console.error(status, err.toString());
+    //   }.bind(this),
+    // });
   }
 
-  handleDownVote() {
-    this.setState ({
-      count: this.state.count - 1,
-    });
+  handleDownVote(song, i) {
+
+    // $.ajax({
+    //   type: 'POST',
+    //   url: 'http://localhost:4568/queue',
+    //   data: song,
+    //   success: function (result) {
+    //     downVote = result.data.upVote;
+    //   }.bind(this),
+    //   error: function (xhr, status, err) {
+    //     console.error(status, err.toString());
+    //   }.bind(this),
+    // });
   }
 
   render() {
@@ -24,13 +41,12 @@ class QueueView extends React.Component {
       <div>
         <h3>Queue</h3>
           <ul>
-            {queue.map((song) =>
+            {queue.map((song, i) =>
               <QueueEntryView
                 key={song.id}
                 song={song}
-                count={this.state.count}
-                handleUpVote={this.handleUpVote.bind(this)}
-                handleDownVote={this.handleDownVote.bind(this)}
+                handleUpVote={this.handleUpVote.bind(this, song, i)}
+                handleDownVote={this.handleDownVote.bind(this, song, i)}
               />
               )}
           </ul>

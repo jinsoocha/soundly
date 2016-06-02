@@ -28,7 +28,7 @@ app.post('/server', soundcloud.get);
 // when you go to localhost:4568/server you will see the data the server is holding if any.
 app.get('/server', soundcloud.server);
 
-// song queue -- will moudlarize //
+// song queue -- will modularize //
 // ********************************** //
 const headers = {
   'access-control-allow-origin': '*',
@@ -38,8 +38,12 @@ const headers = {
 };
 const songsQueue = [];
 app.post('/queue', function(req, res) {
-  songsQueue.push(req.body);
-  console.log('$$$$reqbody',req.body, '$$$$songdqueue', songsQueue);
+  const song = req.body;
+  song.downVote = 0;
+  song.upVote = 0;
+  song.rankingChange = 0;
+  songsQueue.push(song);
+  console.log('songsQueue', songsQueue);
   return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
 });
 

@@ -8,34 +8,59 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-    //  TODO: need to pass this state to queueView
     this.state = {
-      clickedSong: '',
       queue: [],
     };
   }
 
   onClickSong(song) {
-    // set up the state as the song that has been passed from searchResultView
-    this.setState({
-      clickedSong: song,
-    });
     $.ajax({
       url: 'http://localhost:4568/queue',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
-      success: function(result) {
-        console.log(result);
+      success: function (result) {
         this.setState({
           queue: result.data,
         });
       }.bind(this),
-      error: function(xhr, status, err) {
+      error: function (xhr, status, err) {
         console.error(status, err.toString());
       }.bind(this),
     });
   }
+
+  // handleUpVote(song, i) {
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: 'http://localhost:4568/queue/increaseRank',
+  //     data: this.props.song,
+  //     success: function (result) {
+  //       this.setState({
+  //         queue: result.data,
+  //       });
+  //     }.bind(this),
+  //     error: function (xhr, status, err) {
+  //       console.error(status, err.toString());
+  //     }.bind(this),
+  //   });
+  // }
+
+  // handleDownVote(song, i) {
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: 'http://localhost:4568/queue/decreaseRank',
+  //     data: i,
+  //     success: function (result) {
+  //       this.setState({
+  //         queue: result.data,
+  //       });
+  //     }.bind(this),
+  //     error: function (xhr, status, err) {
+  //       console.error(status, err.toString());
+  //     }.bind(this),
+  //   });
+  // }
 
   render() {
     return (
@@ -48,10 +73,10 @@ class App extends React.Component {
         </div>
         <div>
           <QueueView
-            song={this.state.clickedSong}
             queue={this.state.queue}
+            // upVote={this.handleUpVote.bind(this)}
+            // downVote={this.handleDownVote.bind(this)}
           />
-
         </div>
       </div>
 		);
