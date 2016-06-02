@@ -12,6 +12,7 @@ class App extends React.Component {
     this.state = {
       clickedSong: '',
       queue: [],
+      currentSong: '',
     };
   }
 
@@ -29,6 +30,29 @@ class App extends React.Component {
         console.log(result);
         this.setState({
           queue: result.data,
+        });
+        if(this.state.queue.length === 1) {
+          this.setState({
+            currentSong: this.state.queue[0],
+          });
+        }
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
+    });
+  }
+
+  handleChangeSong() {
+    $.ajax({
+      url: 'http://localhost:4568/remove',
+      contentType: 'application/x-www-form-urlencoded',
+      type: 'POST',
+      success: function(result) {
+        console.log(result.data)
+        this.setState({
+          queue: result.data,
+          currentSong: result.data[0],
         });
       }.bind(this),
       error: function(xhr, status, err) {
@@ -51,7 +75,13 @@ class App extends React.Component {
             song={this.state.clickedSong}
             queue={this.state.queue}
           />
-
+        </div>
+        <div>
+          <PlayerView 
+            changeSong={this.handleChangeSong.bind(this)}
+            currentSong={this.state.currentSong}
+            queue={this.state.queue}
+          />
         </div>
       </div>
 		);

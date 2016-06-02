@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const users = require('./routes/users.js');
 const songs = require('./routes/songs.js');
+const queue = require('./routes/queue.js')
 const soundcloud = require('./routes/soundcloud.js');
 // //attach http server to the express app
 const http = require('http').Server(app);
@@ -36,10 +37,17 @@ const headers = {
   'access-control-allow-headers': 'content-type, accept',
   'access-control-max-age': 10, // Seconds.
 };
-const songsQueue = [];
+
+let songsQueue = [];
+
 app.post('/queue', function(req, res) {
   songsQueue.push(req.body);
   console.log('$$$$reqbody',req.body, '$$$$songdqueue', songsQueue);
+  return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
+});
+
+app.post('/remove', function(req,res) {
+  songsQueue.shift();
   return res.send({ statusCode: 200, status: 'OK', data: songsQueue });
 });
 
