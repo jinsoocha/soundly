@@ -90,8 +90,8 @@ const addSong = (song) => {
     rankingChange: 0,
     upvotes: 0,
     downvotes: 0,
-    stream: song.url_stream,
-    artwork: song.artwork_url,
+    stream_url: song.stream_url,
+    artwork_url: song.artwork_url,
   };
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined) {
