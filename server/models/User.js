@@ -6,6 +6,11 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  roomid: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
