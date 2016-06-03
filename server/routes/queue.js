@@ -70,12 +70,16 @@ const emptyQueue = () => {
 };
 
 //  Remove the first/playing song.
-const removeFirstSong = () => {
+const removeFirstSong = (id) => {
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined || songQueue.length === 0) {
       reject('song queue is empty or undefined');
     }
-    songQueue.shift();
+    if (songQueue[0].id === id) {
+      songQueue.shift();
+    } else {
+      console.log('song already removed');
+    }
     resolve();
   });
   return p;
@@ -183,7 +187,8 @@ const getSongQueue = (req, res, next) => {
 };
 
 const firstSongFinished = (req, res, next) => {
-  removeFirstSong()
+  const id = req.body.id;
+  removeFirstSong(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
     console.log('Error ending song: ', err);
