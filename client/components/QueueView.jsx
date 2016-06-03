@@ -5,36 +5,6 @@ class QueueView extends React.Component {
     };
   }
 
-  handleUpVote(song, i) {
-    console.log(song, i);
-    // $.ajax({
-    //   type: 'POST',
-    //   url: 'http://localhost:4568/queue',
-    //   data: this.props.song,
-    //   success: function (result) {
-    //     upVote = result.data.upVote;
-    //   }.bind(this),
-    //   error: function (xhr, status, err) {
-    //     console.error(status, err.toString());
-    //   }.bind(this),
-    // });
-  }
-
-  handleDownVote(song, i) {
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: 'http://localhost:4568/queue',
-    //   data: song,
-    //   success: function (result) {
-    //     downVote = result.data.upVote;
-    //   }.bind(this),
-    //   error: function (xhr, status, err) {
-    //     console.error(status, err.toString());
-    //   }.bind(this),
-    // });
-  }
-
   render() {
     const queue = this.props.queue;
     return (
@@ -45,8 +15,9 @@ class QueueView extends React.Component {
               <QueueEntryView
                 key={song.id}
                 song={song}
-                handleUpVote={this.handleUpVote.bind(this, song, i)}
-                handleDownVote={this.handleDownVote.bind(this, song, i)}
+                index={i}
+                upVote={this.props.upVote}
+                downVote={this.props.downVote}
               />
               )}
           </ul>

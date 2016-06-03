@@ -30,37 +30,37 @@ class App extends React.Component {
     });
   }
 
-  // handleUpVote(song, i) {
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: 'http://localhost:4568/queue/increaseRank',
-  //     data: this.props.song,
-  //     success: function (result) {
-  //       this.setState({
-  //         queue: result.data,
-  //       });
-  //     }.bind(this),
-  //     error: function (xhr, status, err) {
-  //       console.error(status, err.toString());
-  //     }.bind(this),
-  //   });
-  // }
+  handleUpVote(song, i) {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:4568/queue/increaseRank',
+      data: i,
+      success: function (result) {
+        this.setState({
+          queue: result.data,
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
+    });
+  }
 
-  // handleDownVote(song, i) {
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: 'http://localhost:4568/queue/decreaseRank',
-  //     data: i,
-  //     success: function (result) {
-  //       this.setState({
-  //         queue: result.data,
-  //       });
-  //     }.bind(this),
-  //     error: function (xhr, status, err) {
-  //       console.error(status, err.toString());
-  //     }.bind(this),
-  //   });
-  // }
+  handleDownVote(song, i) {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:4568/queue/decreaseRank',
+      data: i,
+      success: function (result) {
+        this.setState({
+          queue: result.data,
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
+    });
+  }
 
   render() {
     return (
@@ -74,8 +74,8 @@ class App extends React.Component {
         <div>
           <QueueView
             queue={this.state.queue}
-            // upVote={this.handleUpVote.bind(this)}
-            // downVote={this.handleDownVote.bind(this)}
+            upVote={this.handleUpVote.bind(this)}
+            downVote={this.handleDownVote.bind(this)}
           />
         </div>
       </div>
