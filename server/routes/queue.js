@@ -191,7 +191,6 @@ const firstSongFinished = (req, res, next) => {
 };
 
 const addSongToQueue = (req, res, next) => {
-  console.log('$$$$reqbody', req.body);
   addSong(req.body)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -201,7 +200,7 @@ const addSongToQueue = (req, res, next) => {
 };
 
 const increaseSongRanking = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.index;
   upvote(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -211,7 +210,7 @@ const increaseSongRanking = (req, res, next) => {
 };
 
 const decreaseSongRanking = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.index;
   downvote(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -221,7 +220,7 @@ const decreaseSongRanking = (req, res, next) => {
 };
 
 const moveUpInQueue = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.index;
   moveup(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -231,7 +230,7 @@ const moveUpInQueue = (req, res, next) => {
 };
 
 const moveDownInQueue = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.index;
   movedown(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -241,7 +240,7 @@ const moveDownInQueue = (req, res, next) => {
 };
 
 const removeSongFromQueue = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.index;
   remove(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
