@@ -3,7 +3,10 @@
 // get user password
 // store in user variable, and pass to db
 
-class SignupView extends React.Component {
+import React from 'react';
+import App from './components/App';
+
+export default class SignupView extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -28,6 +31,3 @@ class SignupView extends React.Component {
     );
   }
 }
-
-
-window.SignupView = SignupView;

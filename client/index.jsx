@@ -7,6 +7,7 @@ import { Router, Route, hashHistory } from 'react-router';
 import App from './components/App';
 import QueueView from './components/QueueView';
 import SearchView from './components/SearchView';
+import SignupView from './components/SignupView';
 
 const app = document.getElementById('app');
 ReactDOM.render((
