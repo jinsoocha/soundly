@@ -8,6 +8,7 @@ const io = require('socket.io')(http);
 // serving index.html on client side
 // You do not need to use app.get('/'...) because it is taken care of by ReactRouter
 app.use(express.static(path.resolve(__dirname + '/../compiled')));
+app.use(express.static(path.resolve(__dirname + '/../node_modules')));
 
 require('./routes/middleware.js')(app, express);
 
