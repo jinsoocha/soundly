@@ -22,9 +22,8 @@ class App extends React.Component {
       type: 'POST',
       data: song,
       success: function(result) {
-        const tempQueue = result;
         this.setState({
-          queue: tempQueue,
+          queue: result,
         });
         if (this.state.queue.length === 1) {
           this.setState({
@@ -44,9 +43,8 @@ class App extends React.Component {
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       success: function(result) {
-        const tempQueue = result;
         this.setState({
-          queue: tempQueue,
+          queue: result,
           currentSong: result.data[0],
         });
       }.bind(this),
@@ -61,9 +59,8 @@ class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
-        const tempQueue = result;
         this.setState({
-          queue: tempQueue,
+          queue: result,
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -78,14 +75,41 @@ class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
-        const tempQueue = result;
         this.setState({
-          queue: tempQueue,
+          queue: result,
         });
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(status, err.toString());
       },
+    });
+  }
+
+  handleSignIn(userData) {
+    $.ajax({
+      type: 'POST',
+      url: 'api/users/signin'
+      data: userData,
+      success: function (result) {
+        // render index view
+      }
+    }.bind(this),
+    error: function (xhr, status, err) {
+      console.error(status, err.toString());
+    });
+  }
+
+  handleSignUp(userData) {
+    $.ajax({
+      type: 'POST',
+      url: 'api/users/signup'
+      data: userData,
+      success: function (result) {
+        // render index view
+      }
+    }.bind(this),
+    error: function (xhr, status, err) {
+      console.error(status, err.toString());
     });
   }
 
@@ -112,9 +136,20 @@ class App extends React.Component {
             queue={this.state.queue}
           />
         </div>
+        <div>
+          <SignupView
+            handleSignUp={this.handleSignUp.bind(this)}
+          />
+        </div>
       </div>
     );
   }
 }
 
 window.App = App;
+
+        // <div>
+        //   <LoginView
+        //     // need to pass need props here
+        //   />
+        // </div>
