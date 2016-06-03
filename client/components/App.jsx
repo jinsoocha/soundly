@@ -22,14 +22,6 @@ export default class App extends React.Component {
     });
   }
 
-  componentWillUpdate() {
-    console.log("state change")
-    const context = this;
-    socket.on('queue', function(data) {
-      context.updateQueue(data);
-    });
-  }
-  
   updateQueue(data) {
     console.log("updating queue")
     this.setState({
@@ -40,13 +32,13 @@ export default class App extends React.Component {
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
     console.log("clicked");
-    socket.emit('update', {hello: 'hi'});
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
       success: function(result) {
+        socket.emit('update', {hello: 'hi'});
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -58,12 +50,12 @@ export default class App extends React.Component {
     });
   }
 
-  handleChangeSong() {
-    socket.emit('update', {hello: 'hi'});
+  handleChangeSong(song) {
     $.ajax({
       url: 'api/queue/songFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
+      data: song,
       success: function(result) {
         this.setState({
           queue: result,
@@ -76,7 +68,6 @@ export default class App extends React.Component {
   }
 
   handleUpVote(song, i) {
-    socket.emit('update', {hello: 'hi'});
     $.ajax({
       type: 'POST',
       url: '/api/queue/increaseRank',
@@ -94,7 +85,6 @@ export default class App extends React.Component {
   }
 
   handleDownVote(song, i) {
-    socket.emit('update', {hello: 'hi'});
     $.ajax({
       type: 'POST',
       url: '/api/queue/decreaseRank',

@@ -19,20 +19,23 @@ export default class PlayerView extends React.Component {
       player.play();
       player.on('finish', () => {
         console.log('finished');
-        this.props.changeSong();
+        this.props.changeSong(track);
       });
     }).catch(() => console.log('Cannot play the song'));
   }
-  
-  render() {
-    console.log("queuefirstsong",this.props.queue[0], "statecurrentsong",this.state.currentSong);
-    if (this.props.queue.length > 0 && this.props.queue[0].id !== this.state.currentSong.id) {
-      this.streamTrack(this.props.queue[0]);
+
+  componentWillReceiveProps(nextProps) {
+    console.log("queuefirstsong",nextProps.queue[0], "statecurrentsong",this.state.currentSong);
+    if (nextProps.queue.length > 0 && nextProps.queue[0].id !== this.state.currentSong.id) {
+      this.streamTrack(nextProps.queue[0]);
       this.setState({
-        currentSong: this.props.queue[0],
+        currentSong: nextProps.queue[0],
       });
       console.log("currentsongintheplayer", this.state.currentSong);
-    }
+    }    
+  }
+  
+  render() {
     return (
       <div>
         <h1>PLAYER</h1>
