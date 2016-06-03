@@ -1,4 +1,11 @@
-class PlayerView extends React.Component {
+import React from 'react';
+import SC from 'soundcloud';
+
+SC.initialize({
+  client_id: window.SCId,
+});
+
+export default class PlayerView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -7,16 +14,14 @@ class PlayerView extends React.Component {
   }
 
   streamTrack(track) {
-    return SC.stream('/tracks/' + track.id)
-      .then(player => { 
-        console.log("playing the song", player)
-        player.play();
-        player.on('finish', () => {
-          console.log("finished")
-          this.props.changeSong();
-        });
-      })
-      .catch(() => console.log('Cannot play the song'));
+    return SC.stream('/tracks/' + track.id).then(player => { 
+      console.log('playing the song', player);
+      player.play();
+      player.on('finish', () => {
+        console.log('finished');
+        this.props.changeSong();
+      });
+    }).catch(() => console.log('Cannot play the song'));
   }
   
   render() {
@@ -30,13 +35,9 @@ class PlayerView extends React.Component {
     }
     return (
       <div>
-        <h1>
-        PLAYER
-        </h1>
+        <h1>PLAYER</h1>
         {this.state.currentSong.title}
       </div>
     );
   }
 }
-
-window.PlayerView = PlayerView;
