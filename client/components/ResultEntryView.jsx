@@ -1,4 +1,6 @@
-class ResultEntryView extends React.Component {
+import React from 'react';
+
+export default class ResultEntryView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,10 +15,8 @@ class ResultEntryView extends React.Component {
   render() {
     return (
       <div onClick={this.handleClick.bind(this)}>
-				{this.props.track.title} {this.props.track.duration/1000}
+				{this.props.track.title} {this.props.track.duration / 1000}
       </div>
 		);
   }
 }
-
-window.ResultEntryView = ResultEntryView;

@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=bower_components,node_modules,compiled,server,client/config/config.js,mockup,start --source-maps inline",
-    "start": "./start & nodemon ./server/server.js",
-    "run-tests": "./node_modules/mocha/bin/mocha"
+    "start": "webpack --progress --colors --watch & nodemon ./server/server.js",
+    "run-tests": "./node_modules/mocha/bin/mocha",
+    "hola": "webpack --progress --colors --watch"
   },
   "repository": {
     "type": "git",
@@ -19,26 +20,28 @@
   },
   "homepage": "https://github.com/glistening-gibus/soundly#readme",
   "dependencies": {
+    "bcrypt": "^0.8.6",
     "body-parser": "^1.15.1",
     "chai": "^3.5.0",
     "eslint-config-airbnb": "^9.0.1",
     "express": "^4.13.4",
     "jquery": "^2.2.4",
     "lodash": "^4.13.1",
-    "method-override": "^2.3.6",
     "mocha": "^2.5.3",
     "mongoose": "^4.4.19",
-    "mongoose-type-url": "^1.0.2",
     "morgan": "^1.7.0",
     "node-soundcloud": "0.0.5",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
-    "socket.io": "^1.4.6"
+    "socket.io": "^1.4.6",
+    "soundcloud": "^3.1.1",
+    "webpack": "^1.13.1"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "eslint": "^2.11.0",

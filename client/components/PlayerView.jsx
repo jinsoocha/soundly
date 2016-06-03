@@ -1,36 +1,43 @@
-class PlayerView extends React.Component {
+import React from 'react';
+import SC from 'soundcloud';
+
+SC.initialize({
+  client_id: window.SCId,
+});
+
+export default class PlayerView extends React.Component {
   constructor(props) {
     super(props);
-    //  TODO: need to pass this state to queueView
+    this.state = {
+      currentSong: '',
+    };
   }
 
   streamTrack(track) {
-    return SC.stream('/tracks/' + track.id)
-      .then(player => { 
-        console.log("playing the song", player)
-        player.play();
-        player.on('finish', () => {
-          this.props.changeSong();
-        });
-      })
-      .catch(() => console.log('Cannot play the song'));
+    return SC.stream('/tracks/' + track.id).then(player => { 
+      console.log('playing the song', player);
+      player.play();
+      player.on('finish', () => {
+        console.log('finished');
+        this.props.changeSong();
+      });
+    }).catch(() => console.log('Cannot play the song'));
   }
   
   render() {
-    if (this.props.currentSong) {
-      console.log("currentsongintheplayer", this.props.currentSong)
-      this.streamTrack(this.props.currentSong);
-      var playingSong = <div>{this.props.currentSong.title}</div>
+    console.log("queuefirstsong",this.props.queue[0], "statecurrentsong",this.state.currentSong);
+    if (this.props.queue.length > 0 && this.props.queue[0].id !== this.state.currentSong.id) {
+      this.streamTrack(this.props.queue[0]);
+      this.setState({
+        currentSong: this.props.queue[0],
+      });
+      console.log("currentsongintheplayer", this.state.currentSong);
     }
     return (
       <div>
-        <h1>
-        PLAYER
-        </h1>
-        {playingSong}
+        <h1>PLAYER</h1>
+        {this.state.currentSong.title}
       </div>
     );
   }
 }
-
-window.PlayerView = PlayerView;

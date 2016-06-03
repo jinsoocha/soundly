@@ -1,35 +1,30 @@
-//  App is our main view that contains every subview.
+import React from 'react';
+import SearchResultView from './SearchResultView';
+import QueueView from './QueueView';
+import PlayerView from './PlayerView';
+import $ from 'jquery';
 
-//  Note: I am using stateful class for every component
-//  because I am not sure if a component would have a state at a later point as we code.
-//  We can refactor to stateless functional class when we feel necessary.
-//  Question for myself: why is stateless functional better than stateful?
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       queue: [],
-      currentSong: '',
     };
   }
 
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
-    console.log(song);
+    console.log("clicked");
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
       success: function(result) {
+        const tempQueue = result;
         this.setState({
-          queue: result,
+          queue: tempQueue,
         });
-        if (this.state.queue.length === 1) {
-          this.setState({
-            currentSong: this.state.queue[0],
-          });
-        }
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(status, err.toString());
@@ -39,13 +34,13 @@ class App extends React.Component {
 
   handleChangeSong() {
     $.ajax({
-      url: 'api/queue/firstSongFinished',
+      url: 'api/queue/songFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       success: function(result) {
         this.setState({
           queue: result,
-          currentSong: result.data[0],
+          currentSong: result[0],
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -59,8 +54,9 @@ class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
+        const tempQueue = result;
         this.setState({
-          queue: result,
+          queue: tempQueue,
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -75,8 +71,9 @@ class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
+        const tempQueue = result;
         this.setState({
-          queue: result,
+          queue: tempQueue,
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -85,40 +82,10 @@ class App extends React.Component {
     });
   }
 
-  handleSignIn(userData) {
-    $.ajax({
-      type: 'POST',
-      url: 'api/users/signin'
-      data: userData,
-      success: function (result) {
-        // render index view
-      }
-    }.bind(this),
-    error: function (xhr, status, err) {
-      console.error(status, err.toString());
-    });
-  }
-
-  handleSignUp(userData) {
-    $.ajax({
-      type: 'POST',
-      url: 'api/users/signup'
-      data: userData,
-      success: function (result) {
-        // render index view
-      }
-    }.bind(this),
-    error: function (xhr, status, err) {
-      console.error(status, err.toString());
-    });
-  }
-
   render() {
     return (
       <div>
-        <h1>
-          AppView
-        </h1>
+        <h1>AppView</h1>
         <div>
           <SearchResultView clickSong={this.onClickSong.bind(this)}/>
         </div>
@@ -132,24 +99,10 @@ class App extends React.Component {
         <div>
           <PlayerView
             changeSong={this.handleChangeSong.bind(this)}
-            currentSong={this.state.currentSong}
             queue={this.state.queue}
-          />
-        </div>
-        <div>
-          <SignupView
-            handleSignUp={this.handleSignUp.bind(this)}
           />
         </div>
       </div>
     );
   }
 }
-
-window.App = App;
-
-        // <div>
-        //   <LoginView
-        //     // need to pass need props here
-        //   />
-        // </div>

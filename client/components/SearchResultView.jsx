@@ -1,7 +1,10 @@
 //  SearchResultView is a parent view of SearchView and ResultView
 //  This view manages the data flow between SearchView and ResultView
+import React from 'react';
+import SearchView from './SearchView';
+import ResultView from './ResultView';
 
-class SearchResultView extends React.Component {
+export default class SearchResultView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,7 +13,7 @@ class SearchResultView extends React.Component {
   }
 
   handleGetTracks(tracks) {
-    this.setState({ tracks: tracks });
+    this.setState({ tracks });
   }
 
   render() {
@@ -23,4 +26,3 @@ class SearchResultView extends React.Component {
   }
 }
 
-window.SearchResultView = SearchResultView;

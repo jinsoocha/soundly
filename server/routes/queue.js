@@ -62,6 +62,7 @@ const reRankSongs = (songIndexId) => {
 };
 
 const getQueue = () => songQueue;
+
 const emptyQueue = () => {
   while (songQueue.length) {
     songQueue.pop();
@@ -82,7 +83,7 @@ const removeFirstSong = () => {
 
 //  Remove the first/playing song.
 const addSong = (song) => {
-  console.log('$$$$SONGfQ', song);
+  // console.log('$$$$SONGfQ', song);
   const songToAdd = {
     title: song.title,
     id: song.id,

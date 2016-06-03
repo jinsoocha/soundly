@@ -6,8 +6,9 @@ const soundcloud = require('./soundcloud.js');
 
 module.exports = (app, express) => {
   //  Users
-  app.get('/users', users.find);
-
+  app.post('/api/users/signup', users.signup);
+  app.post('/api/users/signin', users.signin);
+  //  Song Find
   app.get('/songs', songs.find);
   // when the client posts the search input, server receives and makes an api call to
   // get the corresponding tracks

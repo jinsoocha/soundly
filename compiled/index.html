@@ -7,50 +7,22 @@
 </head>
 <body>
   <div id="app"></div>
-  <script src="node_modules/jquery/dist/jquery.js"></script>
-  <script src="node_modules/react/dist/react.min.js"></script>
-  <script src="node_modules/react-dom/dist/react-dom.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/2.4.1/ReactRouter.js"></script>
-  <script src="node_modules/lodash/lodash.min.js"></script>
-  <script src="https://connect.soundcloud.com/sdk/sdk-3.1.1.js"></script>
   <script type="text/javascript" src="/client/config/config.js"></script>
-  <script>
-  SC.initialize({
-        client_id: window.SCId
-  });
-  </script>
-  <script>
-  var { Router,
-      Route,
-      IndexRoute,
-      IndexLink,
-      Link } = ReactRouter;
-  </script>
-
-  <!-- add more scripts here as you create more component files -->
-  <script src="/client/components/PlayerView.js"></script>
-  <script src="/client/components/ResultEntryView.js"></script>
-  <script src="/client/components/ResultView.js"></script>
-  <script src="/client/components/SearchView.js"></script>
-  <script src="/client/components/SearchResultView.js"></script>
-  <script src="/client/components/App.js"></script>
-  <script src="/client/components/QueueView.js"></script>
-  <script src="/client/components/QueueEntryView.js"></script>
-  <script src="/client/index.js"></script>
+  <script src="/client/bundle.js"></script>
   <!-- in case we are using bootstrap.. -->
 
   <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
 
-
+<!-- 
   <ul id="messages"></ul>
   <form action="">
     <input id="msg" autocomplete="off"><button>Send</button>
-  </form>
+  </form> -->
 
   <!-- socket.io connection -->
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+ <!--  <script>
     var socket = io();
     //emiting form input to the server
     $('form').submit(function() {
@@ -58,6 +30,6 @@
       $('msg').val('');
       return false;
     })
-  </script>
+  </script> -->
 </body>
 </html>
