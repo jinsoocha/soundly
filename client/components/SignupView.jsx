@@ -4,29 +4,42 @@
 // store in user variable, and pass to db
 
 import React from 'react';
-import App from './components/App';
 
 export default class SignupView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      type: 'info',
+      message: '',
+    };
   }
 
   handleSignup(e) {
     e.preventDefault();
-    console.log(this.refs.userInput.value);
+    this.setState({ type: 'info', message: 'Sending...' }, this.sendFormData);
+  }
+
+  sendFormData() {
+    const formData = {
+      username: React.findDOMNode(this.refs.username).value,
+      password: React.findDOMNode(this.refs.password).value,
+    };
   }
 
   render() {
     return (
       <div>
-        <div>
-          <form onSubmit={this.handleSignup.bind(this)}>
-            <p>
-              <input type="text" name="usernameInput" ref="userInput"></input>
-              <input type="text" name="passwordInput" ref="userInput"></input>
-             </p>
-          </form>
-        </div>
+        <h1 id="heading">Signup!</h1>
+        <form action="" onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Select a username</label>
+            <input classname="form-control" name="username" ref="username" required type="text"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Select a password</label>
+            <input classname="form-control" name="password" ref="password" required type="text"/>
+          </div>
+        </form>
       </div>
     );
   }
