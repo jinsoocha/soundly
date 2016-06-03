@@ -13,6 +13,12 @@ class App extends React.Component {
     };
   }
 
+  updateQueue(data) {
+    this.setState({
+      queue: data,
+    });
+  }
+
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
     console.log("clicked");
@@ -84,6 +90,11 @@ class App extends React.Component {
   }
 
   render() {
+    const context = this;
+    socket.on('queue',function(data) {
+      context.updateQueue(data);
+    });
+
     return (
       <div>
         <h1>

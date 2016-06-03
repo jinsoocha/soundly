@@ -28,6 +28,10 @@
   </script>
 
   <!-- add more scripts here as you create more component files -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
   <script src="/client/components/PlayerView.js"></script>
   <script src="/client/components/ResultEntryView.js"></script>
   <script src="/client/components/ResultView.js"></script>
@@ -43,21 +47,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
 
 
-  <ul id="messages"></ul>
+<!--   <ul id="messages"></ul>
   <form action="">
     <input id="msg" autocomplete="off"><button>Send</button>
-  </form>
+  </form> -->
 
   <!-- socket.io connection -->
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
-    //emiting form input to the server
-    $('form').submit(function() {
-      socket.emit('chat message', $('#msg').val());
-      $('msg').val('');
-      return false;
-    })
-  </script>
 </body>
 </html>
