@@ -5,11 +5,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory } from 'react-router';
 import $ from 'jquery';
 
 
-export default class SignupView extends React.Component {
+export default class SigninView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,8 +17,10 @@ export default class SignupView extends React.Component {
     };
   }
 
-  handleSignup(e) {
+  handleSignin(e) {
     e.preventDefault();
+    console.log('$$$event', event);
+    console.log(this.refs.username.value);
     this.setState({ type: 'info', message: 'Sending...' }, this.sendFormData);
   }
 
@@ -30,13 +31,12 @@ export default class SignupView extends React.Component {
     };
     // send data
     $.ajax({
-      url: '/api/users/signup',
+      url: '/api/users/signin',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: formData,
       success: function(result) {
-        console.log('result', result);
-        Router.replace('/main');
+        // redirect to main
       },
       error: function(xhr, status, err) {
         console.error(status, err.toString());
@@ -48,9 +48,9 @@ export default class SignupView extends React.Component {
   render() {
     return (
       <div>
-        <h1 id="heading">Signup!</h1>
+        <h1 id="heading">Signin!</h1>
         <h2>{this.state.message}</h2>
-        <form onSubmit={this.handleSignup.bind(this)}>
+        <form onSubmit={this.handleSignin.bind(this)}>
           <div className="form-group">
             <label htmlFor="username">Select a username</label>
             <input className="form-control" name="username" ref="username" required type="text"/>

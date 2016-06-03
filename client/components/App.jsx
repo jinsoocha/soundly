@@ -105,7 +105,6 @@ export default class App extends React.Component {
         </div>
         <div>
           {this.props.children}
-          this.handleFormSubmit();
         </div>
       </div>
     );

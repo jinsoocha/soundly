@@ -5,15 +5,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import App from './components/App';
-import QueueView from './components/QueueView';
-import SearchView from './components/SearchView';
 import SignupView from './components/SignupView';
+import SigninView from './components/SigninView';
+
 
 const app = document.getElementById('app');
 ReactDOM.render((
-  <Router history={hashHistory}>
-    <Route path="/" component={SignupView} >
-      <Route path="main" component={App} />
-    </Route>
-  </Router>
+<Router history={ hashHistory }>
+  <Route path="/" component={ SignupView } >
+    <Route path="/main" name="main" component={ App } />
+    <Route path="/signin" name="signup" component={ SigninView } />
+  </Route>
+</Router>
 ), app);
+
+
+
+// ReactDOM.render((
+//   <Router history={hashHistory}>
+//     <Route path="/" component={SignupView} >
+//       <Route path="main" component={App} />
+//     </Route>
+//   </Router>
+// ), app);
