@@ -50,7 +50,7 @@ const reRankSongs = (songIndexId) => {
     }
   }
   if (song.rankingChange < 0 && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
-    if (songIndexId !== songQueue.length - 1) {
+    if (songIndexId !== (songQueue.length - 1)) {
       const lowerSong = songQueue[songIndexId + 1];
       // console.log('moving down: ', songIndexId);
       if (song.rankingChange < lowerSong.rankingChange) {
@@ -200,7 +200,7 @@ const addSongToQueue = (req, res, next) => {
 };
 
 const increaseSongRanking = (req, res, next) => {
-  const id = req.body.index;
+  const id = +req.body.index;
   upvote(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -210,7 +210,7 @@ const increaseSongRanking = (req, res, next) => {
 };
 
 const decreaseSongRanking = (req, res, next) => {
-  const id = req.body.index;
+  const id = +req.body.index;
   downvote(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -220,7 +220,7 @@ const decreaseSongRanking = (req, res, next) => {
 };
 
 const moveUpInQueue = (req, res, next) => {
-  const id = req.body.index;
+  const id = +req.body.index;
   moveup(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -230,7 +230,7 @@ const moveUpInQueue = (req, res, next) => {
 };
 
 const moveDownInQueue = (req, res, next) => {
-  const id = req.body.index;
+  const id = +req.body.index;
   movedown(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
@@ -240,7 +240,7 @@ const moveDownInQueue = (req, res, next) => {
 };
 
 const removeSongFromQueue = (req, res, next) => {
-  const id = req.body.index;
+  const id = +req.body.index;
   remove(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
