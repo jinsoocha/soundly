@@ -64,16 +64,12 @@ describe('can add and remove songs from the queue', function() {
       done();
     })
     .catch(function(err) {
-      done();
+      done('received error from remove song');
     });
   });
 
 
-
 });
-
-
-
 
 describe('ranking songs changes order in queue', function() {
   beforeEach(function() {
