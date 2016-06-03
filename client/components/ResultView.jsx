@@ -2,8 +2,10 @@
 
 // passing in the key to the childview is mandatory in React
 // Without key, you will get a warning in console.
+import React from 'react';
+import ResultEntryView from './ResultEntryView';
 
-class ResultView extends React.Component {
+export default class ResultView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +28,3 @@ class ResultView extends React.Component {
 		);
   }
 }
-
-window.ResultView = ResultView;
-

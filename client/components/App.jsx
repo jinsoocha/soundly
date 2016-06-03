@@ -1,11 +1,12 @@
-//  App is our main view that contains every subview.
+import React from 'react';
+import SearchResultView from './SearchResultView';
+import QueueView from './QueueView';
+import PlayerView from './PlayerView';
+import $ from 'jquery';
 
-//  Note: I am using stateful class for every component
-//  because I am not sure if a component would have a state at a later point as we code.
-//  We can refactor to stateless functional class when we feel necessary.
-//  Question for myself: why is stateless functional better than stateful?
+var socket = io();
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,9 +98,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <h1>
-				AppView
-        </h1>
+        <h1>AppView</h1>
         <div>
           <SearchResultView clickSong={this.onClickSong.bind(this)}/>
         </div>
@@ -120,5 +119,3 @@ class App extends React.Component {
 		);
   }
 }
-
-window.App = App;

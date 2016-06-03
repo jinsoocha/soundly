@@ -1,6 +1,8 @@
 //  SearchView renders the input bar and sends the search input to the server on submit.
+import React from 'react';
+import $ from 'jquery';
 
-class SearchView extends React.Component {
+export default class SearchView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +30,7 @@ class SearchView extends React.Component {
       data: this.requestBuildQueryString(obj),
       success: function(result) {
         console.log(result.data);
-        //  sending the data from the server to the parent, SearchResultView
+        // sending the data from the server to the parent, SearchResultView
         this.props.getTracks(result.data);
       }.bind(this),
       error: function(xhr, status, err) {
@@ -45,5 +47,3 @@ class SearchView extends React.Component {
     );
   }
 }
-
-window.SearchView = SearchView;
