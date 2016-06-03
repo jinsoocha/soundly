@@ -18,8 +18,12 @@ module.exports = (app, express, http, io) => {
   io.on('connection', (socket) => {
     count++;
     console.log(count + "users connected");
-    socket.emit('queue',queue.songQueue);
+    socket.broadcast.emit('queue',queue.songQueue);
 
+    socket.on('update', function(data) {
+      console.log(data)
+      socket.broadcast.emit('queue',queue.songQueue);
+    });
     socket.on('disconnect', function () {
       count--;
       console.log(count + "users remained");
