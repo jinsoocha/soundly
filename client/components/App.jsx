@@ -8,7 +8,6 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-    //  TODO: need to pass this state to queueView
     this.state = {
       queue: [],
       currentSong: '',
@@ -16,23 +15,22 @@ class App extends React.Component {
   }
 
   onClickSong(song) {
-    console.log("clicked",song)
     // set up the state as the song that has been passed from searchResultView
+    console.log(song);
     $.ajax({
-      url: 'http://localhost:4568/queue',
+      url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
       success: function(result) {
-        console.log("Queueing the new song",result.data);
+        const tempQueue = result;
         this.setState({
-          queue: result.data,
+          queue: tempQueue,
         });
-        if(this.state.queue.length === 1) {
+        if (this.state.queue.length === 1) {
           this.setState({
             currentSong: this.state.queue[0],
           });
-          console.log("Playing the first song in the queue when length=1", this.state.currentSong)
         }
       }.bind(this),
       error: function(xhr, status, err) {
@@ -41,10 +39,9 @@ class App extends React.Component {
     });
   }
 
-  handleChangeSong() {  
-    console.log("changing song")
+  handleChangeSong() {
     $.ajax({
-      url: 'http://localhost:4568/remove',
+      url: 'api/queue/songFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       success: function(result) {
@@ -52,11 +49,41 @@ class App extends React.Component {
           queue: result.data,
           currentSong: result.data[0],
         });
-        console.log("Changing queue and song on finish",this.state.queue, this.state.currentSong)
       }.bind(this),
-      error: function(xhr, status, err) {
+      error: function (xhr, status, err) {
+      }.bind(this),
+    });
+  }
+
+  handleUpVote(song, i) {
+    $.ajax({
+      type: 'POST',
+      url: '/api/queue/increaseRank',
+      data: { index: i },
+      success: function (result) {
+        this.setState({
+          queue: result.data,
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
         console.error(status, err.toString());
+      },
+    });
+  }
+
+  handleDownVote(song, i) {
+    $.ajax({
+      type: 'POST',
+      url: '/api/queue/decreaseRank',
+      data: { index: i },
+      success: function (result) {
+        this.setState({
+          queue: result.data,
+        });
       }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
+      },
     });
   }
 
@@ -72,10 +99,12 @@ class App extends React.Component {
         <div>
           <QueueView
             queue={this.state.queue}
+            upVote={this.handleUpVote.bind(this)}
+            downVote={this.handleDownVote.bind(this)}
           />
         </div>
         <div>
-          <PlayerView 
+          <PlayerView
             changeSong={this.handleChangeSong.bind(this)}
             currentSong={this.state.currentSong}
             queue={this.state.queue}

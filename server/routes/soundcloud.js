@@ -20,10 +20,8 @@ SC.init({
 // so we can check the input keyword from the client side
 // in our server url: /server
 let data = {};
-
 module.exports.get = (req, res) => {
   data = req.body;
-  console.log(req.body.keyword);
   SC.get('/tracks', {
     q: req.body.keyword,
     limit: 50,
