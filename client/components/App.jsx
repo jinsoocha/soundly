@@ -61,8 +61,9 @@ class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
+        const tempQueue = result;
         this.setState({
-          queue: result.data,
+          queue: tempQueue,
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -77,8 +78,9 @@ class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
+        const tempQueue = result;
         this.setState({
-          queue: result.data,
+          queue: tempQueue,
         });
       }.bind(this),
       error: function (xhr, status, err) {
