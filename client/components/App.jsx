@@ -10,13 +10,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       queue: [],
-      currentSong: '',
     };
   }
 
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
-    console.log(song);
+    console.log("clicked");
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
@@ -27,11 +26,6 @@ class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
-        if (this.state.queue.length === 1) {
-          this.setState({
-            currentSong: this.state.queue[0],
-          });
-        }
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(status, err.toString());
@@ -46,8 +40,8 @@ class App extends React.Component {
       type: 'POST',
       success: function(result) {
         this.setState({
-          queue: result.data,
-          currentSong: result.data[0],
+          queue: result,
+          currentSong: result[0],
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -108,7 +102,6 @@ class App extends React.Component {
         <div>
           <PlayerView
             changeSong={this.handleChangeSong.bind(this)}
-            currentSong={this.state.currentSong}
             queue={this.state.queue}
           />
         </div>
