@@ -12,9 +12,8 @@ import SignupView from './components/SignupView';
 const app = document.getElementById('app');
 ReactDOM.render((
   <Router history={hashHistory}>
-    <Route path="/" component={App} >
-      <Route path="queue" component={QueueView} />
-      <Route path="search" component={SearchView} />
+    <Route path="/" component={SignupView} >
+      <Route path="main" component={App} />
     </Route>
   </Router>
 ), app);

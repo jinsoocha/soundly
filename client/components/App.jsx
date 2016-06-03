@@ -2,6 +2,7 @@ import React from 'react';
 import SearchResultView from './SearchResultView';
 import QueueView from './QueueView';
 import PlayerView from './PlayerView';
+import SignupView from './SignupView';
 import $ from 'jquery';
 
 export default class App extends React.Component {
@@ -101,6 +102,10 @@ export default class App extends React.Component {
             changeSong={this.handleChangeSong.bind(this)}
             queue={this.state.queue}
           />
+        </div>
+        <div>
+          {this.props.children}
+          this.handleFormSubmit();
         </div>
       </div>
     );

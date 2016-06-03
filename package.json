@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=bower_components,node_modules,compiled,server,client/config/config.js,mockup,start --source-maps inline",
-    "start": "webpack --progress --colors --watch & nodemon ./server/server.js",
+    "start": "./start & nodemon ./server/server.js",
     "run-tests": "./node_modules/mocha/bin/mocha",
     "hola": "cd ./compiled && webpack"
   },
