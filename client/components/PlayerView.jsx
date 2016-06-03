@@ -1,5 +1,6 @@
 import React from 'react';
 import SC from 'soundcloud';
+import config from '../config/config';
 
 SC.initialize({
   client_id: window.SCId,
@@ -14,7 +15,7 @@ export default class PlayerView extends React.Component {
   }
 
   streamTrack(track) {
-    return SC.stream('/tracks/' + track.id).then(player => { 
+    return SC.stream('/tracks/' + track.id).then(player => {
       console.log('playing the song', player);
       player.play();
       player.on('finish', () => {
@@ -23,7 +24,7 @@ export default class PlayerView extends React.Component {
       });
     }).catch(() => console.log('Cannot play the song'));
   }
-  
+
   render() {
     console.log("queuefirstsong",this.props.queue[0], "statecurrentsong",this.state.currentSong);
     if (this.props.queue.length > 0 && this.props.queue[0].id !== this.state.currentSong.id) {
