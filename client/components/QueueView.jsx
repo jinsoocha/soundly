@@ -7,6 +7,7 @@ class QueueView extends React.Component {
 
   render() {
     const queue = this.props.queue;
+    console.log('current queue =>', queue);
     return (
       <div>
         <h3>Queue</h3>

@@ -6,101 +6,269 @@ const songQueue = [];
 // the ranking.  That threshold is set here.
 const rankingChangeThreshold = 2;
 
-
 // A song will look like:
 // {
-//  id: 1234,
-//  upvotes: 2,
-//  downvotes: 3,
-//  rankingChange : 1
+  // id: req.body.id,
+  // title: req.body.title,
+  // duration: req.body.duration,
+  // streamUrl: req.body.stream_url,
+  // artwork: req.body.artwork_url,
+  // upvotes: 0,
+  // downvotes: 0,
+  // rankingChange: 0,
 // }
 // Songs will be stored in a array, using array indexing.
+// We will store the number of likes and dislikes.  And a rankingChange which
+// tracks the number of likes or dislikes til a track is moved.
 // Song 0 is currently playing and can not be moved due to ranking changes.
-// Song 1 is next.  It will not move up based on rankingChange.
-// Song 2 is after Song 1, and can not swap places with Song 1 unless its rankingChange > Song 1
+// Song 1 is next.  It will not move UP based on rankingChange, but can move down.
+// Song 2 is after Song 1, and can not swap places with Song 1 unless its rankingChange > Song 1.
+// if a rankingChange is > threshold and > than previous song, it will swap places,
+// and reduce rankingChange by the threshold.
 
 const swapSongs = (i, j) => {
+  // console.log('swapping: ', i, ' with ', j);
   const tempSong = songQueue[i];
   songQueue[i] = songQueue[j];
   songQueue[j] = tempSong;
 };
-// blah blah blah.  Magic.
-const reRankSongs = (songIDThatChanged) => {
-  const songInQueue = songQueue[songIDThatChanged];
-  if (songInQueue.rankingChange >= rankingChangeThreshold) {
-    if (songIDThatChanged === 2) {
-      //  only swap is the rankingChange is greater than the top song
-    } else if (songIDThatChanged > 2) {
-      songInQueue.rankingChange = songInQueue.rankingChange - rankingChangeThreshold;
-      swapSongs(songIDThatChanged, songIDThatChanged - 1);
+
+// Implement algorithm described above.
+const reRankSongs = (songIndexId) => {
+  //  console.log('reranking: ', songIndexId);
+  const song = songQueue[songIndexId];
+  // console.log('currentrankingchange: ', song.rankingChange);
+  if (song.rankingChange >= rankingChangeThreshold) {
+    // 0 never moves, 1 never moves up.  Start the process at 2.
+    if (songIndexId >= 2) {
+      const higherSong = songQueue[songIndexId - 1];
+      // console.log('song.rankingChange: ', song.rankingChange, ' vs ', higherSong.rankingChange);
+      if (song.rankingChange > higherSong.rankingChange) {
+        song.rankingChange = song.rankingChange - rankingChangeThreshold;
+        swapSongs(songIndexId, songIndexId - 1);
+      }
+    }
+  }
+  if (song.rankingChange < 0 && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
+    if (songIndexId !== songQueue.length - 1) {
+      const lowerSong = songQueue[songIndexId + 1];
+      // console.log('moving down: ', songIndexId);
+      if (song.rankingChange < lowerSong.rankingChange) {
+        song.rankingChange = song.rankingChange + rankingChangeThreshold;
+        swapSongs(songIndexId, songIndexId + 1);
+      }
     }
   }
 };
 
+const getQueue = () => songQueue;
+const emptyQueue = () => {
+  while (songQueue.length) {
+    songQueue.pop();
+  }
+};
 
 //  Remove the first/playing song.
-const removeFirstSong = new Promise(
-  (resolve, reject) => {
+const removeFirstSong = () => {
+  const p = new Promise((resolve, reject) => {
+    if (songQueue === undefined || songQueue.length === 0) {
+      reject('song queue is empty or undefined');
+    }
     songQueue.shift();
-  }
-);
+    resolve();
+  });
+  return p;
+};
+
+//  Remove the first/playing song.
+const addSong = (song) => {
+  console.log('$$$$SONGfQ', song);
+  const songToAdd = {
+    title: song.title,
+    id: song.id,
+    duration: song.duration,
+    rankingChange: 0,
+    upvotes: 0,
+    downvotes: 0,
+    stream: song.url_stream,
+    artwork: song.artwork_url,
+  };
+  const p = new Promise((resolve, reject) => {
+    if (songQueue === undefined) {
+      reject('song queue is empty or undefined');
+    }
+    songQueue.push(songToAdd);
+    resolve();
+  });
+  return p;
+};
+
+const upvote = (songIndexId) => {
+  const p = new Promise((resolve, reject) => {
+    const songInQueue = songQueue[songIndexId];
+    if (songInQueue === undefined) {
+      reject('attempt to uprank song that doesn\'t exist');
+    } else {
+      songInQueue.upvotes++;
+      songInQueue.rankingChange++;
+      reRankSongs(songIndexId);
+      resolve();
+    }
+  });
+  return p;
+};
+
+const downvote = (songIndexId) => {
+  const p = new Promise((resolve, reject) => {
+    const songInQueue = songQueue[songIndexId];
+    if (songInQueue === undefined) {
+      reject('attempt to uprank song that doesn\'t exist');
+    } else {
+      songInQueue.upvotes--;
+      songInQueue.rankingChange--;
+      reRankSongs(songIndexId);
+      resolve();
+    }
+  });
+  return p;
+};
+
+const moveup = (songIndexId) => {
+  const p = new Promise((resolve, reject) => {
+    if (songIndexId < 0 || songIndexId >= songQueue.length) {
+      reject('attempt to remove song that doesn\'t exist');
+    } else if (songIndexId <= 1) {
+      reject('can\'t move song in play');
+    } else {
+      swapSongs(songIndexId, songIndexId - 1);
+      resolve();
+    }
+  });
+  return p;
+};
+
+const movedown = (songIndexId) => {
+  const p = new Promise((resolve, reject) => {
+    if (songIndexId < 0 || songIndexId >= songQueue.length) {
+      reject('attempt to remove song that doesn\'t exist');
+    } else if (songIndexId === songQueue.length - 1) {
+      reject('can\'t move last song down');
+    } else {
+      swapSongs(songIndexId, songIndexId + 1);
+      resolve();
+    }
+  });
+  return p;
+};
+
+const remove = (songIndexId) => {
+  const p = new Promise((resolve, reject) => {
+    if (songIndexId < 0 || songIndexId >= songQueue.length) {
+      reject('attempt to remove song that doesn\'t exist');
+    } else {
+      songQueue.splice(songIndexId, 1);
+      resolve();
+    }
+  });
+  return p;
+};
+
 
 // Routes
 //
-module.exports.firstSongFinished = (req, res, next) => {
-  removeFirstSong()
-  .then(
-    res.end()
-  );
+
+const getSongQueue = (req, res, next) => {
+  res.status(300).json(getQueue());
 };
 
-module.exports.addSongToQueue = (req, res, next) => {
-  songQueue.push();
+const firstSongFinished = (req, res, next) => {
+  removeFirstSong
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error ending song: ', err);
+    res.status(500).json(getQueue());
+  });
 };
 
-module.exports.increaseSongRanking = (req, res, next) => {
+const addSongToQueue = (req, res, next) => {
+  console.log('$$$$reqbody', req.body);
+  addSong(req.body)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error adding song to queue: ', err);
+    res.status(500).json(getQueue());
+  });
+};
+
+const increaseSongRanking = (req, res, next) => {
   const id = req.body.id;
-
-  const songInQueue = songQueue[id];
-
-  if (songInQueue === undefined) {
-    console.log('attempt to uprank song that doesn\'t exist');
-  } else {
-    songInQueue.upvotes++;
-    songInQueue.rankingChange++;
-    reRankSongs(id);
-  }
+  upvote(id)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error upvoting song id: ', id, ' : ', err);
+    res.status(500).json(getQueue());
+  });
 };
 
-module.exports.decreaseSongSongRanking = (req, res, next) => {
+const decreaseSongRanking = (req, res, next) => {
   const id = req.body.id;
-
-  const songInQueue = songQueue[id];
-
-  if (songInQueue === undefined) {
-    console.log('attempt to downrank song that doesn\'t exist');
-  } else {
-    songInQueue.upvotes--;
-    songInQueue.rankingChange--;
-    reRankSongs(id);
-  }
+  downvote(id)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error downvoting song id: ', id, ' : ', err);
+    res.status(500).json(getQueue());
+  });
 };
 
-module.exports.moveUpInQueue = (req, res, next) => {
+const moveUpInQueue = (req, res, next) => {
   const id = req.body.id;
-  if (id > 0 && id < songQueue.length) {
-    swapSongs(id, id - 1);
-  }
+  moveup(id)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error downvoting song id: ', id, ' : ', err);
+    res.status(500).json(getQueue());
+  });
 };
 
-module.exports.moveDownInQueue = (req, res, next) => {
+const moveDownInQueue = (req, res, next) => {
   const id = req.body.id;
-  if (id >= 0 && id < songQueue.length - 1) {
-    swapSongs(id, id + 1);
-  }
+  movedown(id)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error downvoting song id: ', id, ' : ', err);
+    res.status(500).json(getQueue());
+  });
 };
 
-module.exports.removeSongFromQueue = (req, res, next) => {
+const removeSongFromQueue = (req, res, next) => {
   const id = req.body.id;
-  songQueue.splice(id, 1);
+  remove(id)
+  .then(() => res.json(getQueue()))
+  .catch((err) => {
+    console.log('Error downvoting song id: ', id, ' : ', err);
+    res.status(500).json(getQueue());
+  });
+};
+
+module.exports = {
+  //  functions for tests
+  getQueue,
+  removeFirstSong,
+  addSong,
+  upvote,
+  downvote,
+  moveup,
+  movedown,
+  remove,
+  songQueue,
+  emptyQueue,
+  //  Routes
+  firstSongFinished,
+  addSongToQueue,
+  increaseSongRanking,
+  decreaseSongRanking,
+  moveUpInQueue,
+  moveDownInQueue,
+  removeSongFromQueue,
+  getSongQueue,
 };
