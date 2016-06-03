@@ -4,7 +4,6 @@
 //  because I am not sure if a component would have a state at a later point as we code.
 //  We can refactor to stateless functional class when we feel necessary.
 //  Question for myself: why is stateless functional better than stateful?
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -41,12 +40,13 @@ class App extends React.Component {
 
   handleChangeSong() {
     $.ajax({
-      url: 'api/queue/songFinished',
+      url: 'api/queue/firstSongFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       success: function(result) {
+        const tempQueue = result;
         this.setState({
-          queue: result.data,
+          queue: tempQueue,
           currentSong: result.data[0],
         });
       }.bind(this),
@@ -93,7 +93,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>
-				AppView
+          AppView
         </h1>
         <div>
           <SearchResultView clickSong={this.onClickSong.bind(this)}/>
@@ -113,7 +113,7 @@ class App extends React.Component {
           />
         </div>
       </div>
-		);
+    );
   }
 }
 

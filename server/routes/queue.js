@@ -182,7 +182,7 @@ const getSongQueue = (req, res, next) => {
 };
 
 const firstSongFinished = (req, res, next) => {
-  removeFirstSong
+  removeFirstSong()
   .then(() => res.json(getQueue()))
   .catch((err) => {
     console.log('Error ending song: ', err);
