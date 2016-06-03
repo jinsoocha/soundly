@@ -14,14 +14,18 @@ export default class PlayerView extends React.Component {
   }
 
   streamTrack(track) {
-    return SC.stream('/tracks/' + track.id).then(player => { 
+    return SC.stream('/tracks/' + track.id)
+    .then(player => { 
       console.log('playing the song', player);
       player.play();
       player.on('finish', () => {
         console.log('finished');
         this.props.changeSong(track);
       });
-    }).catch(() => console.log('Cannot play the song'));
+    })
+    .catch(err => {
+      throw err;
+    });
   }
 
   componentWillReceiveProps(nextProps) {
