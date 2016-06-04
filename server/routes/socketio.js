@@ -4,24 +4,25 @@ const queue = require('./queue.js');
 
 
 module.exports = (app, express, http, io) => {
-  var count = 0;
-  var master = true;
+  let count = 0;
+  let master = true;
 
   io.on('connection', (socket) => {
     count++;
-    console.log(master)
+    console.log(count + "users connected");
+
     if (master) {
       socket.emit('master', master);
       master = false;
     }
-    console.log(count + "users connected");
-    socket.emit('queue',queue.songQueue);
 
-    socket.on('update', function(data) {
-      console.log('sending queue', data)
-      socket.broadcast.emit('queue',queue.songQueue);
+    socket.emit('queue', queue.songQueue);
+
+    socket.on('update', (data) => {
+      socket.broadcast.emit('queue', queue.songQueue);
     });
-    socket.on('disconnect', function () {
+
+    socket.on('disconnect', () => {
       count--;
       console.log(count + "users remained");
     });

@@ -5,7 +5,6 @@ import PlayerView from './PlayerView';
 import $ from 'jquery';
 
 const socket = io();
-window.master = false;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,6 +14,8 @@ export default class App extends React.Component {
     this.onClickSong = this.onClickSong.bind(this);
     this.handleChangeSong = this.handleChangeSong.bind(this);
     this.state = {
+      socket: socket,
+      master: false,
       queue: [],
     };
   }
@@ -22,12 +23,18 @@ export default class App extends React.Component {
   componentWillMount() {
     console.log("initialmount")
     const context = this;
+
+    socket.on('connect', () => {
+      socket.on('master', (data) => {
+        console.log("i am a master",data)
+        context.setState({
+          master: data,
+        });
+      });
+    });
+
     socket.on('queue', (data) => {
       context.updateQueue(data);
-    });
-    socket.on('master', (data) => {
-      console.log("i am a master")
-      window.master = data;
     });
   }
 
@@ -117,7 +124,7 @@ export default class App extends React.Component {
       <div>
         <SearchResultView clickSong={this.onClickSong} />
         <QueueView queue={this.state.queue} upVote={this.handleUpVote} downVote={this.handleDownVote} />
-        <PlayerView changeSong={this.handleChangeSong} queue={this.state.queue} />
+        <PlayerView changeSong={this.handleChangeSong} queue={this.state.queue} master={this.state.master} />
       </div>
 		);
   }

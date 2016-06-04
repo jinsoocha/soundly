@@ -11,6 +11,7 @@ export default class PlayerView extends React.Component {
     super(props);
     this.state = {
       currentSong: '',
+      currentPlayer: undefined,
     };
   }
 
@@ -19,16 +20,20 @@ export default class PlayerView extends React.Component {
       if (this.state.currentSong !== '') {
         console.log("hello",nextProps.queue[0].id,this.state.currentSong.id) 
         if (nextProps.queue[0].id !== this.state.currentSong.id) {
-          this.streamTrack(nextProps.queue[0]);
           this.setState({
             currentSong: nextProps.queue[0],
           });
+          if (this.props.master) {
+            this.streamTrack(nextProps.queue[0]);
+          }
         }
       } else {
         this.setState({
           currentSong: nextProps.queue[0],
         });
-        this.streamTrack(nextProps.queue[0]);
+        if (this.props.master) {
+          this.streamTrack(nextProps.queue[0]);
+        }
       }
     } else {
       this.setState({
@@ -39,22 +44,20 @@ export default class PlayerView extends React.Component {
 
   streamTrack(track) {
     console.log("streaming track", track, "statecurrentsong",this.state.currentSong);
-    let currentPlayer;
     return SC.stream('/tracks/' + track.id)
     .then(player => {
-      if (currentPlayer) {
-        currentPlayer.pause();
+      let context = this;
+      if (this.state.currentPlayer) {
+        this.state.currentPlayer.pause();
       }
-      currentPlayer = player;
-      currentPlayer.play();
-      currentPlayer.on('play-start', () => {
-        console.log('playing')
+      this.state.currentPlayer = player;
+      this.state.currentPlayer.play();
+      this.state.currentPlayer.on('play-start', () => {
+        console.log('playing');
       });
-      currentPlayer.on('finish', () => {
-        if (window.master) {
-          console.log('finished');
-          this.props.changeSong(track);
-        }
+      this.state.currentPlayer.on('finish', () => {
+        console.log('finished');
+        this.props.changeSong(track);
       });
     })
     .catch(err => {
