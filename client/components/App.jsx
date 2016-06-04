@@ -5,14 +5,14 @@ import PlayerView from './PlayerView';
 import $ from 'jquery';
 
 const socket = io();
-window.master = false;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: socket,
+      master: false,
       queue: [],
-      time: 0,
     };
   }
 
@@ -22,35 +22,15 @@ export default class App extends React.Component {
 
     socket.on('connect', () => {
       socket.on('master', (data) => {
-        console.log("i am a master")
-        window.master = data;
+        console.log("i am a master",data)
+        context.setState({
+          master: data,
+        });
       });
-      console.log("requestSongtime")
-      socket.emit('requestSongtime');
-    });
-
-    socket.on('getSongtime', () => {
-      console.log("gettingsongtime", window.master)    
-      if (window.master) {
-      console.log("gettingsongtime cuz it is master")
-        socket.emit('sendSongtime', 3);
-      }
-    });
-
-    socket.on('setSongtime', (data) => {
-      console.log("settingsongtime for non masters")
-      context.syncSong(data);
     });
 
     socket.on('queue', (data) => {
       context.updateQueue(data);
-    });
-  }
-
-  syncSong(data) {
-    console.log("syncing song", data);
-    this.setState({
-      time: data,
     });
   }
 
@@ -151,6 +131,7 @@ export default class App extends React.Component {
         </div>
         <div>
           <PlayerView
+            master={this.state.master}
             changeSong={this.handleChangeSong.bind(this)}
             queue={this.state.queue}
           />

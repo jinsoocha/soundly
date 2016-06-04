@@ -16,16 +16,6 @@ module.exports = (app, express, http, io) => {
       master = false;
     }
 
-    socket.on('requestSongtime', () => {
-      console.log("broadcast getsongtime")
-      socket.broadcast.emit('getSongtime');
-    });
-
-    socket.on('sendSongtime', (data) => {
-      console.log("broadcast songtime to nonmaster")
-      socket.broadcast.emit('setSongtime', data);
-    });
-
     socket.emit('queue', queue.songQueue);
 
     socket.on('update', (data) => {
