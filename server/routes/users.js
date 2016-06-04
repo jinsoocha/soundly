@@ -5,6 +5,21 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
+
+const authenticate = (req, res, next) => {
+
+  if (req.body.user && req.body.roomid) {
+    req.username = req.body.user.username;
+    req.roomid = req.body.roomid;
+  } else {
+    req.username = 'test';
+    req.roomid = '00000';
+  }
+
+  return next();
+};
+
+
 const generateToken = (username) => {
   const token = jwt.sign({ username }, 'TODO:SECRET', {
     expiresIn: 60 * 60 * 12,
@@ -170,4 +185,5 @@ module.exports = {
   doSignin,
   generateRoomId,
   generateToken,
+  authenticate,
 };
