@@ -5,9 +5,15 @@ const queue = require('./queue.js');
 
 module.exports = (app, express, http, io) => {
   var count = 0;
+  var master = true;
 
   io.on('connection', (socket) => {
     count++;
+    console.log(master)
+    if (master) {
+      socket.emit('master', master);
+      master = false;
+    }
     console.log(count + "users connected");
     socket.emit('queue',queue.songQueue);
 

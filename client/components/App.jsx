@@ -5,6 +5,7 @@ import PlayerView from './PlayerView';
 import $ from 'jquery';
 
 const socket = io();
+window.master = false;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,6 +20,10 @@ export default class App extends React.Component {
     const context = this;
     socket.on('queue', (data) => {
       context.updateQueue(data);
+    });
+    socket.on('master', (data) => {
+      console.log("i am a master")
+      window.master = data;
     });
   }
 
@@ -57,6 +62,7 @@ export default class App extends React.Component {
       type: 'POST',
       data: song,
       success: function(result) {
+        socket.emit('update', { socket: 'connected' });
         this.setState({
           queue: result,
         });

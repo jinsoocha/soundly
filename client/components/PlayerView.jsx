@@ -14,16 +14,20 @@ export default class PlayerView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("queuefirstsong",nextProps.queue[0], "statecurrentsong",this.state.currentSong);
     if (nextProps.queue.length > 0) {
-      if (nextProps.queue[0].id !== this.state.currentSong.id) {
-        this.streamTrack(nextProps.queue[0]);
-      }
+      this.streamTrack(nextProps.queue[0]);
+      this.setState({
+        currentSong: nextProps.queue[0],
+      });
+    } else {
+      this.setState({
+        currentSong: '',
+      });
     }
   }
 
   streamTrack(track) {
-    console.log("streaming track", track)
+    console.log("streaming track", track, "statecurrentsong",this.state.currentSong);
     let currentPlayer;
     return SC.stream('/tracks/' + track.id)
     .then(player => {
@@ -32,18 +36,11 @@ export default class PlayerView extends React.Component {
       }
       currentPlayer = player;
       currentPlayer.play();
-      currentPlayer.on('play-start', () => {
-        this.setState({
-          currentSong: track,
-        });
-        console.log("currentsongintheplayer", this.state.currentSong);
-      });
       currentPlayer.on('finish', () => {
-        console.log('finished');
-        this.setState({
-          currentSong: '',
-        });
-        this.props.changeSong(track);
+        if (window.master) {
+          console.log('finished');
+          this.props.changeSong(track);
+        }
       });
     })
     .catch(err => {
