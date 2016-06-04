@@ -5,12 +5,13 @@ import PlayerView from './PlayerView';
 import $ from 'jquery';
 
 const socket = io();
-window.master = false;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: socket,
+      master: false,
       queue: [],
     };
   }
@@ -18,12 +19,18 @@ export default class App extends React.Component {
   componentWillMount() {
     console.log("initialmount")
     const context = this;
+
+    socket.on('connect', () => {
+      socket.on('master', (data) => {
+        console.log("i am a master",data)
+        context.setState({
+          master: data,
+        });
+      });
+    });
+
     socket.on('queue', (data) => {
       context.updateQueue(data);
-    });
-    socket.on('master', (data) => {
-      console.log("i am a master")
-      window.master = data;
     });
   }
 
@@ -124,6 +131,7 @@ export default class App extends React.Component {
         </div>
         <div>
           <PlayerView
+            master={this.state.master}
             changeSong={this.handleChangeSong.bind(this)}
             queue={this.state.queue}
           />
