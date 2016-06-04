@@ -47,11 +47,13 @@ const reRankSongs = (songIndexId, songQueue) => {
       }
     }
   }
-  if (song.rankingChange < 0 && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
+
+  if (songIndexId > 0 && song.rankingChange < 0
+    && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
     if (songIndexId !== (songQueue.length - 1)) {
       const lowerSong = songQueue[songIndexId + 1];
-      // console.log('moving down: ', songIndexId);
       if (song.rankingChange < lowerSong.rankingChange) {
+        //console.log('moving down: ', songIndexId);
         song.rankingChange = song.rankingChange + rankingChangeThreshold;
         swapSongs(songIndexId, songIndexId + 1, songQueue);
       }
@@ -130,8 +132,6 @@ const addSong = (song, roomid) => {
       if (user.queue === undefined) {
         reject('song queue is undefined');
       }
-      user.queue.push(songToAdd);
-
       if (user.queue.length > 0) {
         if (user.queue[user.queue.length - 1].id === songToAdd.id) {
           reject('the same song cannot be added one after another');
@@ -173,7 +173,6 @@ const upvote = (songIndexId, roomid) => {
 
 const downvote = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-<<<<<<< HEAD
     User.findOne({ roomid: roomid }).exec()
     .then((user) => {
       if (user.queue[songIndexId] === undefined) {
@@ -188,17 +187,6 @@ const downvote = (songIndexId, roomid) => {
       }
     })
     .catch(reject);
-=======
-    const songInQueue = songQueue[songIndexId];
-    if (songInQueue === undefined) {
-      reject('attempt to uprank song that doesn\'t exist');
-    } else {
-      songInQueue.downvotes++;
-      songInQueue.rankingChange--;
-      reRankSongs(songIndexId);
-      resolve();
-    }
->>>>>>> 97636f6ec6be79bc52908476276cdb56b1ca69fb
   });
   return p;
 };

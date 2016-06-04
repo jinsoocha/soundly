@@ -87,6 +87,14 @@ describe('add and remove songs from the queue', function() {
 });
 
 // handle users rooms
+
+
+
+
+
+
+
+
 // handle upvote and downvote
 describe('song rankings are stored', function() {
   const roomid = '00001';
@@ -205,5 +213,32 @@ describe('song rankings change order in queue', function() {
     })
     .catch(done);
   });
+
+  it('downvoting does not change playing song', function(done) {
+    queue.downvote(0, roomid)
+    .then(() => queue.downvote(0, roomid))
+    .then(() => queue.getQueue(roomid))
+    .then((updated) => {
+      assert.strictEqual(updated[0].id, song0.id);
+      done();
+    })
+    .catch(done);
+  });
+
+    it('upvoting second song doesn\'t preempt the playing song', function(done) {
+    queue.upvote(1, roomid)
+    .then(() => queue.upvote(1, roomid))
+    .then(() => queue.getQueue(roomid))
+    .then((updated) => {
+      assert.strictEqual(updated[0].id, song0.id);
+      done();
+    })
+    .catch(done);
+  });
+
+
+
+
+
 });
 
