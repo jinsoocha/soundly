@@ -15,10 +15,20 @@ export default class PlayerView extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.queue.length > 0) {
-      this.streamTrack(nextProps.queue[0]);
-      this.setState({
-        currentSong: nextProps.queue[0],
-      });
+      if (this.state.currentSong !== '') {
+        console.log("hello",nextProps.queue[0].id,this.state.currentSong.id) 
+        if (nextProps.queue[0].id !== this.state.currentSong.id) {
+          this.streamTrack(nextProps.queue[0]);
+          this.setState({
+            currentSong: nextProps.queue[0],
+          });
+        }
+      } else {
+        this.setState({
+          currentSong: nextProps.queue[0],
+        });
+        this.streamTrack(nextProps.queue[0]);
+      }
     } else {
       this.setState({
         currentSong: '',
@@ -36,6 +46,9 @@ export default class PlayerView extends React.Component {
       }
       currentPlayer = player;
       currentPlayer.play();
+      currentPlayer.on('play-start', () => {
+        console.log('playing')
+      });
       currentPlayer.on('finish', () => {
         if (window.master) {
           console.log('finished');
