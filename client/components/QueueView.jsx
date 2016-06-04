@@ -17,7 +17,7 @@ export default class QueueView extends React.Component {
         <ul>
           {queue.map((song, i) =>
             <QueueEntryView
-              key={song.id}
+              key={i}
               song={song}
               index={i}
               upVote={this.props.upVote}
