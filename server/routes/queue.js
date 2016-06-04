@@ -138,7 +138,7 @@ const downvote = (songIndexId) => {
     if (songInQueue === undefined) {
       reject('attempt to uprank song that doesn\'t exist');
     } else {
-      songInQueue.upvotes--;
+      songInQueue.downvotes++;
       songInQueue.rankingChange--;
       reRankSongs(songIndexId);
       resolve();
