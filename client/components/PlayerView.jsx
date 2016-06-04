@@ -62,8 +62,7 @@ export default class PlayerView extends React.Component {
     });
   }
 
-
-  render() {
+  render() {    
     return (
       <div className="playerBox">
         <div className="currentSongTitle">{this.state.currentSong.title}</div>

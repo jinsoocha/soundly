@@ -37,10 +37,21 @@ RESULT
 */
 .searchResult {
   padding: 10px;
-  margin: 60px 0;
+  margin: 60px 0 70px 0;
   width: 30%;
   float: left;
   background-color: #D5E654;
+}
+.searchSpan {
+
+}
+.searchKeyword {
+  font-size: 18px;
+  background: #9CA5D7;
+  display: block;
+  margin: 0 10px 0 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid lightgrey;
 }
 .resultEntry {
   display: inline-block;
@@ -48,7 +59,7 @@ RESULT
   padding: 10px;
   width: 40%;
   height: 30px;
-  margin: 6px 8px;
+  margin: 8px;
   overflow: hidden;
   cursor: pointer;
 }
@@ -134,8 +145,15 @@ QUEUE
   padding: 5px;
   margin: 5px 0;
 }
+.upvote img {
+  width: 12px;
+  padding: 4px 0 0 0;
+}
 .downvote {
   background: #CED1D7;
   padding: 5px;
   margin: 5px 0;
+}
+.downvote img {
+  width: 12px;
 }

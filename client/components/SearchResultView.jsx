@@ -8,8 +8,15 @@ export default class SearchResultView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      keyword: '',
       tracks: [],
     };
+  }
+  
+  handleKeyword(keyword) {
+    this.setState({
+      keyword: keyword,
+    });
   }
 
   handleGetTracks(tracks) {
@@ -19,8 +26,8 @@ export default class SearchResultView extends React.Component {
   render() {
     return (
       <div className="search">
-        <SearchView getTracks={this.handleGetTracks.bind(this)}/>
-        <ResultView tracks={this.state.tracks} clickSong={this.props.clickSong}/>
+        <SearchView keyword={this.handleKeyword.bind(this)} getTracks={this.handleGetTracks.bind(this)}/>
+        <ResultView keyword={this.state.keyword} tracks={this.state.tracks} clickSong={this.props.clickSong}/>
       </div>
 		);
   }

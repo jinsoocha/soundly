@@ -12,7 +12,7 @@ export default class ResultEntryView extends React.Component {
 
   render() {
     const { track } = this.props;
-    const defaultArt = 'http://www.dardensmith.com/wp-content/themes/soundcheck/images/default-artwork.png';
+    const defaultArt = "/styles/imgs/defaultart.png"
 
     return (
       <div onClick={this.handleClick.bind(this)} className="resultEntry">
