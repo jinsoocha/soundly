@@ -11,15 +11,12 @@ export default class ResultEntryView extends React.Component {
   }
 
   render() {
-    const {track} = this.props;
-    const time = track.duration / 1000;
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    const default_art = 'http://www.dardensmith.com/wp-content/themes/soundcheck/images/default-artwork.png';
+    const { track } = this.props;
+    const defaultArt = 'http://www.dardensmith.com/wp-content/themes/soundcheck/images/default-artwork.png';
 
     return (
       <div onClick={this.handleClick.bind(this)} className="resultEntry">
-        <img src={track.artwork_url || default_art} alt="artwork" className="resultImg"/>
+        <img src={track.artwork_url || defaultArt} alt="artwork" className="resultImg"/>
         <div className="resultDetails">
           <div className="resultTitle">{track.title}</div>
         </div>

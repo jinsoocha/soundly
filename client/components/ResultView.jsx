@@ -11,7 +11,7 @@ export default class ResultView extends React.Component {
   }
 
   render() {
-    const {tracks} = this.props;
+    const { tracks } = this.props;
     
     return (
       <div className="searchResult">
