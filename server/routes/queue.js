@@ -135,7 +135,6 @@ const addSong = (song, roomid) => {
       if (user.queue === undefined) {
         reject('song queue is undefined');
       }
-      console.log('starting user queue', user.queue);
       if (user.queue.length > 0) {
         if (user.queue[user.queue.length - 1].id === songToAdd.id) {
           reject('the same song cannot be added one after another');
@@ -145,7 +144,6 @@ const addSong = (song, roomid) => {
       } else {
         user.queue.push(songToAdd);
       }
-      console.log('saving user queue:', user.queue);
       user.save()
       .then(resolve)
       .catch(reject);
@@ -279,11 +277,9 @@ const firstSongFinished = (req, res, next) => {
 };
 
 const addSongToQueue = (req, res, next) => {
-  console.log('req.body', req.body);
   addSong(req.body, req.roomid)
   .then(() => {
     getQueue(req.roomid).then((queue) => {
-      console.log('queue to return:', queue);
       res.json(queue);
     });
   }).catch((err) => {

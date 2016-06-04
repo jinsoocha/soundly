@@ -17,7 +17,10 @@ const authenticate = (req, res, next) => {
     const adminRoomId = '00000';
     User.findOne({ roomid: adminRoomId }, (err, results) => {
       if (results === null) {
-        new User({ username: 'admin', password: 'no-password', roomid: adminRoomId })
+        new User({ username: 'admin',
+          password: 'no-password',
+          roomid: adminRoomId,
+          queue: [] })
         .save(() => {
           console.log('creating dummy user');
           req.username = 'admin';
@@ -125,7 +128,11 @@ const doSignup = (username, password) => {
           }
           generateRoomId(username)
           .then((uniqueRoomId) => {
-            const makeUser = new User({ username: username, password: hash, roomid: uniqueRoomId });
+            const makeUser = new User({
+              username: username,
+              password: hash,
+              roomid: uniqueRoomId,
+              queue: [] });
             makeUser.save((saveErr, saveResult) => {
               if (saveErr) {
                 return reject(saveErr);

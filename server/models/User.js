@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   queue: {
     type: Array,
-    default: '[]',
+    default: null,
   },
 });
 

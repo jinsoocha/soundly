@@ -1,6 +1,11 @@
 // queue-agent-tests.js
 var request = require('supertest');
+const chai = require('chai');
+const chaiAsPromised = require("chai-as-promised");
+const assert = chai.assert;
+const expect = chai.expect;
 
+//  Get the server.  Works even if not running
 var app = require('../server/server.js');
 
 
@@ -43,7 +48,8 @@ describe('GET /queue returns with a admin queue', function() {
       //.expect("marcus is stored", done);
       .end(function(err, res) {
         if (err) return done(err);
-        console.log('res from post:', res.body);
+        //console.log('res from post:', res.body);
+        expect(res.body[0].id).to.equal(song0.id);
         done();
       });
   });
