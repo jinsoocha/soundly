@@ -10,8 +10,8 @@ const rankingChangeThreshold = 2;
   // id: req.body.id,
   // title: req.body.title,
   // duration: req.body.duration,
-  // streamUrl: req.body.stream_url,
-  // artwork: req.body.artwork_url,
+  // stream_url: req.body.stream_url,
+  // artwork_url: req.body.artwork_url,
   // upvotes: 0,
   // downvotes: 0,
   // rankingChange: 0,
@@ -168,7 +168,7 @@ const downvote = (songIndexId, roomid) => {
       if (user.queue[songIndexId] === undefined) {
         reject('attempt to uprank song that doesn\'t exist');
       } else {
-        user.queue[songIndexId].upvotes--;
+        user.queue[songIndexId].downvotes++;
         user.queue[songIndexId].rankingChange--;
         user.queue = reRankSongs(songIndexId, user.queue);
         // necessary for marking array change
