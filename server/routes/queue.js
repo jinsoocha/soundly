@@ -53,7 +53,7 @@ const reRankSongs = (songIndexId, songQueue) => {
     if (songIndexId !== (songQueue.length - 1)) {
       const lowerSong = songQueue[songIndexId + 1];
       if (song.rankingChange < lowerSong.rankingChange) {
-        //console.log('moving down: ', songIndexId);
+        //  console.log('moving down: ', songIndexId);
         song.rankingChange = song.rankingChange + rankingChangeThreshold;
         swapSongs(songIndexId, songIndexId + 1, songQueue);
       }
@@ -67,6 +67,9 @@ const getQueue = (roomid) => {
   return new Promise((resolve, reject) => {
     User.findOne({ roomid: roomid })
     .then((found) => {
+      if (found === null) {
+        reject('no queue found for roomid:' + roomid);
+      }
       resolve(found.queue);
     })
     .catch(reject);
@@ -132,6 +135,7 @@ const addSong = (song, roomid) => {
       if (user.queue === undefined) {
         reject('song queue is undefined');
       }
+      console.log('starting user queue', user.queue);
       if (user.queue.length > 0) {
         if (user.queue[user.queue.length - 1].id === songToAdd.id) {
           reject('the same song cannot be added one after another');
@@ -141,6 +145,7 @@ const addSong = (song, roomid) => {
       } else {
         user.queue.push(songToAdd);
       }
+      console.log('saving user queue:', user.queue);
       user.save()
       .then(resolve)
       .catch(reject);
@@ -250,7 +255,13 @@ const remove = (songIndexId, roomid) => {
 //
 
 const getSongQueue = (req, res, next) => {
-  res.status(300).json(getQueue());
+  getQueue(req.roomid).then((queue) => res.json(queue))
+  .catch((err) => {
+    console.log('Error ending song: ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
+  });
 };
 
 const firstSongFinished = (req, res, next) => {
@@ -261,17 +272,25 @@ const firstSongFinished = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error ending song: ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const addSongToQueue = (req, res, next) => {
+  console.log('req.body', req.body);
   addSong(req.body, req.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.roomid).then((queue) => {
+      console.log('queue to return:', queue);
+      res.json(queue);
+    });
   }).catch((err) => {
     console.log('Error adding song to queue: ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -283,7 +302,9 @@ const increaseSongRanking = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error upvoting song idx: ', idx, ' : ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -294,7 +315,9 @@ const decreaseSongRanking = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -305,7 +328,9 @@ const moveUpInQueue = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -316,7 +341,9 @@ const moveDownInQueue = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -327,7 +354,9 @@ const removeSongFromQueue = (req, res, next) => {
     getQueue(req.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 

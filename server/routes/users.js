@@ -10,12 +10,29 @@ const authenticate = (req, res, next) => {
   if (req.body.user && req.body.roomid) {
     req.username = req.body.user.username;
     req.roomid = req.body.roomid;
+    return next();
   } else {
-    req.username = 'test';
-    req.roomid = '00000';
-  }
+    //  create a dummy room to always return until the front end can
+    //  start passing in a existing user.
+    const adminRoomId = '00000';
+    User.findOne({ roomid: adminRoomId }, (err, results) => {
+      if (results === null) {
+        new User({ username: 'admin', password: 'no-password', roomid: adminRoomId })
+        .save(() => {
+          console.log('creating dummy user');
+          req.username = 'admin';
+          req.roomid = adminRoomId;
 
-  return next();
+          return next();
+        });
+      } else {
+        console.log('found dummy user');
+        req.username = 'admin';
+        req.roomid = adminRoomId;
+        return next();
+      }
+    });
+  }
 };
 
 
