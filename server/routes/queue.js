@@ -91,7 +91,6 @@ const emptyQueue = (roomid) => {
 //  Remove the first/playing song.
 const removeFirstSong = (id, roomid) => {
   const p = new Promise((resolve, reject) => {
-
     User.findOne({ roomid: roomid }).exec()
     .then((user) => {
       if (user.queue === undefined || user.queue.length === 0) {
@@ -103,6 +102,7 @@ const removeFirstSong = (id, roomid) => {
         .then(resolve)
         .catch(reject);
       } else {
+        console.log('song already removed');
         resolve();
       }
     })
@@ -128,9 +128,19 @@ const addSong = (song, roomid) => {
     User.findOne({ roomid: roomid }).exec()
     .then((user) => {
       if (user.queue === undefined) {
-        reject('song queue is empty or undefined');
+        reject('song queue is undefined');
       }
       user.queue.push(songToAdd);
+
+      if (user.queue.length > 0) {
+        if (user.queue[user.queue.length - 1].id === songToAdd.id) {
+          reject('the same song cannot be added one after another');
+        } else {
+          user.queue.push(songToAdd);
+        }
+      } else {
+        user.queue.push(songToAdd);
+      }
       user.save()
       .then(resolve)
       .catch(reject);
@@ -163,6 +173,7 @@ const upvote = (songIndexId, roomid) => {
 
 const downvote = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
+<<<<<<< HEAD
     User.findOne({ roomid: roomid }).exec()
     .then((user) => {
       if (user.queue[songIndexId] === undefined) {
@@ -177,6 +188,17 @@ const downvote = (songIndexId, roomid) => {
       }
     })
     .catch(reject);
+=======
+    const songInQueue = songQueue[songIndexId];
+    if (songInQueue === undefined) {
+      reject('attempt to uprank song that doesn\'t exist');
+    } else {
+      songInQueue.downvotes++;
+      songInQueue.rankingChange--;
+      reRankSongs(songIndexId);
+      resolve();
+    }
+>>>>>>> 97636f6ec6be79bc52908476276cdb56b1ca69fb
   });
   return p;
 };
