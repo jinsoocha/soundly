@@ -13,22 +13,36 @@ export default class PlayerView extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log("queuefirstsong",nextProps.queue[0], "statecurrentsong",this.state.currentSong);
+    if (nextProps.queue.length > 0) {
+      if (nextProps.queue[0].id !== this.state.currentSong.id) {
+        this.streamTrack(nextProps.queue[0]);
+      }
+    }
+  }
+
   streamTrack(track) {
     console.log("streaming track", track)
+    let currentPlayer;
     return SC.stream('/tracks/' + track.id)
-    .then(player => { 
-      player.play();
-      player.on('play-start', () => {
+    .then(player => {
+      if (currentPlayer) {
+        currentPlayer.pause();
+      }
+      currentPlayer = player;
+      currentPlayer.play();
+      currentPlayer.on('play-start', () => {
         this.setState({
           currentSong: track,
-        });        
-      console.log("currentsongintheplayer", this.state.currentSong);
+        });
+        console.log("currentsongintheplayer", this.state.currentSong);
       });
-      player.on('finish', () => {
+      currentPlayer.on('finish', () => {
         console.log('finished');
         this.setState({
           currentSong: '',
-        }); 
+        });
         this.props.changeSong(track);
       });
     })
@@ -37,12 +51,6 @@ export default class PlayerView extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("queuefirstsong",nextProps.queue[0], "statecurrentsong",this.state.currentSong);
-    if (nextProps.queue.length > 0 && nextProps.queue[0].id !== this.state.currentSong.id) {
-      this.streamTrack(nextProps.queue[0]);
-    }
-  }
 
   render() {
     return (

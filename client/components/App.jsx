@@ -4,7 +4,7 @@ import QueueView from './QueueView';
 import PlayerView from './PlayerView';
 import $ from 'jquery';
 
-var socket = io();
+const socket = io();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class App extends React.Component {
   componentWillMount() {
     console.log("initialmount")
     const context = this;
-    socket.on('queue', function(data) {
+    socket.on('queue', (data) => {
       context.updateQueue(data);
     });
   }
@@ -37,14 +37,14 @@ export default class App extends React.Component {
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
-      success: function(result) {
-        socket.emit('update', {hello: 'hi'});
+      success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
         });
       }.bind(this),
-      error: function(xhr, status, err) {
+      error: function (xhr, status, err) {
         window.alert('the same song cannot be added one after another');
       }.bind(this),
     });

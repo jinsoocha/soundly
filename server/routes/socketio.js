@@ -9,7 +9,7 @@ module.exports = (app, express, http, io) => {
   io.on('connection', (socket) => {
     count++;
     console.log(count + "users connected");
-    socket.broadcast.emit('queue',queue.songQueue);
+    socket.emit('queue',queue.songQueue);
 
     socket.on('update', function(data) {
       console.log('sending queue', data)
