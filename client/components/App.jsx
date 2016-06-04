@@ -4,6 +4,9 @@ import QueueView from './QueueView';
 import PlayerView from './PlayerView';
 import $ from 'jquery';
 
+const socket = io();
+window.master = false;
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +19,25 @@ export default class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    console.log("initialmount")
+    const context = this;
+    socket.on('queue', (data) => {
+      context.updateQueue(data);
+    });
+    socket.on('master', (data) => {
+      console.log("i am a master")
+      window.master = data;
+    });
+  }
+
+  updateQueue(data) {
+    console.log("updating queue")
+    this.setState({
+      queue: data,
+    });
+  }
+
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
     console.log("clicked");
@@ -24,27 +46,29 @@ export default class App extends React.Component {
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: song,
-      success: function(result) {
+      success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
         });
       }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(status, err.toString());
+      error: function (xhr, status, err) {
+        window.alert('the same song cannot be added one after another');
       }.bind(this),
     });
   }
 
-  handleChangeSong() {
+  handleChangeSong(song) {
     $.ajax({
       url: 'api/queue/songFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
+      data: song,
       success: function(result) {
+        socket.emit('update', { socket: 'connected' });
         this.setState({
           queue: result,
-          currentSong: result[0],
         });
       }.bind(this),
       error: function (xhr, status, err) {
@@ -58,6 +82,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -75,6 +100,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,

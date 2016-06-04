@@ -14,26 +14,56 @@ export default class PlayerView extends React.Component {
     };
   }
 
-  streamTrack(track) {
-    return SC.stream('/tracks/' + track.id).then(player => { 
-      console.log('playing the song', player);
-      player.play();
-      player.on('finish', () => {
-        console.log('finished');
-        this.props.changeSong();
-      });
-    }).catch(() => console.log('Cannot play the song'));
-  }
-  
-  render() {
-    console.log("queuefirstsong",this.props.queue[0], "statecurrentsong",this.state.currentSong);
-    if (this.props.queue.length > 0 && this.props.queue[0].id !== this.state.currentSong.id) {
-      this.streamTrack(this.props.queue[0]);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.queue.length > 0) {
+      if (this.state.currentSong !== '') {
+        console.log("hello",nextProps.queue[0].id,this.state.currentSong.id) 
+        if (nextProps.queue[0].id !== this.state.currentSong.id) {
+          this.streamTrack(nextProps.queue[0]);
+          this.setState({
+            currentSong: nextProps.queue[0],
+          });
+        }
+      } else {
+        this.setState({
+          currentSong: nextProps.queue[0],
+        });
+        this.streamTrack(nextProps.queue[0]);
+      }
+    } else {
       this.setState({
-        currentSong: this.props.queue[0],
+        currentSong: '',
       });
-      console.log("currentsongintheplayer", this.state.currentSong);
     }
+  }
+
+  streamTrack(track) {
+    console.log("streaming track", track, "statecurrentsong",this.state.currentSong);
+    let currentPlayer;
+    return SC.stream('/tracks/' + track.id)
+    .then(player => {
+      if (currentPlayer) {
+        currentPlayer.pause();
+      }
+      currentPlayer = player;
+      currentPlayer.play();
+      currentPlayer.on('play-start', () => {
+        console.log('playing')
+      });
+      currentPlayer.on('finish', () => {
+        if (window.master) {
+          console.log('finished');
+          this.props.changeSong(track);
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+
+  render() {
     return (
       <div className="playerBox">
         <div className="currentSongTitle">{this.state.currentSong.title}</div>

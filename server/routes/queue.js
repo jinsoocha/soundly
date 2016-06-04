@@ -70,12 +70,17 @@ const emptyQueue = () => {
 };
 
 //  Remove the first/playing song.
-const removeFirstSong = () => {
+const removeFirstSong = (id) => {
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined || songQueue.length === 0) {
-      reject('song queue is empty or undefined');
+      console.log('song queue is empty or undefined');
+    } else {
+      if (songQueue[0].id === id) {
+        songQueue.shift();
+      } else {
+        console.log('song already removed');
+      }
     }
-    songQueue.shift();
     resolve();
   });
   return p;
@@ -96,9 +101,17 @@ const addSong = (song) => {
   };
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined) {
-      reject('song queue is empty or undefined');
+      reject('song queue is undefined');
     }
-    songQueue.push(songToAdd);
+    if (songQueue.length > 0) {
+      if (songQueue[songQueue.length - 1].id === songToAdd.id) {
+        reject('the same song cannot be added one after another');
+      } else {
+        songQueue.push(songToAdd);
+      }
+    } else {
+      songQueue.push(songToAdd);
+    }
     resolve();
   });
   return p;
@@ -125,7 +138,7 @@ const downvote = (songIndexId) => {
     if (songInQueue === undefined) {
       reject('attempt to uprank song that doesn\'t exist');
     } else {
-      songInQueue.upvotes--;
+      songInQueue.downvotes++;
       songInQueue.rankingChange--;
       reRankSongs(songIndexId);
       resolve();
@@ -183,7 +196,8 @@ const getSongQueue = (req, res, next) => {
 };
 
 const firstSongFinished = (req, res, next) => {
-  removeFirstSong()
+  const id = req.body.id;
+  removeFirstSong(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
     console.log('Error ending song: ', err);

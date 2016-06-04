@@ -28,12 +28,12 @@ export default class SearchView extends React.Component {
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: this.requestBuildQueryString(obj),
-      success: function(result) {
+      success: function (result) {
         console.log(result.data);
         // sending the data from the server to the parent, SearchResultView
         this.props.getTracks(result.data);
       }.bind(this),
-      error: function(xhr, status, err) {
+      error: function (xhr, status, err) {
         console.error(status, err.toString());
       }.bind(this),
     });
