@@ -14,17 +14,26 @@ export default class PlayerView extends React.Component {
   }
 
   streamTrack(track) {
+    console.log("streaming track", track)
     return SC.stream('/tracks/' + track.id)
     .then(player => { 
-      console.log('playing the song', player);
       player.play();
+      player.on('play-start', () => {
+        this.setState({
+          currentSong: track,
+        });        
+      console.log("currentsongintheplayer", this.state.currentSong);
+      });
       player.on('finish', () => {
         console.log('finished');
+        this.setState({
+          currentSong: '',
+        }); 
         this.props.changeSong(track);
       });
     })
     .catch(err => {
-      throw err;
+      console.log(err);
     });
   }
 
@@ -32,13 +41,9 @@ export default class PlayerView extends React.Component {
     console.log("queuefirstsong",nextProps.queue[0], "statecurrentsong",this.state.currentSong);
     if (nextProps.queue.length > 0 && nextProps.queue[0].id !== this.state.currentSong.id) {
       this.streamTrack(nextProps.queue[0]);
-      this.setState({
-        currentSong: nextProps.queue[0],
-      });
-      console.log("currentsongintheplayer", this.state.currentSong);
-    }    
+    }
   }
-  
+
   render() {
     return (
       <div>

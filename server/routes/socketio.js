@@ -4,15 +4,6 @@ const queue = require('./queue.js');
 
 
 module.exports = (app, express, http, io) => {
-  // //  establish the socket io connection
-  // io.on('connection', (socket) => {
-  //   console.log('a user connected');
-  //   socket.on('disconnect', () => {
-  //     console.log('user disconnected');
-  //   });
-  // });
-
-  //  listening to chat message from the client
   var count = 0;
 
   io.on('connection', (socket) => {
@@ -21,7 +12,7 @@ module.exports = (app, express, http, io) => {
     socket.broadcast.emit('queue',queue.songQueue);
 
     socket.on('update', function(data) {
-      console.log(data)
+      console.log('sending queue', data)
       socket.broadcast.emit('queue',queue.songQueue);
     });
     socket.on('disconnect', function () {

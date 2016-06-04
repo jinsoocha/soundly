@@ -45,7 +45,7 @@ export default class App extends React.Component {
         });
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(status, err.toString());
+        window.alert('the same song cannot be added one after another');
       }.bind(this),
     });
   }
@@ -59,7 +59,6 @@ export default class App extends React.Component {
       success: function(result) {
         this.setState({
           queue: result,
-          currentSong: result[0],
         });
       }.bind(this),
       error: function (xhr, status, err) {

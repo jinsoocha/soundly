@@ -73,12 +73,13 @@ const emptyQueue = () => {
 const removeFirstSong = (id) => {
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined || songQueue.length === 0) {
-      reject('song queue is empty or undefined');
-    }
-    if (songQueue[0].id === id) {
-      songQueue.shift();
+      console.log('song queue is empty or undefined');
     } else {
-      console.log('song already removed');
+      if (songQueue[0].id === id) {
+        songQueue.shift();
+      } else {
+        console.log('song already removed');
+      }
     }
     resolve();
   });
@@ -100,9 +101,17 @@ const addSong = (song) => {
   };
   const p = new Promise((resolve, reject) => {
     if (songQueue === undefined) {
-      reject('song queue is empty or undefined');
+      reject('song queue is undefined');
     }
-    songQueue.push(songToAdd);
+    if (songQueue.length > 0) {
+      if (songQueue[songQueue.length - 1].id === songToAdd.id) {
+        reject('the same song cannot be added one after another');
+      } else {
+        songQueue.push(songToAdd);
+      }
+    } else {
+      songQueue.push(songToAdd);
+    }
     resolve();
   });
   return p;
