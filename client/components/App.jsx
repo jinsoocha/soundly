@@ -78,6 +78,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -95,6 +96,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
+        socket.emit('update', { socket: 'connected' });
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
