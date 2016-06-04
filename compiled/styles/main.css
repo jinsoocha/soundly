@@ -1,0 +1,141 @@
+#app {
+  width: 90%;
+  margin: 0 auto;
+  font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda,Verdana, Tahoma,sans-serif;
+}
+/*
+SEARCH
+*/
+.searchBox {
+  background: #333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.searchInput {
+  background: #BDE6C9;
+  padding: 0 0 0 10px;
+  font-size: 20px;
+  width: 70%;
+  height: 45px;
+  border: none;
+  outline: none;
+}
+.searchButton {
+  margin-left: -70px;
+  padding: 0;
+  background: #4AE6A2;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+/*
+RESULT
+*/
+.searchResult {
+  padding: 10px;
+  margin: 60px 0;
+  width: 30%;
+  float: left;
+  background-color: #D5E654;
+}
+.resultEntry {
+  display: inline-block;
+  border: 1px solid lightgrey;
+  padding: 10px;
+  width: 40%;
+  height: 30px;
+  margin: 6px 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.resultImg {
+  width: 30px;
+  display: inline-block;
+}
+.resultDetails {
+  width: 70%;
+  margin: 0 0 0 10px;
+  display: inline-block;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.resultTitle {
+  font-size: 10px;
+}
+.resultDuration {
+  font-size: 7px;
+  display: inline-block;
+}
+/*
+PLAYER
+*/
+.playerBox {
+  position: fixed;
+  background: #35E63D;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.currentSongTitle {
+  font-size: 30px;
+  text-align: right;
+  padding: 10px;
+}
+/*
+QUEUE
+*/
+.queueBox {
+  margin: 60px 0 70px 0;
+  width: 66%;
+  background-color: #A09FE6;
+  float: right;
+}
+.queueEntry {
+  border: 1px solid lightgrey;
+  padding: 10px;
+  height: 150px;
+  width: 90%;
+  margin: 15px auto;
+  overflow: hidden;
+}
+.queueImg {
+  width: 150px;
+  display: inline-block;
+}
+.queueDetails {
+  width: 75%;
+  height: 150px;
+  margin: 0 0 0 10px;
+  display: inline-block;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.queueTitle {
+  font-size: 20px;
+}
+.queueDuration {
+  font-size: 12px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+.voting {
+  float: right;
+  cursor: pointer;
+}
+.upvote {
+  background: #E63333;
+  padding: 5px;
+  margin: 5px 0;
+}
+.downvote {
+  background: #CED1D7;
+  padding: 5px;
+  margin: 5px 0;
+}

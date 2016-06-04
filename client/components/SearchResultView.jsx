@@ -18,7 +18,7 @@ export default class SearchResultView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="search">
         <SearchView getTracks={this.handleGetTracks.bind(this)}/>
         <ResultView tracks={this.state.tracks} clickSong={this.props.clickSong}/>
       </div>

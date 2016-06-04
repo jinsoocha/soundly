@@ -8,15 +8,13 @@ import ResultEntryView from './ResultEntryView';
 export default class ResultView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
-
   render() {
-    const tracks = this.props.tracks;
+    const {tracks} = this.props;
+    
     return (
-      <div>
+      <div className="searchResult">
 				{tracks.map((track) =>
           <ResultEntryView
             key={track.id}

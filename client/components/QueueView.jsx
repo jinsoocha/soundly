@@ -4,27 +4,22 @@ import QueueEntryView from './QueueEntryView';
 export default class QueueView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {
     const queue = this.props.queue;
     console.log('current queue =>', queue);
     return (
-      <div>
-        <h3>Queue</h3>
-        <ul>
-          {queue.map((song, i) =>
-            <QueueEntryView
-              key={song.id}
-              song={song}
-              index={i}
-              upVote={this.props.upVote}
-              downVote={this.props.downVote}
-            />
-            )}
-        </ul>
+      <div className="queueBox">
+        {queue.map((song, i) =>
+          <QueueEntryView
+            key={i}
+            // key={song.id}
+            song={song}
+            index={i}
+            upVote={this.props.upVote}
+            downVote={this.props.downVote} />
+        )}
       </div>
     );
   }

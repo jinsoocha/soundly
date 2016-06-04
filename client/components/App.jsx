@@ -3,6 +3,7 @@ import SearchResultView from './SearchResultView';
 import QueueView from './QueueView';
 import PlayerView from './PlayerView';
 import $ from 'jquery';
+import { StickyContainer, Sticky } from 'react-sticky';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -85,23 +86,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>AppView</h1>
-        <div>
-          <SearchResultView clickSong={this.onClickSong.bind(this)}/>
-        </div>
-        <div>
-          <QueueView
-            queue={this.state.queue}
-            upVote={this.handleUpVote.bind(this)}
-            downVote={this.handleDownVote.bind(this)}
-          />
-        </div>
-        <div>
-          <PlayerView
-            changeSong={this.handleChangeSong.bind(this)}
-            queue={this.state.queue}
-          />
-        </div>
+        <SearchResultView clickSong={this.onClickSong.bind(this)}/>
+        <QueueView queue={this.state.queue} upVote={this.handleUpVote.bind(this)} downVote={this.handleDownVote.bind(this)} />
+        <PlayerView changeSong={this.handleChangeSong.bind(this)} queue={this.state.queue} />
       </div>
 		);
   }

@@ -41,8 +41,9 @@ export default class SearchView extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
+      <form onSubmit={this.handleSubmit.bind(this)} className="searchBox">
+        <input type="text" name="searchInput" ref="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" required />
+        <button type="submit" className="searchButton">Search</button>
       </form>
     );
   }
