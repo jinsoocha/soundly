@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 
 
 const authenticate = (req, res, next) => {
-
   if (req.body.user && req.body.roomid) {
     req.username = req.body.user.username;
     req.roomid = req.body.roomid;
@@ -93,7 +92,7 @@ const doSignin = (username, password) => {
 };
 
 const doSignup = (username, password) => {
-  console.log('signup attempt of username: ', username);
+  //  console.log('signup attempt of username: ', username);
 
   return new Promise((resolve, reject) => {
     User.find({ username: username }, (err, users) => {

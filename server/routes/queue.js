@@ -67,9 +67,7 @@ const getQueue = (roomid) => {
     .then((found) => {
       resolve(found.queue);
     })
-    .catch((err) => {
-      reject(err);
-    });
+    .catch(reject);
   });
 };
 
@@ -101,11 +99,14 @@ const removeFirstSong = (id, roomid) => {
       }
       if (user.queue[0].id === id) {
         user.queue.shift();
-        user.save(resolve);
+        user.save()
+        .then(resolve)
+        .catch(reject);
       } else {
         resolve();
       }
-    });
+    })
+    .catch(reject);
   });
   return p;
 };
@@ -154,7 +155,8 @@ const upvote = (songIndexId, roomid) => {
         user.markModified('queue');
         user.save().then(resolve).catch(reject);
       }
-    });
+    })
+    .catch(reject);
   });
   return p;
 };
@@ -173,7 +175,8 @@ const downvote = (songIndexId, roomid) => {
         user.markModified('queue');
         user.save().then(resolve).catch(reject);
       }
-    });
+    })
+    .catch(reject);
   });
   return p;
 };
