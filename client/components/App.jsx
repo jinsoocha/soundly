@@ -12,18 +12,45 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       queue: [],
+      time: 0,
     };
   }
 
   componentWillMount() {
     console.log("initialmount")
     const context = this;
+
+    socket.on('connect', () => {
+      socket.on('master', (data) => {
+        console.log("i am a master")
+        window.master = data;
+      });
+      console.log("requestSongtime")
+      socket.emit('requestSongtime');
+    });
+
+    socket.on('getSongtime', () => {
+      console.log("gettingsongtime", window.master)    
+      if (window.master) {
+      console.log("gettingsongtime cuz it is master")
+        socket.emit('sendSongtime', 3);
+      }
+    });
+
+    socket.on('setSongtime', (data) => {
+      console.log("settingsongtime for non masters")
+      context.syncSong(data);
+    });
+
     socket.on('queue', (data) => {
       context.updateQueue(data);
     });
-    socket.on('master', (data) => {
-      console.log("i am a master")
-      window.master = data;
+  }
+
+  syncSong(data) {
+    console.log("syncing song", data);
+    this.setState({
+      time: data,
     });
   }
 
