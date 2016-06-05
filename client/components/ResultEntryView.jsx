@@ -1,22 +1,16 @@
 import React from 'react';
 
-export default class ResultEntryView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  handleClick(e) {
+const ResultEntryView = (props) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    this.props.clickSong(this.props.track);
-  }
+    props.clickSong(props.track);
+  };
 
-  render() {
-    return (
-      <div onClick={this.handleClick.bind(this)}>
-				{this.props.track.title} {this.props.track.duration / 1000}
-      </div>
-		);
-  }
-}
+  return (
+    <div onClick={handleClick}>
+			{props.track.title} {props.track.duration / 1000}
+    </div>
+	);
+};
+
+export default ResultEntryView;

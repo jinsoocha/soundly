@@ -5,26 +5,19 @@
 import React from 'react';
 import ResultEntryView from './ResultEntryView';
 
-export default class ResultView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+const ResultView = (props) => {
+  const tracks = props.result;
+  return (
+    <div>
+			{tracks.map((track) =>
+        <ResultEntryView
+          key={track.id}
+          track={track}
+          clickSong={props.clickSong}
+        />
+			)}
+    </div>
+	);
+};
 
-
-  render() {
-    const tracks = this.props.tracks;
-    return (
-      <div>
-				{tracks.map((track) =>
-          <ResultEntryView
-            key={track.id}
-            track={track}
-            clickSong={this.props.clickSong}
-          />
-				)}
-      </div>
-		);
-  }
-}
+export default ResultView;

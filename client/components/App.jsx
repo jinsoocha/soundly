@@ -1,5 +1,6 @@
 import React from 'react';
-import SearchResultView from './SearchResultView';
+import SearchView from './SearchView';
+import ResultView from './ResultView';
 import QueueView from './QueueView';
 import PlayerView from './PlayerView';
 import $ from 'jquery';
@@ -12,6 +13,7 @@ export default class App extends React.Component {
     this.state = {
       socket: socket,
       master: false,
+      searchResult: [],
       queue: [],
     };
   }
@@ -38,6 +40,38 @@ export default class App extends React.Component {
     console.log("updating queue")
     this.setState({
       queue: data,
+    });
+  }
+
+  //  we need this to send the input data to the client
+  requestBuildQueryString(params) {
+    const queryString = [];
+    for (const property in params) {
+      if (params.hasOwnProperty(property)) {
+        queryString.push(encodeURIComponent(property) + '=' + encodeURIComponent(params[property]));
+      }
+    }
+    return queryString.join('&');
+  }
+
+  handleSubmit(keyword) {
+    console.log(keyword)
+    const obj = { keyword: keyword };
+    $.ajax({
+      url: 'http://localhost:4568/server',
+      contentType: 'application/x-www-form-urlencoded',
+      type: 'POST',
+      data: this.requestBuildQueryString(obj),
+      success: function (result) {
+        console.log(result.data);
+        // sending the data from the server to the parent, SearchResultView
+        this.setState({
+          searchResult: result.data,
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this),
     });
   }
 
@@ -120,7 +154,13 @@ export default class App extends React.Component {
       <div>
         <h1>AppView</h1>
         <div>
-          <SearchResultView clickSong={this.onClickSong.bind(this)}/>
+          <SearchView
+            handleSubmit={this.handleSubmit.bind(this)}
+          />
+          <ResultView
+            result={this.state.searchResult}
+            clickSong={this.onClickSong.bind(this)}
+          />
         </div>
         <div>
           <QueueView
