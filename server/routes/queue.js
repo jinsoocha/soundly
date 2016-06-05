@@ -217,12 +217,24 @@ const addSongToQueue = (req, res, next) => {
 };
 
 const increaseSongRanking = (req, res, next) => {
+<<<<<<< cd187daa6a674812b5bf6a9800dd2cea54504b5b
   const id = +req.body.index;
   upvote(id)
   .then(() => res.json(getQueue()))
   .catch((err) => {
     console.log('Error upvoting song id: ', id, ' : ', err);
     res.status(500).json(getQueue());
+=======
+  const idx = +req.body.index;
+  upvote(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error upvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
+>>>>>>> Added new test for thumbs up
   });
 };
 
