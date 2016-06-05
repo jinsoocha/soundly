@@ -15,6 +15,7 @@ export default class App extends React.Component {
       master: false,
       searchResult: [],
       queue: [],
+      currentSong: '',
     };
   }
 
@@ -32,46 +33,23 @@ export default class App extends React.Component {
     });
 
     socket.on('queue', (data) => {
-      context.updateQueue(data);
-    });
-  }
-
-  updateQueue(data) {
-    console.log("updating queue")
-    this.setState({
-      queue: data,
-    });
-  }
-
-  //  we need this to send the input data to the client
-  requestBuildQueryString(params) {
-    const queryString = [];
-    for (const property in params) {
-      if (params.hasOwnProperty(property)) {
-        queryString.push(encodeURIComponent(property) + '=' + encodeURIComponent(params[property]));
-      }
-    }
-    return queryString.join('&');
-  }
-
-  handleSubmit(keyword) {
-    console.log(keyword)
-    const obj = { keyword: keyword };
-    $.ajax({
-      url: 'http://localhost:4568/server',
-      contentType: 'application/x-www-form-urlencoded',
-      type: 'POST',
-      data: this.requestBuildQueryString(obj),
-      success: function (result) {
-        console.log(result.data);
-        // sending the data from the server to the parent, SearchResultView
+      if (data[0].length === 0) {
         this.setState({
-          searchResult: result.data,
+          queue: data[0],
+          currentSong: '',
         });
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(status, err.toString());
-      }.bind(this),
+      } else {
+        if (data[1]) {
+          this.setState({
+            queue: data[0],
+            currentSong: data[1],
+          });
+        } else {
+          this.setState({
+            queue: data[0],
+          });
+        }
+      }
     });
   }
 
@@ -84,14 +62,49 @@ export default class App extends React.Component {
       type: 'POST',
       data: song,
       success: function (result) {
-        socket.emit('update', { socket: 'connected' });
-        const tempQueue = result;
-        this.setState({
-          queue: tempQueue,
-        });
+        if (result.length === 1) {
+          socket.emit('update', result[0]);
+          this.setState({
+            currentSong: result[0],
+            queue: result,
+          });
+        } else {
+          socket.emit('update');
+          this.setState({
+            queue: result,
+          });
+        }
       }.bind(this),
       error: function (xhr, status, err) {
         window.alert('the same song cannot be added one after another');
+      }.bind(this),
+    });
+  }
+
+  requestBuildQueryString(params) {
+    const queryString = [];
+    for (const property in params) {
+      if (params.hasOwnProperty(property)) {
+        queryString.push(encodeURIComponent(property) + '=' + encodeURIComponent(params[property]));
+      }
+    }
+    return queryString.join('&');
+  }
+
+  handleSubmit(keyword) {
+    const obj = { keyword: keyword };
+    $.ajax({
+      url: 'http://localhost:4568/server',
+      contentType: 'application/x-www-form-urlencoded',
+      type: 'POST',
+      data: this.requestBuildQueryString(obj),
+      success: function (result) {
+        this.setState({
+          searchResult: result.data,
+        });
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(status, err.toString());
       }.bind(this),
     });
   }
@@ -103,10 +116,18 @@ export default class App extends React.Component {
       type: 'POST',
       data: song,
       success: function(result) {
-        socket.emit('update', { socket: 'connected' });
-        this.setState({
-          queue: result,
-        });
+        socket.emit('update', result[0]);
+        if (result.length === 0) {
+          this.setState({
+            queue: result,
+            currentSong: '',
+          });
+        } else {
+          this.setState({
+            queue: result,
+            currentSong: result[0],
+          });
+        }
       }.bind(this),
       error: function (xhr, status, err) {
       }.bind(this),
@@ -119,7 +140,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i },
       success: function (result) {
-        socket.emit('update', { socket: 'connected' });
+        socket.emit('update');
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -137,7 +158,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i },
       success: function (result) {
-        socket.emit('update', { socket: 'connected' });
+        socket.emit('update');
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -171,6 +192,7 @@ export default class App extends React.Component {
         </div>
         <div>
           <PlayerView
+            currentSong={this.state.currentSong}
             master={this.state.master}
             changeSong={this.handleChangeSong.bind(this)}
             queue={this.state.queue}
