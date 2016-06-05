@@ -1,24 +1,26 @@
 // user-tests.js
-const chai = require('chai');
-const chaiAsPromised = require("chai-as-promised");
-const assert = chai.assert;
+var chai = require('chai');
+var chaiAsPromised = require("chai-as-promised");
+var assert = chai.assert;
 chai.use(chaiAsPromised);
-const should = chai.should();
-const expect = chai.expect;
-const users = require('../server/routes/users.js');
-const userSchema = require('../server/models/User.js');
+var should = chai.should();
+var expect = chai.expect;
+var users = require('../server/routes/users.js');
+var userSchema = require('../server/models/User.js');
 
 describe('can register and signin users', function() {
 
   beforeEach(function(done) {
-    //  runs before all tests in this block
+    //runs before all tests in this block
     users.doSignup('register', 'registerpw').should.be.fulfilled.then(function(user) {
       done();
     });
   });
 
   afterEach(function(done) {
-    userSchema.remove({}).then(() => done());
+    userSchema.remove({}).then(function(){
+      done();
+    });
   });
 
   it('it should successfully generate a room id', function(done) {
@@ -50,4 +52,6 @@ describe('can register and signin users', function() {
   it('it should fail with a bad password', function(done) {
     users.doSignin('register', 'badpassword').should.be.rejected.and.notify(done);
   });
+
+
 });
