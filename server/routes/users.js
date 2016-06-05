@@ -5,40 +5,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
-
-const authenticate = (req, res, next) => {
-  if (req.body.user && req.body.roomid) {
-    req.username = req.body.user.username;
-    req.roomid = req.body.roomid;
-    return next();
-  } else {
-    //  create a dummy room to always return until the front end can
-    //  start passing in a existing user.
-    const adminRoomId = '00000';
-    User.findOne({ roomid: adminRoomId }, (err, results) => {
-      if (results === null) {
-        new User({ username: 'admin',
-          password: 'no-password',
-          roomid: adminRoomId,
-          queue: [] })
-        .save(() => {
-          console.log('creating dummy user');
-          req.username = 'admin';
-          req.roomid = adminRoomId;
-
-          return next();
-        });
-      } else {
-        console.log('found dummy user');
-        req.username = 'admin';
-        req.roomid = adminRoomId;
-        return next();
-      }
-    });
-  }
-};
-
-
 const generateToken = (username) => {
   const token = jwt.sign({ username }, 'TODO:SECRET', {
     expiresIn: 60 * 60 * 12,
@@ -112,7 +78,7 @@ const doSignin = (username, password) => {
 };
 
 const doSignup = (username, password) => {
-  //  console.log('signup attempt of username: ', username);
+  console.log('signup attempt of username: ', username);
 
   return new Promise((resolve, reject) => {
     User.find({ username: username }, (err, users) => {
@@ -128,11 +94,7 @@ const doSignup = (username, password) => {
           }
           generateRoomId(username)
           .then((uniqueRoomId) => {
-            const makeUser = new User({
-              username: username,
-              password: hash,
-              roomid: uniqueRoomId,
-              queue: [] });
+            const makeUser = new User({ username: username, password: hash, roomid: uniqueRoomId });
             makeUser.save((saveErr, saveResult) => {
               if (saveErr) {
                 return reject(saveErr);
@@ -208,5 +170,4 @@ module.exports = {
   doSignin,
   generateRoomId,
   generateToken,
-  authenticate,
 };
