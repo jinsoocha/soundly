@@ -1,7 +1,6 @@
 // queue.js
-
-//
-const songQueue = [];
+const User = require('../models/User.js');
+const db = require('../db-config');
 // N upvotes or N downvotes will necessitate a change in
 // the ranking.  That threshold is set here.
 const rankingChangeThreshold = 2;
@@ -11,8 +10,8 @@ const rankingChangeThreshold = 2;
   // id: req.body.id,
   // title: req.body.title,
   // duration: req.body.duration,
-  // streamUrl: req.body.stream_url,
-  // artwork: req.body.artwork_url,
+  // stream_url: req.body.stream_url,
+  // artwork_url: req.body.artwork_url,
   // upvotes: 0,
   // downvotes: 0,
   // rankingChange: 0,
@@ -26,7 +25,7 @@ const rankingChangeThreshold = 2;
 // if a rankingChange is > threshold and > than previous song, it will swap places,
 // and reduce rankingChange by the threshold.
 
-const swapSongs = (i, j) => {
+const swapSongs = (i, j, songQueue) => {
   // console.log('swapping: ', i, ' with ', j);
   const tempSong = songQueue[i];
   songQueue[i] = songQueue[j];
@@ -34,60 +33,91 @@ const swapSongs = (i, j) => {
 };
 
 // Implement algorithm described above.
-const reRankSongs = (songIndexId) => {
-  //  console.log('reranking: ', songIndexId);
+const reRankSongs = (songIndexId, songQueue) => {
   const song = songQueue[songIndexId];
   // console.log('currentrankingchange: ', song.rankingChange);
   if (song.rankingChange >= rankingChangeThreshold) {
     // 0 never moves, 1 never moves up.  Start the process at 2.
     if (songIndexId >= 2) {
       const higherSong = songQueue[songIndexId - 1];
-      // console.log('song.rankingChange: ', song.rankingChange, ' vs ', higherSong.rankingChange);
+      //  console.log('song.rankingChange: ', song.rankingChange, ' vs ', higherSong.rankingChange);
       if (song.rankingChange > higherSong.rankingChange) {
         song.rankingChange = song.rankingChange - rankingChangeThreshold;
-        swapSongs(songIndexId, songIndexId - 1);
+        swapSongs(songIndexId, songIndexId - 1, songQueue);
       }
     }
   }
-  if (song.rankingChange < 0 && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
+
+  if (songIndexId > 0 && song.rankingChange < 0
+    && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
     if (songIndexId !== (songQueue.length - 1)) {
       const lowerSong = songQueue[songIndexId + 1];
-      // console.log('moving down: ', songIndexId);
       if (song.rankingChange < lowerSong.rankingChange) {
+        //  console.log('moving down: ', songIndexId);
         song.rankingChange = song.rankingChange + rankingChangeThreshold;
-        swapSongs(songIndexId, songIndexId + 1);
+        swapSongs(songIndexId, songIndexId + 1, songQueue);
       }
     }
   }
+  // return songQueue.splice(0);
+  return songQueue;
 };
 
-const getQueue = () => songQueue;
+const getQueue = (roomid) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ roomid: roomid })
+    .then((found) => {
+      if (found === null) {
+        reject('no queue found for roomid:' + roomid);
+      }
+      resolve(found.queue);
+    })
+    .catch(reject);
+  });
+};
 
-const emptyQueue = () => {
-  while (songQueue.length) {
-    songQueue.pop();
-  }
+const emptyQueue = (roomid) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (user.queue === undefined) {
+        reject('song queue is empty or undefined');
+      }
+
+      user.queue = [];
+      user.save()
+      .then(resolve)
+      .catch(reject);
+    })
+    .catch(reject);
+  });
 };
 
 //  Remove the first/playing song.
-const removeFirstSong = (id) => {
+const removeFirstSong = (id, roomid) => {
   const p = new Promise((resolve, reject) => {
-    if (songQueue === undefined || songQueue.length === 0) {
-      console.log('song queue is empty or undefined');
-    } else {
-      if (songQueue[0].id === id) {
-        songQueue.shift();
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (user.queue === undefined || user.queue.length === 0) {
+        reject('song queue is empty or undefined');
+      }
+      if (user.queue[0].id === id) {
+        user.queue.shift();
+        user.save()
+        .then(resolve)
+        .catch(reject);
       } else {
         console.log('song already removed');
+        resolve();
       }
-    }
-    resolve();
+    })
+    .catch(reject);
   });
   return p;
 };
 
 //  Remove the first/playing song.
-const addSong = (song) => {
+const addSong = (song, roomid) => {
   // console.log('$$$$SONGfQ', song);
   const songToAdd = {
     title: song.title,
@@ -100,89 +130,120 @@ const addSong = (song) => {
     artwork_url: song.artwork_url,
   };
   const p = new Promise((resolve, reject) => {
-    if (songQueue === undefined) {
-      reject('song queue is undefined');
-    }
-    if (songQueue.length > 0) {
-      if (songQueue[songQueue.length - 1].id === songToAdd.id) {
-        reject('the same song cannot be added one after another');
-      } else {
-        songQueue.push(songToAdd);
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (user.queue === undefined) {
+        reject('song queue is undefined');
       }
-    } else {
-      songQueue.push(songToAdd);
-    }
-    resolve();
+      if (user.queue.length > 0) {
+        if (user.queue[user.queue.length - 1].id === songToAdd.id) {
+          reject('the same song cannot be added one after another');
+        } else {
+          user.queue.push(songToAdd);
+        }
+      } else {
+        user.queue.push(songToAdd);
+      }
+      user.save()
+      .then(resolve)
+      .catch(reject);
+    })
+    .catch(reject);
   });
   return p;
 };
 
-const upvote = (songIndexId) => {
+const upvote = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-    const songInQueue = songQueue[songIndexId];
-    if (songInQueue === undefined) {
-      reject('attempt to uprank song that doesn\'t exist');
-    } else {
-      songInQueue.upvotes++;
-      songInQueue.rankingChange++;
-      reRankSongs(songIndexId);
-      resolve();
-    }
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (user.queue[songIndexId] === undefined) {
+        console.log('songindexid:', songIndexId, 'user.queue', user.queue);
+        reject('attempt to uprank song that doesn\'t exist');
+      } else {
+        user.queue[songIndexId].upvotes++;
+        user.queue[songIndexId].rankingChange++;
+        user.queue = reRankSongs(songIndexId, user.queue);
+        // necessary for marking array change
+        user.markModified('queue');
+        user.save().then(resolve).catch(reject);
+      }
+    })
+    .catch(reject);
   });
   return p;
 };
 
-const downvote = (songIndexId) => {
+const downvote = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-    const songInQueue = songQueue[songIndexId];
-    if (songInQueue === undefined) {
-      reject('attempt to uprank song that doesn\'t exist');
-    } else {
-      songInQueue.downvotes++;
-      songInQueue.rankingChange--;
-      reRankSongs(songIndexId);
-      resolve();
-    }
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (user.queue[songIndexId] === undefined) {
+        reject('attempt to uprank song that doesn\'t exist');
+      } else {
+        user.queue[songIndexId].downvotes++;
+        user.queue[songIndexId].rankingChange--;
+        user.queue = reRankSongs(songIndexId, user.queue);
+        // necessary for marking array change
+        user.markModified('queue');
+        user.save().then(resolve).catch(reject);
+      }
+    })
+    .catch(reject);
   });
   return p;
 };
 
-const moveup = (songIndexId) => {
+const moveup = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-    if (songIndexId < 0 || songIndexId >= songQueue.length) {
-      reject('attempt to remove song that doesn\'t exist');
-    } else if (songIndexId <= 1) {
-      reject('can\'t move song in play');
-    } else {
-      swapSongs(songIndexId, songIndexId - 1);
-      resolve();
-    }
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (songIndexId < 0 || songIndexId >= user.queue.length) {
+        reject('attempt to move song that doesn\'t exist');
+      } else if (songIndexId <= 1) {
+        reject('can\'t move song in play');
+      } else {
+        user.queue = swapSongs(songIndexId, songIndexId - 1, user.queue);
+        user.save().then(resolve).catch(reject);
+      }
+    })
+    .catch(reject);
   });
   return p;
 };
 
-const movedown = (songIndexId) => {
+const movedown = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-    if (songIndexId < 0 || songIndexId >= songQueue.length) {
-      reject('attempt to remove song that doesn\'t exist');
-    } else if (songIndexId === songQueue.length - 1) {
-      reject('can\'t move last song down');
-    } else {
-      swapSongs(songIndexId, songIndexId + 1);
-      resolve();
-    }
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (songIndexId < 0 || songIndexId >= user.queue.length) {
+        reject('attempt to move song that doesn\'t exist');
+      } else if (songIndexId <= 1) {
+        reject('can\'t move song in play');
+      } else if (songIndexId === user.queue.length - 1) {
+        reject('can\'t move last song down');
+      } else {
+        user.queue = swapSongs(songIndexId, songIndexId + 1, user.queue);
+        user.save().then(resolve).catch(reject);
+      }
+    })
+    .catch(reject);
   });
   return p;
 };
 
-const remove = (songIndexId) => {
+const remove = (songIndexId, roomid) => {
   const p = new Promise((resolve, reject) => {
-    if (songIndexId < 0 || songIndexId >= songQueue.length) {
-      reject('attempt to remove song that doesn\'t exist');
-    } else {
-      songQueue.splice(songIndexId, 1);
-      resolve();
-    }
+    User.findOne({ roomid: roomid }).exec()
+    .then((user) => {
+      if (songIndexId < 0 || songIndexId >= user.queue.length) {
+        reject('attempt to move song that doesn\'t exist');
+      } else {
+        user.queue.splice(songIndexId, 1);
+        user.save().then(resolve).catch(reject);
+      }
+    })
+    .catch(reject);
   });
   return p;
 };
@@ -192,75 +253,106 @@ const remove = (songIndexId) => {
 //
 
 const getSongQueue = (req, res, next) => {
-  res.status(300).json(getQueue());
+  getQueue(req.roomid).then((queue) => res.json(queue))
+  .catch((err) => {
+    console.log('Error ending song: ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
+  });
 };
 
 const firstSongFinished = (req, res, next) => {
   const id = req.body.id;
-  removeFirstSong(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
+
+  removeFirstSong(id, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
     console.log('Error ending song: ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const addSongToQueue = (req, res, next) => {
-  addSong(req.body)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
+  addSong(req.body, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => {
+      res.json(queue);
+    });
+  }).catch((err) => {
     console.log('Error adding song to queue: ', err);
-    res.status(500).json(getQueue());
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const increaseSongRanking = (req, res, next) => {
-  const id = +req.body.index;
-  upvote(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
-    console.log('Error upvoting song id: ', id, ' : ', err);
-    res.status(500).json(getQueue());
+  const idx = +req.body.index;
+
+  upvote(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error upvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const decreaseSongRanking = (req, res, next) => {
-  const id = +req.body.index;
-  downvote(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
-    console.log('Error downvoting song id: ', id, ' : ', err);
-    res.status(500).json(getQueue());
+  const idx = +req.body.index;
+  downvote(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error downvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const moveUpInQueue = (req, res, next) => {
-  const id = +req.body.index;
-  moveup(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
-    console.log('Error downvoting song id: ', id, ' : ', err);
-    res.status(500).json(getQueue());
+  const idx = +req.body.index;
+  moveup(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error downvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const moveDownInQueue = (req, res, next) => {
-  const id = +req.body.index;
-  movedown(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
-    console.log('Error downvoting song id: ', id, ' : ', err);
-    res.status(500).json(getQueue());
+  const idx = +req.body.index;
+  movedown(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error downvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const removeSongFromQueue = (req, res, next) => {
-  const id = +req.body.index;
-  remove(id)
-  .then(() => res.json(getQueue()))
-  .catch((err) => {
-    console.log('Error downvoting song id: ', id, ' : ', err);
-    res.status(500).json(getQueue());
+  const idx = +req.body.index;
+  remove(idx, req.roomid)
+  .then(() => {
+    getQueue(req.roomid).then((queue) => res.json(queue));
+  }).catch((err) => {
+    console.log('Error downvoting song idx: ', idx, ' : ', err);
+    res.status(500);
+    getQueue(req.roomid).then((queue) => res.json(queue))
+    .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
@@ -274,7 +366,6 @@ module.exports = {
   moveup,
   movedown,
   remove,
-  songQueue,
   emptyQueue,
   //  Routes
   firstSongFinished,
