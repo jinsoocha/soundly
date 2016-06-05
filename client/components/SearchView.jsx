@@ -42,7 +42,7 @@ export default class SearchView extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
+        <input autofocus type="text" name="searchInput" ref="searchInput" placeholder="Keyword" required />
       </form>
     );
   }
