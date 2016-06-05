@@ -18,13 +18,3 @@ ReactDOM.render((
   </Route>
 </Router>
 ), app);
-
-
-
-// ReactDOM.render((
-//   <Router history={hashHistory}>
-//     <Route path="/" component={SignupView} >
-//       <Route path="main" component={App} />
-//     </Route>
-//   </Router>
-// ), app);

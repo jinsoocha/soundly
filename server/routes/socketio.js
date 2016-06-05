@@ -1,18 +1,34 @@
 // socketio.js
 
-module.exports = (app, express, http, io) => {
-  //  establish the socket io connection
-  io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
-  });
+const queue = require('./queue.js');
 
-  //  listening to chat message from the client
+
+module.exports = (app, express, http, io) => {
+  let count = 0;
+  let master = true;
+
   io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      console.log('user message =>', msg);
+    count++;
+    console.log(count + "users connected");
+
+    if (master) {
+      socket.emit('master', master);
+      master = false;
+    }
+
+    socket.emit('queue', [queue.songQueue, queue.songQueue[0]]);
+
+    socket.on('update', (data) => {
+      if (data) {
+        socket.broadcast.emit('queue', [queue.songQueue, data]);
+      } else {
+        socket.broadcast.emit('queue', [queue.songQueue]);
+      }
+    });
+
+    socket.on('disconnect', () => {
+      count--;
+      console.log(count + "users remained");
     });
   });
 };
