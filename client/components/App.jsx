@@ -61,7 +61,8 @@ export default class App extends React.Component {
         });
       }.bind(this),
       error: function (xhr, status, err) {
-        window.alert('the same song cannot be added one after another');
+        // window.alert('the same song cannot be added one after another');
+        console.log('the same song cannot be added one after another');
       }.bind(this),
     });
   }

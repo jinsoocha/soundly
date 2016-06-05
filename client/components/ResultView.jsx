@@ -12,11 +12,11 @@ export default class ResultView extends React.Component {
 
   render() {
     const { tracks, keyword } = this.props;
-    
+    const searchResult = keyword ? <div className="searchKeyword"><span className="searchSpan">Search results for</span> "{ keyword }"</div> : '';
     return (
       <div>
         <div className="searchResult">
-          <div className="searchKeyword"><span "searchSpan">Search results for</span> "{ keyword }"</div>
+          {searchResult}
   				{tracks.map((track) =>
             <ResultEntryView
               key={track.id}

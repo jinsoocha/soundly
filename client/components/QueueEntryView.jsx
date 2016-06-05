@@ -16,8 +16,8 @@ const QueueEntryView = (props) => {
         <div className="queueTitle">{song.title}</div>
         <div className="queueDuration">{minutes}:{seconds > 9 ? seconds : "0" + seconds}</div>
         <div className="voting">
-          <div onClick={props.upVote.bind(this, song, props.index)} className="upvote"><img src={upvoteArt} alt="Upvote"/> {song.upvotes}</div>
-          <div onClick={props.downVote.bind(this, song, props.index)} className="downvote"><img src=downvoteArt alt="Downvote"/> {song.downvotes}</div>
+          <div onClick={props.upVote.bind(this, song, props.index)} className="upvote"><img src={upvoteArt} alt="Upvote"/> <span className="voteNum">{song.upvotes}</span></div>
+          <div onClick={props.downVote.bind(this, song, props.index)} className="downvote"><img src={downvoteArt} alt="Downvote"/> <span className="voteNum">{song.downvotes}</span></div>
         </div>
       </div>
     </div>

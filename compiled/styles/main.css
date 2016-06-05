@@ -7,64 +7,76 @@
 SEARCH
 */
 .searchBox {
-  background: #333;
+  background: #E6E6E6;
+  padding: 10px 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   text-align: center;
+  z-index: 10;
 }
 .searchInput {
-  background: #BDE6C9;
+  transition: all 0.15s ease-in-out;
+  background: #f5f5f5;
   padding: 0 0 0 10px;
   font-size: 20px;
-  width: 70%;
+  width: 45%;
   height: 45px;
-  border: none;
+  border: 3px solid transparent;
   outline: none;
+  border-radius: 3px;
+  position: relative;
 }
-.searchButton {
-  margin-left: -70px;
-  padding: 0;
-  background: #4AE6A2;
-  font-size: 20px;
-  border: none;
-  outline: none;
-  cursor: pointer;
+.searchInput:focus {
+  border: 3px solid #636376;
+}
+/*.searchInput:not(:hover) {
+  border: 3px solid transparent;
+}*/
+.searchLogo {
+  position: absolute;
+  top: 23px;
+  margin: 0 0 0 -40px;
 }
 /*
 RESULT
 */
 .searchResult {
   padding: 10px;
-  margin: 60px 0 70px 0;
+  margin: 80px 0 70px 0;
   width: 30%;
   float: left;
-  background-color: #D5E654;
-}
-.searchSpan {
-
 }
 .searchKeyword {
-  font-size: 18px;
-  background: #9CA5D7;
+  font-size: 14px;
   display: block;
   margin: 0 10px 0 8px;
   padding: 3px 0;
   border-bottom: 1px solid lightgrey;
 }
 .resultEntry {
+  position: relative;
   display: inline-block;
-  border: 1px solid lightgrey;
-  padding: 10px;
+  border-radius: 3px;
   width: 40%;
   height: 30px;
   margin: 8px;
   overflow: hidden;
   cursor: pointer;
+  padding: 10px 0 10px 10px;
+  opacity: 0.8;
+  border: 2px solid transparent;
+  transition: all 0.1s ease-in-out;
+}
+.resultEntry:hover {
+  border-left: 2px solid #63B3CF;
+  background: #F5F5F5;
+  opacity: 1;
 }
 .resultImg {
   width: 30px;
+  border-radius: 3px;
   display: inline-block;
 }
 .resultDetails {
@@ -86,74 +98,110 @@ RESULT
 PLAYER
 */
 .playerBox {
+  background: #333;
+  font-color: #E6E6E6;
   position: fixed;
-  background: #35E63D;
   right: 0;
   left: 0;
   bottom: 0;
-  width: 100%;
+  width: 100%
 }
-.currentSongTitle {
-  font-size: 30px;
+.playerBox img {
+  width: 20px;
+}
+.songPlaying {
+  color: #F7F7F7;
+  font-size: 25px;
   text-align: right;
   padding: 10px;
+  margin: 0 15px 0 0;
+}
+.nowPlaying {
+  color: #CCFF66;
+  display: block;
+  font-size: 12px;
+  margin: 0 3px 3px 0;
 }
 /*
 QUEUE
 */
 .queueBox {
-  margin: 60px 0 70px 0;
+  margin: 80px 0 70px 0;
   width: 66%;
-  background-color: #A09FE6;
   float: right;
 }
 .queueEntry {
-  border: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
   padding: 10px;
   height: 150px;
   width: 90%;
   margin: 15px auto;
   overflow: hidden;
+  transition: transform 0.7s;
+}
+.queueEntry:hover {
+  border-bottom: 1px solid #63B3CF;
+  transform: translate(-30px, 0);
 }
 .queueImg {
   width: 150px;
+  border-radius: 3px;
   display: inline-block;
+  /*transition: all 1.5s ease-in-out;*/
+}
+.queueImg:hover {
+  /*transform: rotate(1080deg);*/
+  /*opacity: 0.5;*/
 }
 .queueDetails {
+  border-radius: 3px;
+  position: relative;
   width: 75%;
   height: 150px;
   margin: 0 0 0 10px;
-  display: inline-block;
   vertical-align: top;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  display: inline-block;
 }
 .queueTitle {
-  font-size: 20px;
+  font-size: 18px;
+  text-align: right;
+  display: block;
 }
 .queueDuration {
   font-size: 12px;
-  display: inline-block;
-  vertical-align: bottom;
+  display: block;
+  float: right;
+  margin: 5px 0 0 0;
 }
 .voting {
-  float: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   cursor: pointer;
 }
-.upvote {
-  background: #E63333;
+.upvote, .downvote {
   padding: 5px;
-  margin: 5px 0;
-}
-.upvote img {
-  width: 12px;
-  padding: 4px 0 0 0;
+  margin: 4px 5px 0 0;
+  width: 45px;
+  float: left;
+  background: #2E80EC;
+  border-radius: 2px;
+  opacity: 0.6;
 }
 .downvote {
-  background: #CED1D7;
-  padding: 5px;
-  margin: 5px 0;
+  background: #EDEFFD;
 }
-.downvote img {
+.upvote:hover, .downvote:hover {
+  opacity: 1;
+}
+.upvote img, .downvote img {
+  margin: 4px 0 0 5px;
   width: 12px;
+  opacity: 1;
+}
+.voteNum {
+  font-size: 10px;
+  margin: 0 0 0 5px;
 }

@@ -65,10 +65,13 @@ export default class PlayerView extends React.Component {
     });
   }
 
-  render() {    
+  render() {
+    const { title } = this.state.currentSong;
+    const currentSong = title ? <div><span className="nowPlaying">Now playing</span><span className="playingTitle">{title}</span></div> : '';
+
     return (
       <div className="playerBox">
-        <div className="currentSongTitle">{this.state.currentSong.title}</div>
+        <div className="songPlaying">{currentSong}</div>
       </div>
     );
   }

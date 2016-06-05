@@ -39,12 +39,13 @@ export default class SearchView extends React.Component {
       }.bind(this),
     });
   }
-
+  // <button type="submit" className="searchButton">Search</button>
   render() {
+    const searchLogo = '/styles/imgs/searchLogo.svg';
     return (
       <form onSubmit={this.handleSubmit.bind(this)} className="searchBox">
-        <input type="text" name="searchInput" ref="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" required />
-        <button type="submit" className="searchButton">Search</button>
+        <input type="text" ref="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" required />
+        <input type="image" src= {searchLogo} className="searchLogo" />
       </form>
     );
   }
