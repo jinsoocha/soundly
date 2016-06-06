@@ -14,7 +14,7 @@ const app = document.getElementById('app');
 render((
   <Router history={browserHistory}>
     <Route path="/" component={App} />
-    <Route path="signup" name="signup" component={SignupView} />
-    <Route path="signin" name="signup" component={SigninView} />
+    <Route path="/signup" name="signup" component={SignupView} />
+    <Route path="/signin" name="signup" component={SigninView} />
   </Router>
 ), app);

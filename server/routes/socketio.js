@@ -17,9 +17,9 @@ module.exports = (app, express, http, io) => {
     }
     queue.getQueue('00000').then((updated) => {
       if (updated.length > 0) {
-        socket.broadcast.emit('queue', [updated, updated[0]]);
+        socket.emit('queue', [updated, updated[0]]);
       } else {
-        socket.broadcast.emit('queue', [updated]);
+        socket.emit('queue', [updated]);
       }
     });
 
