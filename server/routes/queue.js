@@ -263,7 +263,7 @@ const getSongQueue = (req, res, next) => {
 };
 
 const firstSongFinished = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.song.id;
 
   removeFirstSong(id, req.body.roomid)
   .then(() => {
