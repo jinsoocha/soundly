@@ -21,9 +21,11 @@ export default class SignupView extends React.Component {
   }
 
   handleSuccess(result) {
-    console.log('result', result);
+    console.log('result', result.token);
     browserHistory.push('/');
     // programmatically add the room param to the root
+    // add auth
+    window.sessionStorage.accessToken = result.token;
   }
 
   sendFormData(callback) {
