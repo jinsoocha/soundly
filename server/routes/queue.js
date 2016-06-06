@@ -50,12 +50,14 @@ const reRankSongs = (songIndexId) => {
     }
   }
   if (song.rankingChange < 0 && Math.abs(song.rankingChange) >= rankingChangeThreshold) {
-    if (songIndexId !== (songQueue.length - 1)) {
-      const lowerSong = songQueue[songIndexId + 1];
-      // console.log('moving down: ', songIndexId);
-      if (song.rankingChange < lowerSong.rankingChange) {
-        song.rankingChange = song.rankingChange + rankingChangeThreshold;
-        swapSongs(songIndexId, songIndexId + 1);
+    if (songIndexId >= 1) {
+      if (songIndexId !== (songQueue.length - 1)) {
+        const lowerSong = songQueue[songIndexId + 1];
+        // console.log('moving down: ', songIndexId);
+        if (song.rankingChange < lowerSong.rankingChange) {
+          song.rankingChange = song.rankingChange + rankingChangeThreshold;
+          swapSongs(songIndexId, songIndexId + 1);
+        }
       }
     }
   }

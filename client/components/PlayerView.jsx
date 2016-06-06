@@ -7,55 +7,37 @@ SC.initialize({
 });
 
 export default class PlayerView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentSong: '',
-      currentPlayer: undefined,
-    };
-  }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.queue.length > 0) {
-      if (this.state.currentSong !== '') {
-        console.log("hello",nextProps.queue[0].id,this.state.currentSong.id) 
-        if (nextProps.queue[0].id !== this.state.currentSong.id) {
-          this.setState({
-            currentSong: nextProps.queue[0],
-          });
+    console.log("thisprops",this.props.currentSong, "nextprops",nextProps.currentSong, nextProps.queue);
+    if (nextProps.currentSong) {
+      if (this.props.currentSong) {
+        if (this.props.currentSong.id !== nextProps.currentSong.id) {
           if (this.props.master) {
-            this.streamTrack(nextProps.queue[0]);
+            this.streamTrack(nextProps.currentSong);
           }
         }
       } else {
-        this.setState({
-          currentSong: nextProps.queue[0],
-        });
         if (this.props.master) {
-          this.streamTrack(nextProps.queue[0]);
+          this.streamTrack(nextProps.currentSong);
         }
       }
-    } else {
-      this.setState({
-        currentSong: '',
-      });
     }
   }
 
   streamTrack(track) {
-    console.log("streaming track", track, "statecurrentsong",this.state.currentSong);
     return SC.stream('/tracks/' + track.id)
     .then(player => {
-      let context = this;
-      if (this.state.currentPlayer) {
-        this.state.currentPlayer.pause();
+      let currentPlayer;
+      if (currentPlayer) {
+        currentPlayer.pause();
       }
-      this.state.currentPlayer = player;
-      this.state.currentPlayer.play();
-      this.state.currentPlayer.on('play-start', () => {
+      currentPlayer = player;
+      currentPlayer.play();
+      currentPlayer.on('play-start', () => {
         console.log('playing');
       });
-      this.state.currentPlayer.on('finish', () => {
+      currentPlayer.on('finish', () => {
         console.log('finished');
         this.props.changeSong(track);
       });
@@ -66,7 +48,7 @@ export default class PlayerView extends React.Component {
   }
 
   render() {
-    const { title } = this.state.currentSong;
+    const { title } = this.props.currentSong;
     const currentSong = title ? <div><span className="nowPlaying">Now playing</span><span className="playingTitle">{title}</span></div> : '';
 
     return (

@@ -8,6 +8,8 @@ const QueueEntryView = (props) => {
   const defaultArt = '/styles/imgs/defaultart.png';
   const upvoteArt = '/styles/imgs/upvote.png';
   const downvoteArt = '/styles/imgs/downvote.png';
+  const handleUpvote = () => props.upVote(song, props.index);
+  const handleDownvote = () => props.downVote(song, props.index);
 
   return (
     <div className="queueEntry">
@@ -16,8 +18,8 @@ const QueueEntryView = (props) => {
         <div className="queueTitle">{song.title}</div>
         <div className="queueDuration">{minutes}:{seconds > 9 ? seconds : "0" + seconds}</div>
         <div className="voting">
-          <div onClick={props.upVote.bind(this, song, props.index)} className="upvote"><img src={upvoteArt} alt="Upvote"/> <span className="voteNum">{song.upvotes}</span></div>
-          <div onClick={props.downVote.bind(this, song, props.index)} className="downvote"><img src={downvoteArt} alt="Downvote"/> <span className="voteNum">{song.downvotes}</span></div>
+          <div onClick={handleUpvote} className="upvote"><img src={upvoteArt} alt="Upvote"/> <span className="voteNum">{song.upvotes}</span></div>
+          <div onClick={handleDownvote} className="downvote"><img src={downvoteArt} alt="Downvote"/> <span className="voteNum">{song.downvotes}</span></div>
         </div>
       </div>
     </div>

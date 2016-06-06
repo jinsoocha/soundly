@@ -1,28 +1,23 @@
 import React from 'react';
 
-export default class ResultEntryView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  handleClick(e) {
+const ResultEntryView = (props) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    this.props.clickSong(this.props.track);
-  }
+    props.clickSong(props.track);
+  };
+  const { track } = props;
+  const defaultArt = '/styles/imgs/defaultart.png';
 
-  render() {
-    const { track } = this.props;
-    const defaultArt = "/styles/imgs/defaultart.png"
-
-    return (
-      <div onClick={this.handleClick.bind(this)} className="resultEntry">
-        <div className="border">
-          <img src={track.artwork_url || defaultArt} alt="artwork" className="resultImg"/>
-          <div className="resultDetails">
-            <div className="resultTitle">{track.title}</div>
-          </div>
+  return (
+    <div onClick={handleClick} className="resultEntry">
+      <div className="border">
+        <img src={track.artwork_url || defaultArt} alt="artwork" className="resultImg" />
+        <div className="resultDetails">
+          <div className="resultTitle">{track.title}</div>
         </div>
       </div>
-		);
-  }
-}
+    </div>
+	);
+};
+
+export default ResultEntryView;
