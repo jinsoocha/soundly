@@ -7,10 +7,21 @@ const mongoose = require('mongoose');
 
 
 const authenticate = (req, res, next) => {
-  if (req.body.user && req.body.roomid) {
-    req.username = req.body.user.username;
-    req.roomid = req.body.roomid;
-    return next();
+  // const roomid = req.roomid;
+  if (req.body.user && req.body.token) {
+    const token = req.body.token;
+
+    jwt.verify(token, 'TODO:SECRET', (err, decoded) => {
+      if (err) {
+        req.isAuthenticated = false;
+        return next();
+      }
+      // if everything is good, save to request for use in other routes
+      req.isAuthenticated = true;
+      req.username = decoded.username;
+
+      return next();
+    });
   } else {
     //  create a dummy room to always return until the front end can
     //  start passing in a existing user.
@@ -40,7 +51,7 @@ const authenticate = (req, res, next) => {
 
 
 const generateToken = (username) => {
-  const token = jwt.sign({ username }, 'TODO:SECRET', {
+  const token = jwt.sign({ username: username }, 'TODO:SECRET', {
     expiresIn: 60 * 60 * 12,
   });
   //  console.log(token);
