@@ -9,25 +9,33 @@ module.exports = (app, express, http, io) => {
 
   io.on('connection', (socket) => {
     count++;
-    console.log(count + "users connected");
+    console.log(count, 'users connected');
 
     if (master) {
       socket.emit('master', master);
       master = false;
     }
-    socket.emit('queue', [queue.songQueue, queue.songQueue[0]]);
+    queue.getQueue('00000').then((updated) => {
+      if (updated.length > 0) {
+        socket.broadcast.emit('queue', [updated, updated[0]]);
+      } else {
+        socket.broadcast.emit('queue', [updated]);
+      }
+    });
 
     socket.on('update', (data) => {
-      if (data) {
-        socket.broadcast.emit('queue', [queue.songQueue, data]);
-      } else {
-        socket.broadcast.emit('queue', [queue.songQueue]);
-      }
+      queue.getQueue('00000').then((updated) => {
+        if (data) {
+          socket.broadcast.emit('queue', [updated, data]);
+        } else {
+          socket.broadcast.emit('queue', [updated]);
+        }
+      });
     });
 
     socket.on('disconnect', () => {
       count--;
-      console.log(count + "users remained");
+      console.log(count, 'users remained');
     });
   });
 };
