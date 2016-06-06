@@ -8,13 +8,17 @@ import App from './components/App';
 import SignupView from './components/SignupView';
 import SigninView from './components/SigninView';
 import HomeView from './components/HomeView';
+import ParentView from './components/ParentView';
 
 
 const app = document.getElementById('app');
 render((
   <Router history={browserHistory}>
-    <Route path="/" component={App} />
-    <Route path="/signup" name="signup" component={SignupView} />
-    <Route path="/signin" name="signin" component={SigninView} />
+    <Route path="/" component={ParentView}>
+      <IndexRoute component={HomeView} />
+      <Route path="signin" component={SigninView} />
+      <Route path="signup" component={SignupView} />
+      <Route path="main/:roomID" component={App} />
+    </Route>
   </Router>
 ), app);

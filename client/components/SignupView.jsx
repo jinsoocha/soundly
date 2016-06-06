@@ -21,8 +21,8 @@ export default class SignupView extends React.Component {
   }
 
   handleSuccess(result) {
-    console.log('result', result);
-    browserHistory.push('/');
+    const roomID = result.user.roomid;
+    browserHistory.push('main/' + roomID);
     // programmatically add the room param to the root
     window.sessionStorage.accessToken = result.token;
     window.sessionStorage.roomid = result.user.roomid;
