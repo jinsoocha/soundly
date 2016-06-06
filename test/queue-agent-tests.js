@@ -4,6 +4,7 @@ const chai = require('chai');
 const chaiAsPromised = require("chai-as-promised");
 const assert = chai.assert;
 const expect = chai.expect;
+const User = require('../server/models/User.js');
 
 //  Get the server.  Works even if not running
 var app = require('../server/server.js');
@@ -21,12 +22,28 @@ describe('GET /songs', function() {
 });
 
 describe('GET /queue returns with a admin queue', function() {
+
+  const roomid = '00001';
+
+  before(function(done) {
+    //  create a user with the roomid;
+    new User({username:'testqueueuser', password:'pw', roomid: roomid, queue: []})
+    .save((err, success) => done(err));
+  });
+
+  after(function(done) {
+    User.remove({ roomid: roomid }).then(() => done());
+  });
+  
+
+
   it('get queue successfully', function(done) {
     request(app)
       .get('/api/queue/getQueue')
       .set('Accept', 'application/json')
       // .expect('Content-Type', /json/)
       // .expect(200)
+      .send({roomid: roomid})
       .end(function(err, res) {
         if (err) return done(err);
         done();
@@ -43,7 +60,7 @@ describe('GET /queue returns with a admin queue', function() {
     };
     request(app)
       .post('/api/queue/addSong')
-      .send(song0)
+      .send({song: song0, roomid: roomid})
       .expect(200)
       //.expect("marcus is stored", done);
       .end(function(err, res) {
@@ -63,12 +80,12 @@ describe('GET /queue returns with a admin queue', function() {
     };
     request(app)
       .post('/api/queue/addSong')
-      .send(song1)
+      .send({song: song1, roomid: roomid})
       .expect(200)
       .end(function(err, res) {
         request(app)
           .post('/api/queue/increaseRank')
-          .send({'index':'0'})
+          .send({'index':'0', roomid: roomid})
           .expect(200)
           //.expect("marcus is stored", done);
           .end(function(err, res) {
