@@ -15,14 +15,14 @@ module.exports = (app, express, http, io) => {
       socket.emit('master', master);
       master = false;
     }
-    socket.emit('queue', [queue.songQueue, queue.songQueue[0]]);
+    queue.getQueue('00000').then((updated) => {
+      socket.emit('queue', updated);
+    });
 
     socket.on('update', (data) => {
-      if (data) {
-        socket.broadcast.emit('queue', [queue.songQueue, data]);
-      } else {
-        socket.broadcast.emit('queue', [queue.songQueue]);
-      }
+      queue.getQueue('00000').then((updated) => {
+        socket.broadcast.emit('queue', updated);
+      });
     });
 
     socket.on('disconnect', () => {
