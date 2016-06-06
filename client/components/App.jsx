@@ -63,9 +63,7 @@ export default class App extends React.Component {
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
     const data = {};
-    if (window.sessionStorage.roomid) {
-      data.roomid = window.sessionStorage.roomid;
-    }
+    data.roomid = window.location.pathname.split('/')[2];
     data.song = song;
     console.log('clicked');
     $.ajax({
@@ -132,9 +130,7 @@ export default class App extends React.Component {
 
   handleChangeSong(song) {
     const data = {};
-    if (window.sessionStorage.roomid) {
-      data.roomid = window.sessionStorage.roomid;
-    }
+    data.roomid = window.location.pathname.split('/')[2];
     data.song = song;
     $.ajax({
       url: 'api/queue/songFinished',
@@ -164,7 +160,7 @@ export default class App extends React.Component {
     $.ajax({
       type: 'POST',
       url: '/api/queue/increaseRank',
-      data: { index: i, roomid: window.sessionStorage.roomid },
+      data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
         socket.emit('update');
         const tempQueue = result;
@@ -184,7 +180,7 @@ export default class App extends React.Component {
     $.ajax({
       type: 'POST',
       url: '/api/queue/decreaseRank',
-      data: { index: i, roomid: window.sessionStorage.roomid },
+      data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
         socket.emit('update');
         const tempQueue = result;
