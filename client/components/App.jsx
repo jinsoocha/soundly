@@ -5,6 +5,7 @@ import QueueView from './QueueView';
 import PlayerView from './PlayerView';
 import SignupView from './SignupView';
 import $ from 'jquery';
+import { Link } from 'react-router';
 
 const socket = io();
 
@@ -105,6 +106,7 @@ export default class App extends React.Component {
         });
       }.bind(this),
       error: function (xhr, status, err) {
+        console.error('error here');
         console.error(status, err.toString());
       }.bind(this),
     });
@@ -176,6 +178,10 @@ export default class App extends React.Component {
       <div>
         <h1>AppView</h1>
         <div>
+          <ul class="navbar">
+            <li><button><Link to="signin">Signin</Link></button></li>
+            <li><button><Link to="signup">Signup</Link></button></li>
+          </ul>
           <SearchView
             handleSubmit={this.handleSubmit.bind(this)}
           />
@@ -198,9 +204,6 @@ export default class App extends React.Component {
             changeSong={this.handleChangeSong.bind(this)}
             queue={this.state.queue}
           />
-        </div>
-        <div>
-          {this.props.children}
         </div>
       </div>
     );

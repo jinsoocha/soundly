@@ -5,25 +5,28 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import App from './App';
 
 
 export default class SignupView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      type: 'info',
-      message: '',
-    };
   }
 
   handleSignup(e) {
     e.preventDefault();
-    this.setState({ type: 'info', message: 'Sending...' }, this.sendFormData);
+    this.sendFormData(this.handleSuccess);
   }
 
-  sendFormData() {
+  handleSuccess(result) {
+    console.log('result', result);
+    browserHistory.push('/');
+    // programmatically add the room param to the root
+  }
+
+  sendFormData(callback) {
     const formData = {
       username: this.refs.username.value,
       password: this.refs.password.value,
@@ -35,12 +38,10 @@ export default class SignupView extends React.Component {
       type: 'POST',
       data: formData,
       success: function(result) {
-        console.log('result', result);
-        Router.replace('/main');
+        callback(result);
       },
       error: function(xhr, status, err) {
         console.error(status, err.toString());
-        this.setState({ type: 'info', message: err.toString() });
       },
     });
   }
@@ -49,7 +50,6 @@ export default class SignupView extends React.Component {
     return (
       <div>
         <h1 id="heading">Signup!</h1>
-        <h2>{this.state.message}</h2>
         <form onSubmit={this.handleSignup.bind(this)}>
           <div className="form-group">
             <label htmlFor="username">Select a username</label>
@@ -60,7 +60,7 @@ export default class SignupView extends React.Component {
             <input className="form-control" name="password" ref="password" required type="text"/>
           </div>
           <div className="form-group">
-            <button>submit</button>
+          <button>submit</button>
           </div>
         </form>
       </div>

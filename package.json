@@ -2,12 +2,12 @@
   "name": "soundly",
   "version": "0.0.1",
   "description": "Changing the way you view and share music.",
-  "main": "app.js",
+  "main": "webpack.config.js",
   "scripts": {
-    "test": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=bower_components,node_modules,compiled,server,client/config/config.js,mockup,start --source-maps inline",
-    "start": "./start & nodemon ./server/server.js",
-    "run-tests": "./node_modules/mocha/bin/mocha",
-    "hola": "cd ./compiled && webpack"
+    "test": "./node_modules/mocha/bin/mocha",
+    "start": "npm run build",
+      "server": "nodemon server.bundle.js",
+      "build": "cd ./compiled && webpack"
   },
   "repository": {
     "type": "git",
@@ -51,6 +51,7 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.1.1",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
   }
 }
