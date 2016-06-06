@@ -26,12 +26,12 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    console.log("initialmount")
+    console.log('initialmount');
     const context = this;
 
     socket.on('connect', () => {
       socket.on('master', (data) => {
-        console.log("i am a master",data)
+        console.log('i am a master', data);
         context.setState({
           master: data,
         });
@@ -61,7 +61,7 @@ export default class App extends React.Component {
 
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
-    console.log("clicked");
+    console.log('clicked');
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
@@ -218,6 +218,6 @@ export default class App extends React.Component {
           />
         </div>
       </div>
-		);
+    );
   }
 }
