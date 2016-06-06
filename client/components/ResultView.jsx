@@ -5,17 +5,24 @@
 import React from 'react';
 import ResultEntryView from './ResultEntryView';
 
+
 const ResultView = (props) => {
-  const tracks = props.result;
+  const { tracks, keyword, clickSong } = props;
+  const searchResult = keyword ? <div className="searchKeyword"><span className="searchSpan">Search results for</span> "{ keyword }"</div> : '';
   return (
     <div>
-			{tracks.map((track) =>
-        <ResultEntryView
-          key={track.id}
-          track={track}
-          clickSong={props.clickSong}
-        />
-			)}
+      <div className="songAdded">Song is added to the queue</div>
+      <div className="notAdded">Song is already in the queue</div>
+      <div className="resultBox">
+        {searchResult}
+				{tracks.map((track) =>
+          <ResultEntryView
+            key={track.id}
+            track={track}
+            clickSong={clickSong}
+          />
+        )}
+      </div>
     </div>
 	);
 };

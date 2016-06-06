@@ -5,10 +5,17 @@ const ResultEntryView = (props) => {
     e.preventDefault();
     props.clickSong(props.track);
   };
+  const { track } = props;
+  const defaultArt = '/styles/imgs/defaultart.png';
 
   return (
-    <div onClick={handleClick}>
-			{props.track.title} {props.track.duration / 1000}
+    <div onClick={handleClick} className="resultEntry">
+      <div className="border">
+        <img src={track.artwork_url || defaultArt} alt="artwork" className="resultImg" />
+        <div className="resultDetails">
+          <div className="resultTitle">{track.title}</div>
+        </div>
+      </div>
     </div>
 	);
 };

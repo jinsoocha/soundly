@@ -1,5 +1,6 @@
 import React from 'react';
 import SC from 'soundcloud';
+import config from '../config/config';
 
 SC.initialize({
   client_id: window.SCId,
@@ -46,13 +47,16 @@ export default class PlayerView extends React.Component {
     });
   }
 
-
   render() {
-    const title = this.props.currentSong.title;
+    const { title } = this.props.currentSong;
+    const currentSong = title ? <div><span className="nowPlaying">Now playing</span><span className="playingTitle">{title}</span></div> : '';
+
     return (
       <div>
-        <h1>PLAYER</h1>
-        <div>{title}</div>
+        <div className="playerBox">
+          <div className="songPlaying">{currentSong}</div>
+        </div>
+        <div className="footer"></div>
       </div>
     );
   }

@@ -10,12 +10,18 @@ const socket = io();
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.handleUpVote = this.handleUpVote.bind(this);
+    this.handleDownVote = this.handleDownVote.bind(this);
+    this.onClickSong = this.onClickSong.bind(this);
+    this.handleChangeSong = this.handleChangeSong.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       socket: socket,
       master: false,
       searchResult: [],
       queue: [],
       currentSong: '',
+      keyword: '',
     };
   }
 
@@ -74,9 +80,12 @@ export default class App extends React.Component {
             queue: result,
           });
         }
+        // displaying a "song is added" message
+        $('.songAdded').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
-        window.alert('the same song cannot be added one after another');
+        // displaying a "song is not added" message;
+        $('.notAdded').fadeToggle(500).fadeToggle(500);
       }.bind(this),
     });
   }
@@ -92,7 +101,9 @@ export default class App extends React.Component {
   }
 
   handleSubmit(keyword) {
-    const obj = { keyword: keyword };
+    this.setState({ keyword });
+    const obj = { keyword };
+    // const obj = { keyword: keyword };
     $.ajax({
       url: 'http://localhost:4568/server',
       contentType: 'application/x-www-form-urlencoded',
@@ -102,8 +113,12 @@ export default class App extends React.Component {
         this.setState({
           searchResult: result.data,
         });
+        // displaying a "song is added" message
+        $('.songAdded').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
+        // displaying a "song is not added" message;
+        $('.notAdded').fadeToggle(500).fadeToggle(500);
         console.error(status, err.toString());
       }.bind(this),
     });
@@ -145,6 +160,8 @@ export default class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
+        // upvote click animation
+        $('.upvoteMsg').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(status, err.toString());
@@ -163,6 +180,8 @@ export default class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
+        // downvote click animation
+        $('.downvoteMsg').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(status, err.toString());
@@ -173,28 +192,28 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>AppView</h1>
         <div>
           <SearchView
-            handleSubmit={this.handleSubmit.bind(this)}
+            handleSubmit={this.handleSubmit}
           />
           <ResultView
-            result={this.state.searchResult}
-            clickSong={this.onClickSong.bind(this)}
+            tracks={this.state.searchResult}
+            clickSong={this.onClickSong}
+            keyword={this.state.keyword}
           />
         </div>
         <div>
           <QueueView
             queue={this.state.queue}
-            upVote={this.handleUpVote.bind(this)}
-            downVote={this.handleDownVote.bind(this)}
+            upVote={this.handleUpVote}
+            downVote={this.handleDownVote}
           />
         </div>
         <div>
           <PlayerView
             currentSong={this.state.currentSong}
             master={this.state.master}
-            changeSong={this.handleChangeSong.bind(this)}
+            changeSong={this.handleChangeSong}
             queue={this.state.queue}
           />
         </div>

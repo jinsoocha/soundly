@@ -6,10 +6,11 @@ const SearchView = (props) => {
     e.preventDefault();
     props.handleSubmit(document.getElementById("searchInput").value);
   };
-
+  const searchLogo = '/styles/imgs/searchLogo.svg';
   return (
-    <form onSubmit={handleSubmit}>
-      <input autofocus type="text" name="searchInput" id="searchInput" placeholder="Keyword" required />
+    <form onSubmit={handleSubmit} className="searchBox">
+      <input type="text" id="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" required />
+      <input type="image" src={searchLogo} className="searchLogo" />
     </form>
   );
 };

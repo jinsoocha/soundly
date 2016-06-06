@@ -24,7 +24,7 @@ module.exports.get = (req, res) => {
   data = req.body;
   SC.get('/tracks', {
     q: req.body.keyword,
-    limit: 50,
+    limit: 100,
     streamable: true,
   }, (error, tracks) => {
     if (error) {
