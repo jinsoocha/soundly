@@ -15,7 +15,6 @@ module.exports = (app, express, http, io) => {
       socket.emit('master', master);
       master = false;
     }
-
     socket.emit('queue', [queue.songQueue, queue.songQueue[0]]);
 
     socket.on('update', (data) => {
