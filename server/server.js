@@ -10,6 +10,16 @@ const path = require('path');
 app.use(express.static(path.resolve(__dirname + '/../compiled')));
 app.use(express.static(path.resolve(__dirname + '/../node_modules')));
 
+app.get('/signin', (req, res) => {
+  // and drop 'public' in the middle of here
+  res.sendFile(path.join(__dirname, '/../compiled', 'index.html'));
+});
+
+app.get('/signup', (req, res) => {
+  // and drop 'public' in the middle of here
+  res.sendFile(path.join(__dirname, '/../compiled', 'index.html'));
+});
+
 require('./routes/middleware.js')(app, express);
 
 require('./routes/routes.js')(app, express);
