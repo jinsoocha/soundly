@@ -103,7 +103,6 @@ export default class App extends React.Component {
   handleSubmit(keyword) {
     this.setState({ keyword });
     const obj = { keyword };
-    // const obj = { keyword: keyword };
     $.ajax({
       url: 'http://localhost:4568/server',
       contentType: 'application/x-www-form-urlencoded',

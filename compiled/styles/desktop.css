@@ -1,0 +1,249 @@
+/****************/
+/* DESKTOP ONLY */
+/****************/
+@media all and (min-width:1100px) {
+    #app {
+      width: 90%;
+      margin: 0 auto;
+      font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda,Verdana, Tahoma,sans-serif;
+    }
+    .songAdded, .notAdded {
+      z-index: 15;
+      position: fixed;
+      display: none;
+      top: 28px;
+      left: 125px;
+    }
+    .upvoteMsg, .downvoteMsg {
+      z-index: 15;
+      position: fixed;
+      /*top: 80px;*/
+      top: 11px;
+      display: none;
+      right: 40px;
+      margin: 4px 0 0 5px;
+      width: 40px;
+    }
+    /*
+    SEARCH
+    */
+    .searchBox {
+      background: #E6E6E6;
+      background: -moz-linear-gradient(top, #E6E6E6, transparent);
+      background: -o-linear-gradient(top, #E6E6E6, transparent);
+      background: linear-gradient(top, #E6E6E6, transparent);
+
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 10;
+      transition: all 0.5s ease-in-out;
+    }
+    .searchInput {
+      transition: all 0.2s ease-in-out;
+      background: #FAFAFA;
+      padding: 0 0 0 10px;
+      font-size: 20px;
+      width: 45%;
+      height: 45px;
+      border: 3px solid #B3B3B3;
+      outline: none;
+      border-radius: 3px;
+      position: relative;
+    }
+    .searchInput:focus {
+      border: 3px solid #636376;
+      background: #FFFFFF
+    }
+    /*.searchInput:not(:hover) {
+      border: 3px solid transparent;
+    }*/
+    .searchLogo {
+      position: absolute;
+      top: 23px;
+      margin: 0 0 0 -40px;
+    }
+    /*
+    RESULT
+    */
+    .searchKeyword {
+      font-size: 14px;
+      display: block;
+      margin: 0 10px 0 8px;
+      padding: 3px 0;
+      /*text-decoration: underline;*/
+      border-bottom: 1px solid #E6E6E6;
+    }
+    .resultBox {
+      padding: 10px;
+      margin: 80px 0 70px 0;
+      width: 30%;
+      float: left;
+    }
+    .resultEntry {
+      position: relative;
+      display: inline-block;
+      border-radius: 3px;
+      width: 40%;
+      height: 30px;
+      margin: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 10px 0 10px 10px;
+      opacity: 0.8;
+      border: 1px solid transparent;
+      transition: all 0.1s ease-out;
+    }
+    .resultEntry:hover {
+      border: 1px solid #63B3CF;
+      background: #F5F5F5;
+      opacity: 1;
+    }
+    .resultImg {
+      width: 30px;
+      border-radius: 50%;
+      /*border-radius: 3px;*/
+      display: inline-block;
+    }
+    .resultDetails {
+      width: 70%;
+      margin: 0 0 0 10px;
+      display: inline-block;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .resultTitle {
+      font-size: 10px;
+    }
+    .resultDuration {
+      font-size: 7px;
+      display: inline-block;
+    }
+    /*
+    PLAYER
+    */
+    .playerBox {
+      background: #333;
+      font-color: #E6E6E6;
+      position: fixed;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      transition: all 0.5s ease-in-out;
+    }
+    .playerBox:hover {
+      background: #191919;
+      padding: 0 0 10px 0;
+    }
+    .songPlaying {
+      color: #F7F7F7;
+      font-size: 25px;
+      text-align: right;
+      padding: 10px;
+      margin: 0 15px 0 0;
+    }
+    .nowPlaying {
+      color: #CCFF66;
+      display: block;
+      font-size: 12px;
+      margin: 0 3px 3px 0;
+    }
+    /*
+    FOOTER
+    */
+    .footer {
+
+    }
+    /*
+    QUEUE
+    */
+    .queueBox {
+      margin: 80px 0 70px 0;
+      padding: 0 0 0 15px;
+      width: 66%;
+      float: right;
+    }
+    .queueBox:hover {
+      transition: all 1s ease-in-out;
+      border-left: 1px solid #E6E6E6;
+    }
+    .queueEntry {
+      border-bottom: 2px solid #E6E6E6;
+      padding: 10px;
+      height: 150px;
+      width: 90%;
+      margin: 15px auto;
+      overflow: hidden;
+      transition: transform 0.7s;
+    }
+    .queueEntry:hover {
+      border-bottom: 2px solid #63B3CF;
+      transform: translate(-20px, 0);
+    }
+    .queueImg {
+      width: 150px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .queueEntry:hover > .queueImg {
+      transition: all 1s ease;
+      transform: rotate(-360deg);
+    }
+    .queueDetails {
+      border-radius: 3px;
+      position: relative;
+      width: 75%;
+      height: 150px;
+      margin: 0 0 0 10px;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      display: inline-block;
+    }
+    .queueTitle {
+      font-size: 18px;
+      text-align: right;
+      display: block;
+    }
+    .queueDuration {
+      font-size: 12px;
+      display: block;
+      float: right;
+      margin: 5px 0 0 0;
+    }
+    .voting {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      cursor: pointer;
+    }
+    .upvote, .downvote {
+      padding: 5px;
+      margin: 4px 5px 0 0;
+      width: 45px;
+      float: left;
+      background: #2E80EC;
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+    .downvote {
+      background: #E5E5E5;
+    }
+    .upvote:hover, .downvote:hover {
+      opacity: 1;
+    }
+    .upvote img, .downvote img {
+      margin: 4px 0 0 5px;
+      width: 12px;
+      opacity: 1;
+    }
+    .voteNum {
+      font-size: 10px;
+      margin: 0 0 0 5px;
+    }
+}

@@ -1,0 +1,176 @@
+/**************/
+/* MOBILE ONLY*/
+/**************/
+@media not all and (min-width:1100px) {
+    #app {
+      width: 90%;
+      margin: 0 auto;
+      font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda,Verdana, Tahoma,sans-serif;
+    }
+    .songAdded, .notAdded {
+      display: none;
+    }
+    .upvoteMsg, .downvoteMsg {
+      display: none;
+      position: fixed;
+      width: 20px;
+      right: 40px;
+      top: 18px;
+      margin: 4px 0 0 5px;
+      width: 40px;
+    }
+    /*
+    SEARCH
+    */
+    .searchBox {
+      display: none;
+    }
+    .searchInput {
+    }
+    .searchInput:focus {
+    }
+    .searchInput::-webkit-input-placeholder {
+    }
+    .searchLogo {
+    }
+     /*
+    RESULT
+    */
+    .searchKeyword {
+    }
+    .resultBox {
+    }
+    .resultEntry {
+    }
+    .resultEntry:hover {
+    }
+    .resultImg {
+    }
+    .resultDetails {
+    }
+    .resultTitle {
+    }
+    .resultDuration {
+    }
+    .upvote img, .downvote img {
+      display: none;
+    }
+    /*
+    PLAYER
+    */
+    .playerBox {
+      background: #333;
+      font-color: #E6E6E6;
+      position: fixed;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+    }
+    .playerBox:hover {
+    }
+    .songPlaying {
+      color: #F7F7F7;
+      font-size: 14px;
+      text-align: right;
+      padding: 10px;
+      margin: 0 10px 0 0;
+    }
+    .nowPlaying {
+      color: #CCFF66;
+      display: block;
+      font-size: 10px;
+      margin: 0 3px 3px 0;
+    }
+    /*
+    FOOTER
+    */
+    .footer {
+
+    }
+    /*
+    QUEUE
+    */
+    .queueBox {
+      width: 95%;
+      margin: 80px auto;
+      padding: 0 0 0 15px;
+
+    }
+    .queueBox:hover {
+    }
+    .queueEntry {
+      border-bottom: 2px solid #E6E6E6;
+      padding: 10px;
+      height: 85px;
+      width: 90%;
+      margin: 15px auto;
+      overflow: hidden;
+      transition: transform 0.7s;
+    }
+    .queueEntry:hover {
+    }
+    .queueImg {
+      width: 80px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .queueImg:hover {
+      transition: all 1s ease;
+      transform: rotate(-360deg);
+    }
+    .queueEntry:hover > .queueImg {
+    }
+    .queueDetails {
+      border-radius: 3px;
+      position: relative;
+      width: 60%;
+      height: 80px;
+      margin: 0 0 0 10px;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      display: inline-block;
+    }
+    .queueDetails:hover {
+    }
+    .queueTitle {
+      font-size: 12px;
+      text-align: right;
+      display: block;
+    }
+    .queueDuration {
+      font-size: 8px;
+      display: block;
+      float: right;
+      margin: 5px 0 0 0;
+    }
+    .voting {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      cursor: pointer;
+    }
+    .upvote, .downvote {
+      padding: 5px;
+      margin: 4px 0 0 4px;
+      width: 20px;
+      height: 10px;
+      float: left;
+      background: #2E80EC;
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+    .downvote {
+      background: #E5E5E5;
+    }
+    .upvote:hover, .downvote:hover {
+      opacity: 1;
+    }
+    .upvote img, .downvote img {
+    }
+    .voteNum {
+      font-size: 8px;
+      padding: 0 0 0 4px;
+    }
+}
