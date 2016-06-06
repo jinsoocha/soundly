@@ -15,7 +15,9 @@ export default class ResultView extends React.Component {
     const searchResult = keyword ? <div className="searchKeyword"><span className="searchSpan">Search results for</span> "{ keyword }"</div> : '';
     return (
       <div>
-        <div className="searchResult">
+        <div className="songAdded">Song is added to the queue</div>
+        <div className="notAdded">Song is already in the queue</div>
+        <div className="resultBox">
           {searchResult}
   				{tracks.map((track) =>
             <ResultEntryView

@@ -59,10 +59,12 @@ export default class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
+        // displaying a "song is added" message
+        $('.songAdded').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
-        // window.alert('the same song cannot be added one after another');
-        console.log('the same song cannot be added one after another');
+        // displaying a "song is not added" message;
+        $('.notAdded').fadeToggle(500).fadeToggle(500);
       }.bind(this),
     });
   }
@@ -95,6 +97,8 @@ export default class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
+        // upvote click animation
+        $('.upvoteMsg').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(status, err.toString());
@@ -113,6 +117,8 @@ export default class App extends React.Component {
         this.setState({
           queue: tempQueue,
         });
+        // downvote click animation
+        $('.downvoteMsg').fadeToggle(500).fadeToggle(500);
       }.bind(this),
       error: function (xhr, status, err) {
         console.error(status, err.toString());

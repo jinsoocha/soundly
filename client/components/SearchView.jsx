@@ -44,7 +44,7 @@ export default class SearchView extends React.Component {
     const searchLogo = '/styles/imgs/searchLogo.svg';
     return (
       <form onSubmit={this.handleSubmit.bind(this)} className="searchBox">
-        <input type="text" ref="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" required />
+        <input type="text" ref="searchInput" placeholder="Search from artists, bands, tracks, podcasts" className="searchInput" autofocus required />
         <input type="image" src= {searchLogo} className="searchLogo" />
       </form>
     );
