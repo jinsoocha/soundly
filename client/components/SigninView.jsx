@@ -15,11 +15,11 @@ export default class SigninView extends React.Component {
   }
 
   handleSuccess(result) {
-    console.log('result', result);
     const roomID = result.user.roomid;
     browserHistory.push('main/' + roomID);
     // programmatically add the room param to the root
     window.sessionStorage.accessToken = result.token;
+    window.sessionStorage.roomid = result.user.roomid;
   }
 
   sendFormData(callback) {
