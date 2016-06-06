@@ -5,8 +5,53 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
+
+const authenticate = (req, res, next) => {
+  // we check the token here, but it really doesn't do anything with the authentication.
+  if (req.body.user && req.body.token) {
+    const token = req.body.token;
+
+    jwt.verify(token, 'TODO:SECRET', (err, decoded) => {
+      if (err) {
+        req.isAuthenticated = false;
+        return next();
+      }
+      // if everything is good, save to request for use in other routes
+      req.isAuthenticated = true;
+      req.username = decoded.username;
+
+      return next();
+    });
+  }
+    //  create a dummy room to always return until the front end can
+    //  start passing in a existing user.
+    // const adminRoomId = '00000';
+    // User.findOne({ roomid: adminRoomId }, (err, results) => {
+    //   if (results === null) {
+    //     new User({ username: 'admin',
+    //       password: 'no-password',
+    //       roomid: adminRoomId,
+    //       queue: [] })
+    //     .save(() => {
+    //       console.log('creating dummy user');
+    //       req.username = 'admin';
+    //       req.roomid = adminRoomId;
+
+    //       return next();
+    //     });
+    //   } else {
+    //     console.log('found dummy user');
+    //     req.username = 'admin';
+    //     req.roomid = adminRoomId;
+    //     return next();
+    //   }
+    // });
+  return next();
+};
+
+
 const generateToken = (username) => {
-  const token = jwt.sign({ username }, 'TODO:SECRET', {
+  const token = jwt.sign({ username: username }, 'TODO:SECRET', {
     expiresIn: 60 * 60 * 12,
   });
   //  console.log(token);
@@ -68,7 +113,7 @@ const doSignin = (username, password) => {
           }
           const returnUser = {
             username: user.username,
-            roomId: user.roomid,
+            roomid: user.roomid,
           };
 
           resolve(returnUser);
@@ -78,7 +123,7 @@ const doSignin = (username, password) => {
 };
 
 const doSignup = (username, password) => {
-  console.log('signup attempt of username: ', username);
+  //  console.log('signup attempt of username: ', username);
 
   return new Promise((resolve, reject) => {
     User.find({ username: username }, (err, users) => {
@@ -94,7 +139,11 @@ const doSignup = (username, password) => {
           }
           generateRoomId(username)
           .then((uniqueRoomId) => {
-            const makeUser = new User({ username: username, password: hash, roomid: uniqueRoomId });
+            const makeUser = new User({
+              username: username,
+              password: hash,
+              roomid: uniqueRoomId,
+              queue: [] });
             makeUser.save((saveErr, saveResult) => {
               if (saveErr) {
                 return reject(saveErr);
@@ -170,4 +219,5 @@ module.exports = {
   doSignin,
   generateRoomId,
   generateToken,
+  authenticate,
 };

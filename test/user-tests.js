@@ -18,8 +18,10 @@ describe('can register and signin users', function() {
   });
 
   afterEach(function(done) {
-    userSchema.remove({}).then(function(){
-      done();
+    userSchema.remove({username:'register'}).then(function(){
+      userSchema.remove({username:'testusername'}).then(function(){
+        done();
+      });
     });
   });
 

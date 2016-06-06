@@ -3,6 +3,7 @@ import SearchView from './SearchView';
 import ResultView from './ResultView';
 import QueueView from './QueueView';
 import PlayerView from './PlayerView';
+import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
 const socket = io();
@@ -26,12 +27,12 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    console.log("initialmount")
+    console.log('initialmount');
     const context = this;
 
     socket.on('connect', () => {
       socket.on('master', (data) => {
-        console.log("i am a master",data)
+        console.log('i am a master', data);
         context.setState({
           master: data,
         });
@@ -61,12 +62,15 @@ export default class App extends React.Component {
 
   onClickSong(song) {
     // set up the state as the song that has been passed from searchResultView
-    console.log("clicked");
+    const data = {};
+    data.roomid = window.location.pathname.split('/')[2];
+    data.song = song;
+    console.log('clicked');
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
-      data: song,
+      data: data,
       success: function (result) {
         if (result.length === 1) {
           socket.emit('update', result[0]);
@@ -124,11 +128,14 @@ export default class App extends React.Component {
   }
 
   handleChangeSong(song) {
+    const data = {};
+    data.roomid = window.location.pathname.split('/')[2];
+    data.song = song;
     $.ajax({
       url: 'api/queue/songFinished',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
-      data: song,
+      data: data,
       success: function(result) {
         socket.emit('update', result[0]);
         if (result.length === 0) {
@@ -152,7 +159,7 @@ export default class App extends React.Component {
     $.ajax({
       type: 'POST',
       url: '/api/queue/increaseRank',
-      data: { index: i },
+      data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
         socket.emit('update');
         const tempQueue = result;
@@ -172,7 +179,7 @@ export default class App extends React.Component {
     $.ajax({
       type: 'POST',
       url: '/api/queue/decreaseRank',
-      data: { index: i },
+      data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
         socket.emit('update');
         const tempQueue = result;
@@ -217,6 +224,6 @@ export default class App extends React.Component {
           />
         </div>
       </div>
-		);
+    );
   }
 }
