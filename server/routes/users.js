@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 
 const authenticate = (req, res, next) => {
-  // const roomid = req.roomid;
+  // we check the token here, but it really doesn't do anything with the authentication.
   if (req.body.user && req.body.token) {
     const token = req.body.token;
 
@@ -22,31 +22,31 @@ const authenticate = (req, res, next) => {
 
       return next();
     });
-  } else {
+  }
     //  create a dummy room to always return until the front end can
     //  start passing in a existing user.
-    const adminRoomId = '00000';
-    User.findOne({ roomid: adminRoomId }, (err, results) => {
-      if (results === null) {
-        new User({ username: 'admin',
-          password: 'no-password',
-          roomid: adminRoomId,
-          queue: [] })
-        .save(() => {
-          console.log('creating dummy user');
-          req.username = 'admin';
-          req.roomid = adminRoomId;
+    // const adminRoomId = '00000';
+    // User.findOne({ roomid: adminRoomId }, (err, results) => {
+    //   if (results === null) {
+    //     new User({ username: 'admin',
+    //       password: 'no-password',
+    //       roomid: adminRoomId,
+    //       queue: [] })
+    //     .save(() => {
+    //       console.log('creating dummy user');
+    //       req.username = 'admin';
+    //       req.roomid = adminRoomId;
 
-          return next();
-        });
-      } else {
-        console.log('found dummy user');
-        req.username = 'admin';
-        req.roomid = adminRoomId;
-        return next();
-      }
-    });
-  }
+    //       return next();
+    //     });
+    //   } else {
+    //     console.log('found dummy user');
+    //     req.username = 'admin';
+    //     req.roomid = adminRoomId;
+    //     return next();
+    //   }
+    // });
+  return next();
 };
 
 
@@ -113,7 +113,7 @@ const doSignin = (username, password) => {
           }
           const returnUser = {
             username: user.username,
-            roomId: user.roomid,
+            roomid: user.roomid,
           };
 
           resolve(returnUser);

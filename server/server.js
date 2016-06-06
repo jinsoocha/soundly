@@ -16,6 +16,13 @@ require('./routes/routes.js')(app, express);
 
 require('./routes/socketio.js')(app, express, http, io);
 
+//  everything else goes to react
+app.get('*', function (req, res) {
+  // and drop 'public' in the middle of here
+  res.sendFile(path.join(__dirname, '/../compiled', 'index.html'));
+});
+
+
 const port = process.env.PORT || 4568;
 
 http.listen(port, () => {

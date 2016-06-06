@@ -169,7 +169,7 @@ describe('song rankings change order in queue', function() {
 
   before(function(done) {
     //  create a user with the roomid;
-    new User({username:'testqueueuser', password:'pw', roomid: roomid})
+    new User({username:'testqueueuser', password:'pw', roomid: roomid, queue: []})
     .save((err, success) => done(err));
   });
 

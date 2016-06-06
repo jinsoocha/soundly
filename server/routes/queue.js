@@ -253,11 +253,11 @@ const remove = (songIndexId, roomid) => {
 //
 
 const getSongQueue = (req, res, next) => {
-  getQueue(req.roomid).then((queue) => res.json(queue))
+  getQueue(req.body.roomid).then((queue) => res.json(queue))
   .catch((err) => {
     console.log('Error ending song: ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
@@ -265,92 +265,92 @@ const getSongQueue = (req, res, next) => {
 const firstSongFinished = (req, res, next) => {
   const id = req.body.id;
 
-  removeFirstSong(id, req.roomid)
+  removeFirstSong(id, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error ending song: ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const addSongToQueue = (req, res, next) => {
-  addSong(req.body, req.roomid)
+  addSong(req.body.song, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => {
+    getQueue(req.body.roomid).then((queue) => {
       res.json(queue);
     });
   }).catch((err) => {
     console.log('Error adding song to queue: ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const increaseSongRanking = (req, res, next) => {
   const idx = +req.body.index;
-  upvote(idx, req.roomid)
+  upvote(idx, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error upvoting song idx: ', idx, ' : ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const decreaseSongRanking = (req, res, next) => {
   const idx = +req.body.index;
-  downvote(idx, req.roomid)
+  downvote(idx, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const moveUpInQueue = (req, res, next) => {
   const idx = +req.body.index;
-  moveup(idx, req.roomid)
+  moveup(idx, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const moveDownInQueue = (req, res, next) => {
   const idx = +req.body.index;
-  movedown(idx, req.roomid)
+  movedown(idx, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
 
 const removeSongFromQueue = (req, res, next) => {
   const idx = +req.body.index;
-  remove(idx, req.roomid)
+  remove(idx, req.body.roomid)
   .then(() => {
-    getQueue(req.roomid).then((queue) => res.json(queue));
+    getQueue(req.body.roomid).then((queue) => res.json(queue));
   }).catch((err) => {
     console.log('Error downvoting song idx: ', idx, ' : ', err);
     res.status(500);
-    getQueue(req.roomid).then((queue) => res.json(queue))
+    getQueue(req.body.roomid).then((queue) => res.json(queue))
     .catch(() => console.log('Major Error.  unable to send queue'));
   });
 };
