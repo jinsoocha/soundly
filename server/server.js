@@ -21,3 +21,6 @@ const port = process.env.PORT || 4568;
 http.listen(port, () => {
   console.log('Music happening on =>', port);
 });
+
+//  to allow supertest to work.
+module.exports = app;
