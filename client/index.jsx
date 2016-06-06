@@ -2,19 +2,19 @@
 //  Route connects a certain url path with a specific component we have set up
 //  SearchResultView component becomes a child of the App component with an indentation
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory } from 'react-router';
+import { render } from 'react-dom';
+import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
 import App from './components/App';
-import QueueView from './components/QueueView';
-import SearchView from './components/SearchView';
+import SignupView from './components/SignupView';
+import SigninView from './components/SigninView';
+import HomeView from './components/HomeView';
+
 
 const app = document.getElementById('app');
-ReactDOM.render((
-  <Router history={hashHistory}>
-    <Route path="/" component={App} >
-      <Route path="queue" component={QueueView} />
-      <Route path="search" component={SearchView} />
-    </Route>
+render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App} />
+    <Route path="/signup" name="signup" component={SignupView} />
+    <Route path="/signin" name="signup" component={SigninView} />
   </Router>
 ), app);
-
