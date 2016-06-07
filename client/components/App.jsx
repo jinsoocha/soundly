@@ -113,7 +113,6 @@ export default class App extends React.Component {
   handleSubmit(keyword) {
     this.setState({ keyword });
     const obj = { keyword };
-    // const obj = { keyword: keyword };
     $.ajax({
       url: 'http://localhost:4568/server',
       contentType: 'application/x-www-form-urlencoded',
@@ -168,7 +167,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update', [data.roomid]);
+        socket.emit('update', [window.location.pathname.split('/')[2]]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -188,7 +187,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update', [data.roomid]);
+        socket.emit('update', [window.location.pathname.split('/')[2]]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,

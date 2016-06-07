@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import $ from 'jquery';
 
 
@@ -44,18 +45,17 @@ export default class SigninView extends React.Component {
   render() {
     return (
       <div>
-        <h1 id="heading">Signin!</h1>
-        <form onSubmit={this.handleSignin.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="username">Select a username</label>
-            <input className="form-control" name="username" ref="username" required type="text"/>
+        <form onSubmit={this.handleSignin.bind(this)} className="loginForm">
+          <div className="usernameForm">
+            <label htmlFor="username" className="username">Username</label>
+            <input className="usernameInput" name="username" ref="username" required type="text" />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Select a password</label>
-            <input className="form-control" name="password" ref="password" required type="text" />
+          <div className="passwordForm">
+            <label htmlFor="password" className="password">Password</label>
+            <input className="passwordInput" name="password" ref="password" required type="password" />
           </div>
-          <div className="form-group">
-            <button>submit</button>
+          <div className="loginWrapper">
+            <button className="loginButton">Login</button>
           </div>
         </form>
       </div>
