@@ -19,7 +19,7 @@ require('./routes/socketio.js')(app, express, http, io);
 //  everything else goes to react
 app.get('*', function (req, res) {
   // and drop 'public' in the middle of here
-  res.sendFile(path.join(__dirname, '/../compiled', 'index.html'));
+  res.sendFile(path.join(__dirname, '/../compiled'));
 });
 
 
