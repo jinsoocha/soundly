@@ -29,6 +29,7 @@
     */
     .searchBox {
       background: #E6E6E6;
+      background: -webkit-linear-gradient(top, #E6E6E6, transparent);
       background: -moz-linear-gradient(top, #E6E6E6, transparent);
       background: -o-linear-gradient(top, #E6E6E6, transparent);
       background: linear-gradient(top, #E6E6E6, transparent);
@@ -70,6 +71,7 @@
     RESULT
     */
     .searchKeyword {
+      text-align: left;
       font-size: 14px;
       display: block;
       margin: 0 10px 0 8px;

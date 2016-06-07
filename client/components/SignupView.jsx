@@ -57,7 +57,7 @@ export default class SignupView extends React.Component {
           </div>
           <div className="passwordForm">
             <label htmlFor="password" className="password">Password</label>
-            <input className="passwordInput" name="password" ref="password" required type="text" />
+            <input className="passwordInput" name="password" ref="password" required type="password" />
           </div>
           <div className="signupWrapper">
             <button className="signupButton">Signup</button>
