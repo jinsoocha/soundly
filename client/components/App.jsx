@@ -167,7 +167,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update', [data.roomid]);
+        socket.emit('update', [window.location.pathname.split('/')[2]]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -187,7 +187,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update', [data.roomid]);
+        socket.emit('update', [window.location.pathname.split('/')[2]]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
