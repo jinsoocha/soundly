@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
-
 const authenticate = (req, res, next) => {
   // we check the token here, but it really doesn't do anything with the authentication.
   if (req.body.user && req.body.token) {

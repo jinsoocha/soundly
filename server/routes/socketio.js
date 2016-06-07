@@ -5,33 +5,41 @@ const queue = require('./queue.js');
 
 module.exports = (app, express, http, io) => {
   let count = 0;
-  let master = true;
+  const masters = {};
 
   io.on('connection', (socket) => {
     count++;
     console.log(count, 'users connected');
-
-    if (master) {
-      socket.emit('master', master);
-      master = false;
-    }
-    queue.getQueue('00000').then((updated) => {
-      if (updated.length > 0) {
-        socket.emit('queue', [updated, updated[0]]);
-      } else {
-        socket.emit('queue', [updated]);
+    socket.on('room', (room) => {
+      console.log("roomname",room)
+      socket.join(room);
+      if (!masters[room]) {
+        masters[room] = socket.id;
+        console.log("masters",masters)
+        io.to(socket.id).emit('master', true);
       }
-    });
-
-    socket.on('update', (data) => {
-      queue.getQueue('00000').then((updated) => {
-        if (data) {
-          socket.broadcast.emit('queue', [updated, data]);
+      queue.getQueue(room).then((updated) => {
+        console.log("getting the initial queue",room, updated)
+        if (updated.length > 0) {
+          io.in(room).emit('queue', [updated, updated[0]]);
         } else {
-          socket.broadcast.emit('queue', [updated]);
+          io.in(room).emit('queue', [updated]);
         }
       });
     });
+
+    socket.on('update', (data) => {
+      let roomid = data[0];
+      let currentSong = data[1];
+      queue.getQueue(roomid).then((updated) => {
+        if (currentSong) {
+          io.broadcast.in(roomid).emit('queue', [updated, currentSong]);
+        } else {
+          io.broadcast.in(roomid).emit('queue', [updated]);
+        }
+      });
+    });
+
 
     socket.on('disconnect', () => {
       count--;
