@@ -6,7 +6,7 @@ import PlayerView from './PlayerView';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
-const socket = io();
+const socket = io.connect('http://localhost:4568');
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,19 +27,25 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    const room = window.location.pathname.split('/')[2];
     console.log('initialmount');
     const context = this;
-
+    console.log("room",room)
     socket.on('connect', () => {
-      socket.on('master', (data) => {
-        console.log('i am a master', data);
-        context.setState({
-          master: data,
-        });
+      console.log("HELLO")
+    });
+
+    socket.emit('room', room);
+
+    socket.on('master', (data) => {
+      console.log('i am a master', data);
+      context.setState({
+        master: data,
       });
     });
 
     socket.on('queue', (data) => {
+      console.log("client getting queue", data)
       if (data[0].length === 0) {
         this.setState({
           queue: data[0],
@@ -65,7 +71,7 @@ export default class App extends React.Component {
     const data = {};
     data.roomid = window.location.pathname.split('/')[2];
     data.song = song;
-    console.log('clicked');
+    console.log('clicked',data);
     $.ajax({
       url: '/api/queue/addSong',
       contentType: 'application/x-www-form-urlencoded',
@@ -73,13 +79,13 @@ export default class App extends React.Component {
       data: data,
       success: function (result) {
         if (result.length === 1) {
-          socket.emit('update', result[0]);
+          socket.emit('update', [data.roomid, result[0]]);
           this.setState({
             currentSong: result[0],
             queue: result,
           });
         } else {
-          socket.emit('update');
+          socket.emit('update', [data.roomid]);
           this.setState({
             queue: result,
           });
@@ -138,7 +144,7 @@ export default class App extends React.Component {
       type: 'POST',
       data: data,
       success: function(result) {
-        socket.emit('update', result[0]);
+        socket.emit('update', [data.roomid, result[0]]);
         if (result.length === 0) {
           this.setState({
             queue: result,
@@ -162,7 +168,7 @@ export default class App extends React.Component {
       url: '/api/queue/increaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update');
+        socket.emit('update', [data.roomid]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
@@ -182,7 +188,7 @@ export default class App extends React.Component {
       url: '/api/queue/decreaseRank',
       data: { index: i, roomid: window.location.pathname.split('/')[2] },
       success: function (result) {
-        socket.emit('update');
+        socket.emit('update', [data.roomid]);
         const tempQueue = result;
         this.setState({
           queue: tempQueue,
