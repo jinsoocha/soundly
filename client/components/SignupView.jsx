@@ -50,18 +50,17 @@ export default class SignupView extends React.Component {
   render() {
     return (
       <div>
-        <h1 id="heading">Signup!</h1>
-        <form onSubmit={this.handleSignup.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="username">Select a username</label>
-            <input className="form-control" name="username" ref="username" required type="text"/>
+        <form onSubmit={this.handleSignup.bind(this)} className="signupForm">
+          <div className="usernameForm">
+            <label htmlFor="username" className="username">Username</label>
+            <input className="usernameInput" name="username" ref="username" required type="text" />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Select a password</label>
-            <input className="form-control" name="password" ref="password" required type="text"/>
+          <div className="passwordForm">
+            <label htmlFor="password" className="password">Password</label>
+            <input className="passwordInput" name="password" ref="password" required type="text" />
           </div>
-          <div className="form-group">
-          <button>submit</button>
+          <div className="signupWrapper">
+            <button className="signupButton">Signup</button>
           </div>
         </form>
       </div>
