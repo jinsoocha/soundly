@@ -1,0 +1,74 @@
+/*
+AUTHENTICATION
+*/
+.welcome {
+  margin: 20% 0 0 0;
+  font-size: 20px;
+}
+.parentView {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+.homeOptions {
+  text-decoration: none;
+  font-size: 12px;
+  width: 90%;
+  margin: 10px auto 40px auto;
+}
+.loginForm, .signupForm {
+  display: block;
+  margin: 0 auto;
+  border-radius: 3px;
+}
+.signIn, .joinRoom, .signUp {
+  padding: 5px;
+}
+.usernameForm, .passwordForm, .roomForm {
+  width: 60%;
+  margin: 0 auto;
+  padding: 5px;
+}
+.username, .password {
+  text-align: left;
+  position: relative;
+  left: 0;
+  /*float: left;*/
+  margin: 0 3px 3px 0;
+  padding: 3px 0;
+}
+.password {
+}
+.usernameInput, .passwordInput {
+  border-radius: 3px;
+  border: 1px solid #E6E6E6;
+  height: 15px;
+  position: relative;
+  /*float: right;*/
+  right: 0;
+  margin: 2px;
+  padding: 5px 0;
+}
+.roomInput {
+  position: relative;
+  right: 0;
+  border-radius: 3px;
+  border: 1px solid #E6E6E6;
+  height: 15px;
+  padding: 5px;
+}
+.loginWrapper, .signupWrapper {
+  width: 40%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 6px;
+  display: block;
+}
+.loginButton, .signupButton {
+  border-radius: 3px;
+  margin: 15px;
+  background: #E6E6E6;
+  height: 30px;
+  width: 60px;
+}
