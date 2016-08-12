@@ -10,4 +10,6 @@ Type and enter the keywords such as song title, singer name in the search bar an
 
 Your room ID is the last 6 digits of your url. Your friends can join your room with this room ID on the landing page. You can also test it by opening another browser and joining the room. Everybody will see the exact same playlist upon joining and can add, upvote or downvote the songs in the playlist! Enjoy Q-Maker!
 
+* The application serves the purpose of creating the same playlist for everybody in one place, so only the first browser that creates a room can listen to music. Other browsers will be able to add and vote for songs only. 
+
 ![image](https://cloud.githubusercontent.com/assets/17713849/17637531/0a9ec0aa-6099-11e6-9aca-76be80d7fc7c.png)
