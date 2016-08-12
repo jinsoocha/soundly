@@ -1,6 +1,5 @@
-# Q-Maker
-A music streaming application to create collaborative playlists for groups.
-> This application is built with React, Node, MongoDB, Socket IO and Soundcloud API. 
+# Q-Maker: Visit http://138.68.12.179:4568
+A music streaming application to create collaborative playlists for groups. This application is built with React, Node, MongoDB, Socket IO and Soundcloud API. 
 
 # How to use
 Please sign up by clicking sign up button on the landing page.
