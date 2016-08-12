@@ -25940,7 +25940,7 @@
 	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 	}
 
-	var socket = io.connect('http://localhost:4568');
+	var socket = io.connect();
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -26061,7 +26061,7 @@
 	      this.setState({ keyword: keyword });
 	      var obj = { keyword: keyword };
 	      _jquery2.default.ajax({
-	        url: 'http://localhost:4568/server',
+	        url: '/server',
 	        contentType: 'application/x-www-form-urlencoded',
 	        type: 'POST',
 	        data: this.requestBuildQueryString(obj),

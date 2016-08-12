@@ -6,7 +6,7 @@ import PlayerView from './PlayerView';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
 
-const socket = io.connect('http://localhost:4568');
+const socket = io.connect();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -114,7 +114,7 @@ export default class App extends React.Component {
     this.setState({ keyword });
     const obj = { keyword };
     $.ajax({
-      url: 'http://localhost:4568/server',
+      url: '/server',
       contentType: 'application/x-www-form-urlencoded',
       type: 'POST',
       data: this.requestBuildQueryString(obj),

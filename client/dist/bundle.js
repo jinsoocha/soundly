@@ -25925,7 +25925,7 @@
 	      var obj = { keyword: this.refs.searchInput.value };
 	      console.log(this.refs.searchInput.value);
 	      $.ajax({
-	        url: 'http://localhost:4568/server',
+	        url: '/server',
 	        contentType: 'application/x-www-form-urlencoded',
 	        type: 'POST',
 	        data: this.requestBuildQueryString(obj),
