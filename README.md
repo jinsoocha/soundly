@@ -1,63 +1,14 @@
-# MisQueue
-Collaborative music streamer and visualizer.
+# Q-Maker
+A music streaming application to create collaborative playlists for groups.
+> This application is built with React, Node, MongoDB, Socket IO and Soundcloud API. 
 
+# How to use
+Please sign up by clicking sign up button on the landing page.
+![image](https://cloud.githubusercontent.com/assets/17713849/17637532/0a9f010a-6099-11e6-80be-2225a92d4b90.png)
 
-# Project Name
+Type and enter the keywords such as song title, singer name in the search bar and you will see the list of songs. Click a song and it will add to the playlist.
+![image](https://cloud.githubusercontent.com/assets/17713849/17637530/0a9deb94-6099-11e6-8b8c-0cc30c649b4c.png)
 
-MisQueue
+Your room ID is the last 6 digits of your url. Your friends can join your room with this room ID on the landing page. You can also test it by opening another browser and joining the room. Everybody will see the exact same playlist upon joining and can add, upvote or downvote the songs in the playlist! Enjoy Q-Maker!
 
-
-> Changing the way you view and queue music.
-
-## Team
-
-- __Product Owner__: Bill Ramsey
-- __Scrum Master__: Aaron Brown
-- __Development Team Members__: Jinsoo Cha, Sehoon Park
-
-
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
-
-## Usage
-
-MisQueue is a shared queue app.  A user can register and have a shared queue.  They can then
-give out their room id to allow users to come in and add songs to their queue.  All playing on
-the original users browser.  Users can rate the songs.  When they get two 'hearts' or two 'thumbs down'
-it will move the song up or down in the queue.
-
-
-## Requirements
-
-## Development
-
-tests can be run with
-npm test
-
-### Installing Dependencies
-
-npm install
-copy compiled/client/config/config.example.js to the same directory as config.js and put a sound cloud api key in it.
-npm run hola
-ctrl-c then run:
-npm start
-
-
-### Roadmap
-
-Nice to haves:
-Mobile view for adding to the queue. (or react native!)
-Better restrictions how many times you can vote.
-playing synchronized on multiple browsers.
-store sound cloud api key on the server.
-
-## Contributing
-
--In process. No contributions being taken at this time.
+![image](https://cloud.githubusercontent.com/assets/17713849/17637531/0a9ec0aa-6099-11e6-9aca-76be80d7fc7c.png)
