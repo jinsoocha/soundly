@@ -13,7 +13,7 @@ import ParentView from './components/ParentView';
 
 const app = document.getElementById('app');
 render((
-  <Router history={browserHistory}>
+  <Router>
     <Route path="/" component={ParentView}>
       <IndexRoute component={HomeView} />
       <Route path="signin" component={SigninView} />
