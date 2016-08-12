@@ -88,7 +88,6 @@
 	//  Router and Route is a ReactRouter method
 	//  Route connects a certain url path with a specific component we have set up
 	//  SearchResultView component becomes a child of the App component with an indentation
-
 	var app = document.getElementById('app');
 	(0, _reactDom.render)(_react2.default.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory }, _react2.default.createElement(_reactRouter.Route, { path: '/', component: _ParentView2.default }, _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeView2.default }), _react2.default.createElement(_reactRouter.Route, { path: 'signin', component: _SigninView2.default }), _react2.default.createElement(_reactRouter.Route, { path: 'signup', component: _SignupView2.default }), _react2.default.createElement(_reactRouter.Route, { path: 'main/:roomID', component: _App2.default }))), app);
 
@@ -26203,7 +26202,6 @@
 	  var searchLogo = '/styles/imgs/searchLogo.svg';
 	  return _react2.default.createElement('form', { onSubmit: handleSubmit, className: 'searchBox' }, _react2.default.createElement('input', { type: 'text', id: 'searchInput', placeholder: 'Search from artists, bands, tracks, podcasts', className: 'searchInput', required: true }), _react2.default.createElement('input', { type: 'image', src: searchLogo, className: 'searchLogo' }));
 	}; //  SearchView renders the input bar and sends the search input to the server on submit.
-
 	exports.default = SearchView;
 
 /***/ },
@@ -26232,7 +26230,6 @@
 
 	// passing in the key to the childview is mandatory in React
 	// Without key, you will get a warning in console.
-
 	var ResultView = function ResultView(props) {
 	  var tracks = props.tracks;
 	  var keyword = props.keyword;
@@ -36605,7 +36602,6 @@
 	}
 
 	// dashboard view to be used when a user navigates to our page.
-
 	var HomeView = function HomeView(props) {
 	  var handleSubmit = function handleSubmit(e) {
 	    e.preventDefault();
